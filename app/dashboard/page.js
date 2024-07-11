@@ -62,10 +62,7 @@ export default function Dashboard() {
 			<Card className="w-full max-w-md">
 				<CardHeader className="flex gap-3">
 					<Avatar
-						src={
-							user.photoURL ||
-							`https://api.dicebear.com/6.x/initials/svg?seed=${user.email}`
-						}
+						src={`https://api.dicebear.com/6.x/bottts-neutral/svg?seed=${user.email}`}
 						size="lg"
 					/>
 					<div className="flex flex-col">

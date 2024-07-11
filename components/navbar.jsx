@@ -62,10 +62,7 @@ export const Navbar = () => {
 				<Avatar
 					as="button"
 					size="sm"
-					src={
-						user?.photoURL ||
-						`https://api.dicebear.com/6.x/initials/svg?seed=${user?.email}`
-					}
+					src={`https://api.dicebear.com/6.x/bottts-neutral/svg?seed=${user?.email}`}
 				/>
 			</DropdownTrigger>
 			<DropdownMenu aria-label="User menu actions">
