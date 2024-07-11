@@ -6,6 +6,7 @@
     "node": true
   },
   "extends": [
+       "next",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
