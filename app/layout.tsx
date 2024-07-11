@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
+import { ReactNode } from "react";
 
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
@@ -10,7 +11,7 @@ export const metadata = {
 	description: "Authenticated App with NextUI",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
