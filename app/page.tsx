@@ -28,7 +28,7 @@ export default function Home() {
 						radius: "full",
 						variant: "shadow",
 					})}
-					href="/start-quiz"
+					href="/ssc"
 				>
 					Start Quiz
 				</Link>
