@@ -78,7 +78,7 @@ export default function Dashboard() {
 				<CardBody className="text-center">
 					<h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 					<p className="mb-4">
-						You're successfully logged in as {user.email}!
+						You&rsquo;re successfully logged in as {user.email}!
 					</p>
 					<Button
 						color="danger"
