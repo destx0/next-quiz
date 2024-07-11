@@ -30,7 +30,7 @@ import useAuthStore from "@/lib/zustand";
 const navItems = [
 	{ href: "/", label: "Home" },
 	{ href: "/dashboard", label: "Dashboard" },
-	{ href: "/upload", label: "Upload" }, // New nav item for upload page
+	{ href: "/upload", label: "Upload" },
 ];
 
 export const Navbar = () => {
