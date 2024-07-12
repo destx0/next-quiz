@@ -1,10 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import ManualQuestionForm from "./ManualQuestionForm";
 import BulkUploadForm from "./BulkUploadForm";
 import QuizForm from "./QuizForm";
+import TestBatchForm from "./TestBatchForm";
 
 export default function UploadPage() {
 	const [activeTab, setActiveTab] = useState("manual");
@@ -12,7 +12,7 @@ export default function UploadPage() {
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold mb-4">
-				Upload Questions and Quizzes
+				Upload Questions, Quizzes, and Test Batches
 			</h1>
 			<Tabs activeKey={activeTab} onSelectionChange={setActiveTab}>
 				<Tab key="manual" title="Manual Upload">
@@ -33,6 +33,13 @@ export default function UploadPage() {
 					<Card>
 						<CardBody>
 							<QuizForm />
+						</CardBody>
+					</Card>
+				</Tab>
+				<Tab key="testBatch" title="Create Test Batch">
+					<Card>
+						<CardBody>
+							<TestBatchForm />
 						</CardBody>
 					</Card>
 				</Tab>
