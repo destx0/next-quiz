@@ -1,22 +1,9 @@
 "use client";
-
 import React from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import dynamic from "next/dynamic";
-import useAuthStore from "@/lib/zustand";
+import QuizBatches from "./QuizBatches";
 
-const DynamicQuizBatches = dynamic(() => import("./QuizBatches"), {
-	ssr: false,
-	loading: () => <p>Loading quiz batches...</p>,
-});
-
-export default function SSC() {
-	const { user, loading } = useAuthStore();
-
-	if (loading) {
-		return <div>Loading...</div>;
-	}
-
+export default function SSCPage() {
 	return (
 		<div className="container mx-auto p-4">
 			<Card className="mb-4">
@@ -26,18 +13,14 @@ export default function SSC() {
 					</h1>
 				</CardHeader>
 				<CardBody>
-					{user ? (
-						<p>
-							Welcome, {user.displayName || user.email}! Here you
-							can find and take SSC preparation tests.
-						</p>
-					) : (
-						<p>Please log in to access SSC tests.</p>
-					)}
+					<p>
+						Welcome to the SSC test preparation page. Here you can
+						find and take SSC preparation tests.
+					</p>
 				</CardBody>
 			</Card>
 
-			{user && <DynamicQuizBatches />}
+			<QuizBatches />
 		</div>
 	);
 }

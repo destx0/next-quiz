@@ -1,9 +1,49 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
+import { Card, CardBody, Button } from "@nextui-org/react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase"; // Import db from firebase.js
-import { getQuiz } from "@/lib/firestore"; // Import getQuiz from firestore.js
+import { db } from "@/lib/firebase";
+import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
-import BatchContainer from "./BatchContainer";
+import Link from "next/link";
+
+const QuizCard = ({ quiz, batchId }) => (
+	<Card className="w-64 h-40 flex-shrink-0 mr-4">
+		<CardBody className="p-3">
+			<h4 className="text-sm font-medium mb-1 truncate">
+				{quiz.title || "Untitled Quiz"}
+			</h4>
+			<p className="text-xs mb-1 truncate">{quiz.description}</p>
+			<div className="text-xs">
+				<p>Duration: {quiz.duration} min</p>
+				<p>Sections: {quiz.sections?.length || 0}</p>
+			</div>
+			<Link href={`/ssc/${quiz.id}?batchId=${batchId}`} passHref>
+				<Button size="sm" color="primary" className="mt-2">
+					Start Test
+				</Button>
+			</Link>
+		</CardBody>
+	</Card>
+);
+
+const BatchContainer = ({ batch }) => (
+	<Card className="mb-4">
+		<CardBody>
+			<h3 className="text-lg font-semibold mb-2">{batch.title}</h3>
+			<p className="text-sm mb-2">{batch.description}</p>
+			<p className="text-xs mb-2">
+				Topic-wise: {batch.isTopicWise ? "Yes" : "No"}
+			</p>
+			<div className="flex overflow-x-auto py-2">
+				{batch.quizzes.map((quiz) => (
+					<QuizCard key={quiz.id} quiz={quiz} batchId={batch.id} />
+				))}
+			</div>
+		</CardBody>
+	</Card>
+);
 
 const QuizBatches = () => {
 	const [testBatches, setTestBatches] = useState([]);
@@ -76,22 +116,9 @@ const QuizBatches = () => {
 		fetchTestBatches();
 	}, [user]);
 
-	const handleStartTest = (batchId, quizId) => {
-		console.log(`Starting test for batch ${batchId}, quiz ${quizId}`);
-		// Implement the logic to start the test
-	};
-
-	if (loading) {
-		return <div>Loading quiz batches...</div>;
-	}
-
-	if (error) {
-		return <div className="text-red-500">{error}</div>;
-	}
-
-	if (!user) {
-		return <div>Please log in to view quiz batches.</div>;
-	}
+	if (loading) return <div>Loading quiz batches...</div>;
+	if (error) return <div className="text-red-500">{error}</div>;
+	if (!user) return <div>Please log in to view quiz batches.</div>;
 
 	return (
 		<div className="space-y-4">
@@ -100,11 +127,7 @@ const QuizBatches = () => {
 				<p>No quiz batches available at the moment.</p>
 			) : (
 				testBatches.map((batch) => (
-					<BatchContainer
-						key={batch.id}
-						batch={batch}
-						onStartTest={handleStartTest}
-					/>
+					<BatchContainer key={batch.id} batch={batch} />
 				))
 			)}
 		</div>
