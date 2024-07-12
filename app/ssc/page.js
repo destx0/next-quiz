@@ -2,8 +2,13 @@
 
 import React from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import QuizBatches from "./QuizBatches";
-import useAuthStore from "@//lib/zustand";
+import dynamic from "next/dynamic";
+import useAuthStore from "@/lib/zustand";
+
+const DynamicQuizBatches = dynamic(() => import("./QuizBatches"), {
+	ssr: false,
+	loading: () => <p>Loading quiz batches...</p>,
+});
 
 export default function SSC() {
 	const { user, loading } = useAuthStore();
@@ -32,7 +37,7 @@ export default function SSC() {
 				</CardBody>
 			</Card>
 
-			<QuizBatches />
+			{user && <DynamicQuizBatches />}
 		</div>
 	);
 }

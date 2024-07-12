@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-	Card,
-	CardBody,
-	CardHeader,
-	Button,
-	Accordion,
-	AccordionItem,
-} from "@nextui-org/react";
 import { collection, getDocs } from "firebase/firestore";
-import { db, getTestBatch, getQuiz } from "@/lib/firebase"; // Adjust the import path as needed
+import { db } from "@/lib/firebase"; // Import db from firebase.js
+import { getQuiz } from "@/lib/firestore"; // Import getQuiz from firestore.js
 import useAuthStore from "@/lib/zustand";
+import BatchContainer from "./BatchContainer";
 
 const QuizBatches = () => {
 	const [testBatches, setTestBatches] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const { user } = useAuthStore();
 
 	useEffect(() => {
@@ -30,21 +25,40 @@ const QuizBatches = () => {
 				const batchesData = await Promise.all(
 					querySnapshot.docs.map(async (doc) => {
 						const batchData = doc.data();
-						const topicsWithQuizzes = await Promise.all(
-							batchData.topics.map(async (topic) => ({
-								...topic,
-								quizzes: await Promise.all(
-									topic.quizzes.map(async (quizId) => ({
+						if (
+							!batchData.quizzes ||
+							!Array.isArray(batchData.quizzes)
+						) {
+							console.warn(
+								`Batch ${doc.id} has no quizzes or quizzes is not an array`
+							);
+							return {
+								id: doc.id,
+								...batchData,
+								quizzes: [],
+							};
+						}
+						const quizzesWithDetails = await Promise.all(
+							batchData.quizzes.map(async (quizId) => {
+								try {
+									const quizData = await getQuiz(quizId);
+									return { id: quizId, ...quizData };
+								} catch (error) {
+									console.error(
+										`Error fetching quiz ${quizId}:`,
+										error
+									);
+									return {
 										id: quizId,
-										...(await getQuiz(quizId)),
-									}))
-								),
-							}))
+										error: "Failed to load quiz",
+									};
+								}
+							})
 						);
 						return {
 							id: doc.id,
 							...batchData,
-							topics: topicsWithQuizzes,
+							quizzes: quizzesWithDetails,
 						};
 					})
 				);
@@ -52,6 +66,9 @@ const QuizBatches = () => {
 				setLoading(false);
 			} catch (error) {
 				console.error("Error fetching test batches:", error);
+				setError(
+					"Failed to load quiz batches. Please try again later."
+				);
 				setLoading(false);
 			}
 		};
@@ -60,13 +77,16 @@ const QuizBatches = () => {
 	}, [user]);
 
 	const handleStartTest = (batchId, quizId) => {
-		// Implement the logic to start the test
 		console.log(`Starting test for batch ${batchId}, quiz ${quizId}`);
-		// You might want to navigate to a test page or open a modal here
+		// Implement the logic to start the test
 	};
 
 	if (loading) {
 		return <div>Loading quiz batches...</div>;
+	}
+
+	if (error) {
+		return <div className="text-red-500">{error}</div>;
 	}
 
 	if (!user) {
@@ -75,100 +95,18 @@ const QuizBatches = () => {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="text-2xl font-bold mb-4">Quiz Batches</h1>
-			{testBatches.map((batch) => (
-				<Accordion key={batch.id}>
-					<AccordionItem
+			<h2 className="text-xl font-bold mb-4">Available Quiz Batches</h2>
+			{testBatches.length === 0 ? (
+				<p>No quiz batches available at the moment.</p>
+			) : (
+				testBatches.map((batch) => (
+					<BatchContainer
 						key={batch.id}
-						aria-label={`Test Batch: ${batch.name}`}
-						title={batch.name}
-					>
-						<Card>
-							<CardBody>
-								<p>
-									<strong>Description:</strong>{" "}
-									{batch.description}
-								</p>
-								<p>
-									<strong>Start Date:</strong>{" "}
-									{new Date(
-										batch.startDate.seconds * 1000
-									).toLocaleString()}
-								</p>
-								<p>
-									<strong>End Date:</strong>{" "}
-									{new Date(
-										batch.endDate.seconds * 1000
-									).toLocaleString()}
-								</p>
-								{batch.topics.map((topic) => (
-									<div key={topic.name} className="mt-4">
-										<h3 className="text-lg font-semibold">
-											{topic.name}
-										</h3>
-										{topic.quizzes.map((quiz) => (
-											<Card
-												key={quiz.id}
-												className="mt-2"
-											>
-												<CardHeader>
-													<h4 className="text-md font-medium">
-														{quiz.title}
-													</h4>
-												</CardHeader>
-												<CardBody>
-													<p>
-														<strong>
-															Description:
-														</strong>{" "}
-														{quiz.description}
-													</p>
-													<p>
-														<strong>
-															Duration:
-														</strong>{" "}
-														{quiz.duration} minutes
-													</p>
-													<p>
-														<strong>
-															Positive Score:
-														</strong>{" "}
-														{quiz.positiveScore}
-													</p>
-													<p>
-														<strong>
-															Negative Score:
-														</strong>{" "}
-														{quiz.negativeScore}
-													</p>
-													<p>
-														<strong>
-															Number of Sections:
-														</strong>{" "}
-														{quiz.sections.length}
-													</p>
-													<Button
-														color="primary"
-														onClick={() =>
-															handleStartTest(
-																batch.id,
-																quiz.id
-															)
-														}
-														className="mt-2"
-													>
-														Start Test
-													</Button>
-												</CardBody>
-											</Card>
-										))}
-									</div>
-								))}
-							</CardBody>
-						</Card>
-					</AccordionItem>
-				</Accordion>
-			))}
+						batch={batch}
+						onStartTest={handleStartTest}
+					/>
+				))
+			)}
 		</div>
 	);
 };
