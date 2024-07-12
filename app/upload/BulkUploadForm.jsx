@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
 	Button,
 	Textarea,
@@ -8,6 +8,7 @@ import {
 	CardBody,
 } from "@nextui-org/react";
 import { addQuestion, addQuiz } from "@/lib/firestore";
+
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
 	const [uploadType, setUploadType] = useState("questions");
@@ -21,9 +22,10 @@ export default function BulkUploadForm() {
 				const questions = Array.isArray(data) ? data : [data];
 				const ids = await Promise.all(questions.map(addQuestion));
 				alert(`Questions added successfully. IDs: ${ids.join(", ")}`);
-			} else if (uploadType === "quiz") {
-				const quizId = await addQuiz(data);
-				alert(`Quiz added successfully. ID: ${quizId}`);
+			} else if (uploadType === "quizzes") {
+				const quizzes = Array.isArray(data) ? data : [data];
+				const quizIds = await Promise.all(quizzes.map(addQuiz));
+				alert(`Quizzes added successfully. IDs: ${quizIds.join(", ")}`);
 			}
 
 			setJsonData("");
@@ -47,29 +49,32 @@ export default function BulkUploadForm() {
   },
   // ... more questions ...
 ]`,
-		quiz: `Expected format for quiz:
-{
-  "title": "General Knowledge Quiz",
-  "description": "Test your knowledge!",
-  "thumbnailLink": "https://example.com/thumbnail.jpg",
-  "duration": 30,
-  "positiveScore": 1,
-  "negativeScore": 0.25,
-  "sections": [
-    {
-      "name": "History",
-      "questions": [
-        { "id": "existingQuestionId" },
-        {
-          "question": "Who was the first US President?",
-          "options": ["Washington", "Adams", "Jefferson", "Madison"],
-          "correctAnswer": 0,
-          "explanation": "George Washington was the first US President."
-        }
-      ]
-    }
-  ]
-}`,
+		quizzes: `Expected format for quizzes:
+[
+  {
+    "title": "General Knowledge Quiz",
+    "description": "Test your knowledge!",
+    "thumbnailLink": "https://example.com/thumbnail.jpg",
+    "duration": 30,
+    "positiveScore": 1,
+    "negativeScore": 0.25,
+    "sections": [
+      {
+        "name": "History",
+        "questions": [
+          { "id": "existingQuestionId" },
+          {
+            "question": "Who was the first US President?",
+            "options": ["Washington", "Adams", "Jefferson", "Madison"],
+            "correctAnswer": 0,
+            "explanation": "George Washington was the first US President."
+          }
+        ]
+      }
+    ]
+  },
+  // ... more quizzes ...
+]`,
 	};
 
 	return (
@@ -81,8 +86,9 @@ export default function BulkUploadForm() {
 				orientation="horizontal"
 			>
 				<Radio value="questions">Questions</Radio>
-				<Radio value="quiz">Quiz</Radio>
+				<Radio value="quizzes">Quizzes</Radio>
 			</RadioGroup>
+
 			<Card>
 				<CardBody>
 					<pre className="text-sm overflow-auto">
@@ -90,16 +96,18 @@ export default function BulkUploadForm() {
 					</pre>
 				</CardBody>
 			</Card>
+
 			<Textarea
-				label="JSON Data"
+				label={`JSON Data for ${uploadType}`}
 				value={jsonData}
 				onChange={(e) => setJsonData(e.target.value)}
-				placeholder="Paste your JSON data here"
+				placeholder={`Paste your ${uploadType} JSON data here`}
 				minRows={10}
 				required
 			/>
+
 			<Button type="submit" color="primary">
-				Upload {uploadType === "questions" ? "Questions" : "Quiz"}
+				Upload {uploadType}
 			</Button>
 		</form>
 	);
