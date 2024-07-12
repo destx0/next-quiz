@@ -18,28 +18,44 @@ export default function UploadPage() {
 				<Tab key="manual" title="Manual Upload">
 					<Card>
 						<CardBody>
-							<ManualQuestionForm />
+							{ManualQuestionForm ? (
+								<ManualQuestionForm />
+							) : (
+								<p>ManualQuestionForm is undefined</p>
+							)}
 						</CardBody>
 					</Card>
 				</Tab>
 				<Tab key="bulk" title="Bulk Upload">
 					<Card>
 						<CardBody>
-							<BulkUploadForm />
+							{BulkUploadForm ? (
+								<BulkUploadForm />
+							) : (
+								<p>BulkUploadForm is undefined</p>
+							)}
 						</CardBody>
 					</Card>
 				</Tab>
 				<Tab key="quiz" title="Create Quiz">
 					<Card>
 						<CardBody>
-							<QuizForm />
+							{QuizForm ? (
+								<QuizForm />
+							) : (
+								<p>QuizForm is undefined</p>
+							)}
 						</CardBody>
 					</Card>
 				</Tab>
 				<Tab key="testBatch" title="Create Test Batch">
 					<Card>
 						<CardBody>
-							<TestBatchForm />
+							{TestBatchForm ? (
+								<TestBatchForm />
+							) : (
+								<p>TestBatchForm is undefined</p>
+							)}
 						</CardBody>
 					</Card>
 				</Tab>

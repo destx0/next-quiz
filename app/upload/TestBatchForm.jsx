@@ -13,74 +13,32 @@ export default function TestBatchForm() {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [isTopicWise, setIsTopicWise] = useState(false);
-	const [topics, setTopics] = useState([{ name: "", quizzes: [""] }]);
+	const [quizzes, setQuizzes] = useState([""]);
 
-	const addTopic = () => {
-		setTopics([...topics, { name: "", quizzes: [""] }]);
+	const addQuizField = () => {
+		setQuizzes([...quizzes, ""]);
 	};
 
-	const removeTopic = (topicIndex) => {
-		const newTopics = topics.filter((_, index) => index !== topicIndex);
-		setTopics(newTopics);
+	const handleQuizChange = (index, value) => {
+		const newQuizzes = [...quizzes];
+		newQuizzes[index] = value;
+		setQuizzes(newQuizzes);
 	};
 
-	const addQuizField = (topicIndex) => {
-		const newTopics = [...topics];
-		newTopics[topicIndex].quizzes.push("");
-		setTopics(newTopics);
-	};
-
-	const handleTopicNameChange = (topicIndex, name) => {
-		const newTopics = [...topics];
-		newTopics[topicIndex].name = name;
-		setTopics(newTopics);
-	};
-
-	const handleQuizChange = (topicIndex, quizIndex, value) => {
-		const newTopics = [...topics];
-		newTopics[topicIndex].quizzes[quizIndex] = value;
-		setTopics(newTopics);
-	};
-
-	const removeQuizField = (topicIndex, quizIndex) => {
-		const newTopics = [...topics];
-		newTopics[topicIndex].quizzes = newTopics[topicIndex].quizzes.filter(
-			(_, index) => index !== quizIndex
-		);
-		setTopics(newTopics);
+	const removeQuizField = (index) => {
+		const newQuizzes = quizzes.filter((_, i) => i !== index);
+		setQuizzes(newQuizzes);
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			let testBatchData;
-			if (isTopicWise) {
-				testBatchData = {
-					title,
-					description,
-					isTopicWise,
-					topics: topics.map((topic) => ({
-						name: topic.name,
-						quizzes: topic.quizzes.filter(
-							(quizId) => quizId.trim() !== ""
-						),
-					})),
-				};
-			} else {
-				testBatchData = {
-					title,
-					description,
-					isTopicWise,
-					topics: [
-						{
-							name: "Default",
-							quizzes: topics[0].quizzes.filter(
-								(quizId) => quizId.trim() !== ""
-							),
-						},
-					],
-				};
-			}
+			const testBatchData = {
+				title,
+				description,
+				isTopicWise,
+				quizzes: quizzes.filter((quizId) => quizId.trim() !== ""),
+			};
 
 			const testBatchId = await addTestBatch(testBatchData);
 			alert(`Test Batch added successfully. ID: ${testBatchId}`);
@@ -88,7 +46,7 @@ export default function TestBatchForm() {
 			setTitle("");
 			setDescription("");
 			setIsTopicWise(false);
-			setTopics([{ name: "", quizzes: [""] }]);
+			setQuizzes([""]);
 		} catch (error) {
 			alert("Error adding test batch: " + error.message);
 		}
@@ -119,77 +77,41 @@ export default function TestBatchForm() {
 				</CardBody>
 			</Card>
 
-			{topics.map((topic, topicIndex) => (
-				<Card key={topicIndex} className="mt-4">
-					<CardBody className="space-y-4">
-						{isTopicWise && (
-							<div className="flex items-center space-x-2">
-								<Input
-									label={`Topic ${topicIndex + 1} Name`}
-									value={topic.name}
-									onChange={(e) =>
-										handleTopicNameChange(
-											topicIndex,
-											e.target.value
-										)
-									}
-									className="flex-grow"
-									required
-								/>
-								<Button
-									color="danger"
-									variant="light"
-									onPress={() => removeTopic(topicIndex)}
-								>
-									Remove Topic
-								</Button>
-							</div>
-						)}
-						{topic.quizzes.map((quiz, quizIndex) => (
-							<div
-								key={quizIndex}
-								className="flex items-center space-x-2"
-							>
-								<Input
-									label={`Quiz ${quizIndex + 1} ID`}
-									value={quiz}
-									onChange={(e) =>
-										handleQuizChange(
-											topicIndex,
-											quizIndex,
-											e.target.value
-										)
-									}
-									className="flex-grow"
-									required
-								/>
-								<Button
-									color="danger"
-									variant="light"
-									onPress={() =>
-										removeQuizField(topicIndex, quizIndex)
-									}
-								>
-									Remove
-								</Button>
-							</div>
-						))}
-						<Button
-							color="secondary"
-							variant="flat"
-							onPress={() => addQuizField(topicIndex)}
+			<Card>
+				<CardBody className="space-y-4">
+					<h3 className="text-lg font-semibold">Quizzes</h3>
+					{quizzes.map((quiz, index) => (
+						<div
+							key={index}
+							className="flex items-center space-x-2"
 						>
-							Add Quiz
-						</Button>
-					</CardBody>
-				</Card>
-			))}
-
-			{isTopicWise && (
-				<Button color="secondary" onPress={addTopic}>
-					Add Topic
-				</Button>
-			)}
+							<Input
+								label={`Quiz ${index + 1} ID`}
+								value={quiz}
+								onChange={(e) =>
+									handleQuizChange(index, e.target.value)
+								}
+								className="flex-grow"
+								required
+							/>
+							<Button
+								color="danger"
+								variant="light"
+								onPress={() => removeQuizField(index)}
+							>
+								Remove
+							</Button>
+						</div>
+					))}
+					<Button
+						color="secondary"
+						variant="flat"
+						onPress={addQuizField}
+					>
+						Add Quiz
+					</Button>
+				</CardBody>
+			</Card>
 
 			<Button type="submit" color="primary">
 				Create Test Batch
