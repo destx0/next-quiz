@@ -14,13 +14,13 @@ const Background = () => {
 				viewBox="0 0 1440 720"
 				className="opacity-70"
 			>
-				<g mask="url(#SvgjsMask2265)" fill="none">
+				<g mask="url(#SvgjsMask4883)" fill="none">
 					<rect
 						width="1440"
 						height="720"
 						x="0"
 						y="0"
-						fill="url(#SvgjsLinearGradient2266)"
+						fill="url(#SvgjsLinearGradient4884)"
 					></rect>
 					<path
 						d="M290.35 747.85C476.11 738.15 587.93 423.02 952.44 408.39 1316.95 393.76 1435.51 140.11 1614.53 134.79"
@@ -49,7 +49,7 @@ const Background = () => {
 					></path>
 				</g>
 				<defs>
-					<mask id="SvgjsMask2265">
+					<mask id="SvgjsMask4883">
 						<rect width="1440" height="720" fill="#ffffff"></rect>
 					</mask>
 					<linearGradient
@@ -58,10 +58,29 @@ const Background = () => {
 						x2="12.5%"
 						y2="125%"
 						gradientUnits="userSpaceOnUse"
-						id="SvgjsLinearGradient2266"
+						id="SvgjsLinearGradient4884"
 					>
-						<stop stopColor="rgba(66, 14, 71, 1)" offset="0"></stop>
-						<stop stopColor="rgba(0, 0, 0, 1)" offset="0.56"></stop>
+						<stop
+							stopColor="rgba(66, 14, 71, 0)"
+							offset="0.02"
+						></stop>
+						<stop
+							stopColor="rgba(78, 186, 159, 0.15)"
+							offset="0.2"
+						></stop>
+						<stop stopColor="rgba(0, 0, 0, 0)" offset="0.44"></stop>
+						<stop
+							stopColor="rgba(0, 0, 0, 0.25)"
+							offset="0.62"
+						></stop>
+						<stop
+							stopColor="rgba(148, 79, 167, 0.16)"
+							offset="0.85"
+						></stop>
+						<stop
+							stopColor="rgba(60, 6, 75, 0.01)"
+							offset="0.96"
+						></stop>
 					</linearGradient>
 				</defs>
 			</svg>
