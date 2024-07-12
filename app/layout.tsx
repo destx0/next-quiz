@@ -1,3 +1,4 @@
+import React from "react";
 import "@/styles/globals.css";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
@@ -5,6 +6,7 @@ import { ReactNode } from "react";
 
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
+import Background from "@/components/Background";
 
 export const metadata = {
 	title: "NextUI App",
@@ -17,11 +19,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 			<head />
 			<body
 				className={clsx(
-					"min-h-screen bg-background font-sans antialiased"
+					"min-h-screen bg-transparent font-sans antialiased"
 				)}
 			>
 				<Providers>
-					<div className="relative flex flex-col h-screen">
+					<Background />
+					<div className="relative flex flex-col min-h-screen">
 						<Navbar />
 						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
 							{children}
