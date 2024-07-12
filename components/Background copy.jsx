@@ -3,7 +3,8 @@ import React from "react";
 const Background = () => {
 	return (
 		<div className="fixed inset-0 z-0 pointer-events-none">
-			{/* <div className="absolute inset-0 backdrop-blur-sm"></div> */}
+			<div className="absolute inset-0 bg-black opacity-30"></div>
+			<div className="absolute inset-0 backdrop-blur-sm"></div>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				version="1.1"
@@ -11,7 +12,7 @@ const Background = () => {
 				height="100%"
 				preserveAspectRatio="xMidYMid slice"
 				viewBox="0 0 1440 720"
-				className="opacity-30"
+				className="opacity-70"
 			>
 				<g mask="url(#SvgjsMask4883)" fill="none">
 					<rect
@@ -73,7 +74,7 @@ const Background = () => {
 							offset="0.62"
 						></stop>
 						<stop
-							stopColor="rgba(148, 79, 167, 0.1)"
+							stopColor="rgba(148, 79, 167, 0.16)"
 							offset="0.85"
 						></stop>
 						<stop
