@@ -1,32 +1,48 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardBody, Button, Radio, RadioGroup } from "@nextui-org/react";
 
 export default function QuizContent({ quiz }) {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [userAnswers, setUserAnswers] = useState({});
+	const [selectedOption, setSelectedOption] = useState(null);
+
+	useEffect(() => {
+		// Reset selected option when moving to a new question
+		setSelectedOption(userAnswers[currentQuestionIndex] ?? null);
+	}, [currentQuestionIndex, userAnswers]);
 
 	const handleAnswerChange = (value) => {
-		setUserAnswers({
-			...userAnswers,
-			[currentQuestionIndex]: parseInt(value),
-		});
+		setSelectedOption(value);
 	};
 
-	const handleNextQuestion = () => {
+	const handleSaveAndNext = () => {
+		if (selectedOption !== null) {
+			setUserAnswers((prevAnswers) => ({
+				...prevAnswers,
+				[currentQuestionIndex]: selectedOption,
+			}));
+		}
+
 		if (currentQuestionIndex < quiz.questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
+			setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
 		}
 	};
 
 	const handlePreviousQuestion = () => {
 		if (currentQuestionIndex > 0) {
-			setCurrentQuestionIndex(currentQuestionIndex - 1);
+			setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
 		}
 	};
 
 	const handleSubmitQuiz = () => {
+		// Save the answer for the last question if selected
+		if (selectedOption !== null) {
+			setUserAnswers((prevAnswers) => ({
+				...prevAnswers,
+				[currentQuestionIndex]: selectedOption,
+			}));
+		}
 		console.log("Quiz submitted", userAnswers);
 		// Implement quiz submission logic here
 	};
@@ -44,8 +60,8 @@ export default function QuizContent({ quiz }) {
 					</h2>
 					<p className="mb-4">{currentQuestion.question}</p>
 					<RadioGroup
-						value={userAnswers[currentQuestionIndex]?.toString()}
-						onChange={handleAnswerChange}
+						value={selectedOption}
+						onValueChange={handleAnswerChange}
 					>
 						{currentQuestion.options.map((option, index) => (
 							<Radio key={index} value={index.toString()}>
@@ -61,7 +77,9 @@ export default function QuizContent({ quiz }) {
 							Previous
 						</Button>
 						{currentQuestionIndex < quiz.questions.length - 1 ? (
-							<Button onClick={handleNextQuestion}>Next</Button>
+							<Button onClick={handleSaveAndNext}>
+								Save and Next
+							</Button>
 						) : (
 							<Button onClick={handleSubmitQuiz} color="success">
 								Submit Quiz

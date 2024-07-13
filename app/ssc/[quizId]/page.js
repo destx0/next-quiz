@@ -1,3 +1,4 @@
+// app\ssc\[quizId]\page.js
 import { getQuiz, getQuestions } from "@/lib/firestore";
 import QuizContent from "./QuizContent";
 
