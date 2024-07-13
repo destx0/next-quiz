@@ -25,8 +25,8 @@ export default function QuestionCard({
 	};
 
 	return (
-		<Card className="w-full">
-			<CardHeader className="flex flex-col bg-default-100 border-b border-default-200 p-4">
+		<Card className="w-full h-full flex flex-col">
+			<CardHeader className="flex-shrink-0 flex flex-col bg-default-100 border-b border-default-200 p-4">
 				<div className="flex justify-between items-center w-full mb-4">
 					<div className="flex items-center">
 						<p className="text-small text-default-500 mr-4">
@@ -49,7 +49,7 @@ export default function QuestionCard({
 				</div>
 				<h2 className="text-xl font-semibold">{question.question}</h2>
 			</CardHeader>
-			<CardBody className="pt-4">
+			<CardBody className="flex-grow overflow-y-auto pt-4">
 				<RadioGroup
 					value={tempSelectedOption}
 					onValueChange={setTempSelectedOption}

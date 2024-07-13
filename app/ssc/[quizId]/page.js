@@ -175,7 +175,7 @@ export default function QuizPage({ params }) {
 							</div>
 
 							{/* Question content */}
-							<div className="flex-1 overflow-y-auto pr-4">
+							<div className="flex-1 overflow-hidden">
 								<QuestionCard
 									question={{
 										...currentQuestion,
@@ -196,7 +196,7 @@ export default function QuizPage({ params }) {
 					</Tab>
 				))}
 			</Tabs>
-			<div className="mt-auto pt-4 ">
+			<div className="mt-auto pt-4">
 				<Divider className="my-4" />
 				<div className="flex justify-between">
 					<Button color="primary" onClick={handleNextQuestion}>
