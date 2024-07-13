@@ -20,6 +20,9 @@ export default function QuizContent({ initialQuiz }) {
 		getCurrentSectionQuestions,
 		setShowExplanations,
 		showExplanations,
+		calculateScore,
+		score,
+		totalQuestions,
 	} = useQuizStore();
 
 	useEffect(() => {
@@ -45,8 +48,8 @@ export default function QuizContent({ initialQuiz }) {
 	};
 
 	const handleSubmitQuiz = () => {
-		console.log("Quiz submitted", userAnswers);
 		setShowExplanations(true);
+		calculateScore();
 	};
 
 	if (!quiz) {
@@ -68,6 +71,23 @@ export default function QuizContent({ initialQuiz }) {
 		<div className="flex">
 			<div className="flex-1 p-4">
 				<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
+				{showExplanations && score !== null && (
+					<div
+						className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4"
+						role="alert"
+					>
+						<p className="font-bold">Quiz Completed</p>
+						<p>
+							Your score: {score} out of{" "}
+							{totalQuestions * (quiz.positiveScore || 1)}
+						</p>
+						<p>Total questions: {totalQuestions}</p>
+						<p>
+							Correct answers:{" "}
+							{Math.round(score / (quiz.positiveScore || 1))}
+						</p>
+					</div>
+				)}
 				<Tabs
 					aria-label="Quiz sections"
 					selectedKey={currentSectionIndex.toString()}

@@ -11,6 +11,7 @@ export const useQuizStore = create((set, get) => ({
 	visitedQuestions: {},
 	markedQuestions: {},
 	showExplanations: false,
+	score: null,
 	setQuiz: (quiz) => set({ quiz }),
 	setCurrentSectionIndex: (index) => set({ currentSectionIndex: index }),
 	setCurrentQuestionIndex: (index) => set({ currentQuestionIndex: index }),
@@ -40,4 +41,30 @@ export const useQuizStore = create((set, get) => ({
 		return state.quiz?.sections[state.currentSectionIndex]?.questions || [];
 	},
 	setShowExplanations: (show) => set({ showExplanations: show }),
+	calculateScore: () => {
+		const state = get();
+		let score = 0;
+		let totalQuestions = 0;
+
+		state.quiz.sections.forEach((section, sectionIndex) => {
+			section.questions.forEach((question, questionIndex) => {
+				const userAnswer =
+					state.userAnswers[`${sectionIndex}-${questionIndex}`];
+				const correctAnswer = state.quiz.questions.find(
+					(q) => q.id === question.id
+				).correctAnswer;
+
+				totalQuestions++;
+				if (userAnswer !== undefined) {
+					if (userAnswer === correctAnswer) {
+						score += state.quiz.positiveScore || 1;
+					} else {
+						score -= state.quiz.negativeScore || 0;
+					}
+				}
+			});
+		});
+
+		set({ score, totalQuestions });
+	},
 }));
