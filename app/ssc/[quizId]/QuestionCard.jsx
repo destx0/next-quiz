@@ -47,7 +47,11 @@ export default function QuestionCard({
 						{question.isMarked ? "Unmark" : "Mark"} Question
 					</Button>
 				</div>
-				<h2 className="text-xl font-semibold">{question.question}</h2>
+				<div className="w-full">
+					<h2 className="text-xl font-semibold">
+						{question.question}
+					</h2>
+				</div>
 			</CardHeader>
 			<CardBody className="flex-grow overflow-y-auto pt-4">
 				<RadioGroup
