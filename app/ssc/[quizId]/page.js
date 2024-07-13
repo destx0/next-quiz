@@ -1,7 +1,8 @@
 "use client";
+
 import { getQuizWithQuestions } from "@/lib/firestore";
 import useQuizStore from "@/stores/quizStore"; // Adjust the import path as needed
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function QuizPage({ params }) {
 	const {
@@ -13,8 +14,9 @@ export default function QuizPage({ params }) {
 		setSelectedOption,
 		visitCurrentQuestion,
 		nextQuestion,
-		previousQuestion,
 	} = useQuizStore();
+
+	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -30,19 +32,29 @@ export default function QuizPage({ params }) {
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
 
+	useEffect(() => {
+		if (quizData) {
+			const { currentSectionIndex, currentQuestionIndex, sections } =
+				quizData;
+			const currentQuestion =
+				sections[currentSectionIndex].questions[currentQuestionIndex];
+			setTempSelectedOption(currentQuestion.selectedOption);
+		}
+	}, [quizData]);
+
 	const handleNextQuestion = () => {
+		if (tempSelectedOption !== null) {
+			setSelectedOption(tempSelectedOption);
+		}
 		nextQuestion();
 		visitCurrentQuestion();
-	};
-
-	const handlePreviousQuestion = () => {
-		previousQuestion();
-		visitCurrentQuestion();
+		setTempSelectedOption(null);
 	};
 
 	const handleJumpToSection = (sectionIndex) => {
 		setCurrentIndices(sectionIndex, 0);
 		visitCurrentQuestion();
+		setTempSelectedOption(null);
 	};
 
 	if (!quizData) return <div>Loading...</div>;
@@ -83,8 +95,8 @@ export default function QuizPage({ params }) {
 							type="radio"
 							id={`option-${index}`}
 							name="question-option"
-							checked={currentQuestion.selectedOption === index}
-							onChange={() => setSelectedOption(index)}
+							checked={tempSelectedOption === index}
+							onChange={() => setTempSelectedOption(index)}
 						/>
 						<label htmlFor={`option-${index}`} className="ml-2">
 							{option}
@@ -93,12 +105,6 @@ export default function QuizPage({ params }) {
 				))}
 			</div>
 			<div className="flex space-x-2">
-				<button
-					onClick={handlePreviousQuestion}
-					className="px-4 py-2 bg-blue-500 text-white rounded"
-				>
-					Previous
-				</button>
 				<button
 					onClick={handleNextQuestion}
 					className="px-4 py-2 bg-blue-500 text-white rounded"
