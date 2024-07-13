@@ -20,6 +20,8 @@ export default function QuizPage({ params }) {
 		submitQuiz,
 		calculateScore,
 		isSubmitted,
+		remainingTime,
+		decrementRemainingTime,
 	} = useQuizStore();
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
@@ -37,6 +39,26 @@ export default function QuizPage({ params }) {
 
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
+
+	useEffect(() => {
+		if (quizData && !isSubmitted) {
+			const timer = setInterval(() => {
+				decrementRemainingTime();
+				if (remainingTime <= 0) {
+					submitQuiz();
+					clearInterval(timer);
+				}
+			}, 1000);
+
+			return () => clearInterval(timer);
+		}
+	}, [
+		quizData,
+		isSubmitted,
+		remainingTime,
+		decrementRemainingTime,
+		submitQuiz,
+	]);
 
 	useEffect(() => {
 		if (quizData) {
@@ -88,9 +110,20 @@ export default function QuizPage({ params }) {
 	const currentSection = sections[currentSectionIndex];
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
+	const formatTime = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+	};
+
 	return (
 		<div className="p-4 max-w-6xl mx-auto">
-			<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
+			<div className="flex justify-between items-center mb-4">
+				<h1 className="text-2xl font-bold">{quizData.title}</h1>
+				<div className="text-xl font-semibold">
+					Time Remaining: {formatTime(remainingTime)}
+				</div>
+			</div>
 			<Tabs
 				selectedKey={currentSectionIndex.toString()}
 				onSelectionChange={handleJumpToSection}

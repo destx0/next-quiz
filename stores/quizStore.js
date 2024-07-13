@@ -4,6 +4,7 @@ const useQuizStore = create((set, get) => ({
 	quizData: null,
 	isSubmitted: false,
 	showAnswers: false,
+	remainingTime: null,
 
 	setQuizData: (data) =>
 		set((state) => ({
@@ -23,6 +24,7 @@ const useQuizStore = create((set, get) => ({
 			},
 			isSubmitted: false,
 			showAnswers: false,
+			remainingTime: data.duration * 60, // Convert duration to seconds
 		})),
 
 	setCurrentIndices: (sectionIndex, questionIndex) =>
@@ -164,6 +166,7 @@ const useQuizStore = create((set, get) => ({
 	submitQuiz: () =>
 		set((state) => ({
 			isSubmitted: true,
+			remainingTime: 0,
 		})),
 
 	toggleShowAnswers: () =>
@@ -185,6 +188,11 @@ const useQuizStore = create((set, get) => ({
 		});
 		return totalScore;
 	},
+
+	decrementRemainingTime: () =>
+		set((state) => ({
+			remainingTime: Math.max(0, state.remainingTime - 1),
+		})),
 }));
 
 export default useQuizStore;
