@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, Button } from "@nextui-org/react";
 
 const QuizCard = ({ quiz, onStartTest }) => {
+	useEffect(() => {
+		console.log("Quiz data:", quiz);
+	}, [quiz]);
+
 	if (quiz.error) {
 		return (
 			<Card className="w-64 h-40 flex-shrink-0 mr-4">
@@ -21,8 +25,8 @@ const QuizCard = ({ quiz, onStartTest }) => {
 				<p className="text-xs mb-1 truncate">{quiz.description}</p>
 				<div className="text-xs">
 					<p>Duration: {quiz.duration} min</p>
-					<p>Sections: {quiz.sections?.length || 0}</p>
 				</div>
+
 				<Button
 					size="sm"
 					color="primary"

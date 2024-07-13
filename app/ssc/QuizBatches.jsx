@@ -7,26 +7,7 @@ import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
 import Link from "next/link";
-
-const QuizCard = ({ quiz, batchId }) => (
-	<Card className="w-64 h-40 flex-shrink-0 mr-4">
-		<CardBody className="p-3">
-			<h4 className="text-sm font-medium mb-1 truncate">
-				{quiz.title || "Untitled Quiz"}
-			</h4>
-			<p className="text-xs mb-1 truncate">{quiz.description}</p>
-			<div className="text-xs">
-				<p>Duration: {quiz.duration} min</p>
-				<p>Sections: {quiz.sections?.length || 0}</p>
-			</div>
-			<Link href={`/ssc/${quiz.id}?batchId=${batchId}`} passHref>
-				<Button size="sm" color="primary" className="mt-2">
-					Start Test
-				</Button>
-			</Link>
-		</CardBody>
-	</Card>
-);
+import QuizCard from "./QuizCard";
 
 const BatchContainer = ({ batch }) => (
 	<Card className="mb-4">
