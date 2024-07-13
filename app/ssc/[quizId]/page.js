@@ -1,13 +1,13 @@
 "use client";
 
-import { getQuizWithQuestions } from "@/lib/firestore";
-import useQuizStore from "@/stores/quizStore";
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
 import { RefreshCw, Check, Flag, Eye } from "lucide-react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
+import useQuizStore from "@/stores/quizStore";
+import { getQuizWithQuestions } from "@/lib/firestore";
 
 export default function QuizPage({ params }) {
 	const {
@@ -42,6 +42,16 @@ export default function QuizPage({ params }) {
 
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
+
+	useEffect(() => {
+		if (quizData && !isSubmitted) {
+			const timer = setInterval(() => {
+				incrementActiveQuestionTime();
+			}, 1000);
+
+			return () => clearInterval(timer);
+		}
+	}, [quizData, isSubmitted, incrementActiveQuestionTime]);
 
 	useEffect(() => {
 		if (quizData) {
@@ -113,12 +123,12 @@ export default function QuizPage({ params }) {
 							color: "#4B5563",
 						}}
 						digitBlockStyle={{
-							width: 30,
-							height: 40,
-							fontSize: 20,
+							width: 20,
+							height: 30,
+							fontSize: 16,
 							backgroundColor: "#3B82F6",
 						}}
-						separatorStyle={{ color: "#4B5563", size: "6px" }}
+						separatorStyle={{ color: "#4B5563", size: "3px" }}
 						duration={0.5}
 						onComplete={handleComplete}
 						className="flex-shrink-0"
