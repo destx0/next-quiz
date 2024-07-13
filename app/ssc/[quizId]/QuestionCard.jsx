@@ -26,30 +26,30 @@ export default function QuestionCard({
 
 	return (
 		<Card className="w-full">
-			<CardHeader className="flex justify-between items-center bg-default-100 border-b border-default-200">
-				<div className="flex items-center">
-					<p className="text-small text-default-500 mr-4">
-						Question {question.index + 1} of {sectionQuestionCount}
-					</p>
-					<div className="flex items-center text-small text-default-500">
-						<Clock size={16} className="mr-1" />
-						{formatTime(question.timeSpent)}
+			<CardHeader className="flex flex-col bg-default-100 border-b border-default-200 p-4">
+				<div className="flex justify-between items-center w-full mb-4">
+					<div className="flex items-center">
+						<p className="text-small text-default-500 mr-4">
+							Question {question.index + 1} of{" "}
+							{sectionQuestionCount}
+						</p>
+						<div className="flex items-center text-small text-default-500">
+							<Clock size={16} className="mr-1" />
+							{formatTime(question.timeSpent)}
+						</div>
 					</div>
+					<Button
+						color={question.isMarked ? "warning" : "secondary"}
+						variant="flat"
+						size="sm"
+						onClick={markCurrentQuestion}
+					>
+						{question.isMarked ? "Unmark" : "Mark"} Question
+					</Button>
 				</div>
-				<Button
-					color={question.isMarked ? "warning" : "secondary"}
-					variant="flat"
-					size="sm"
-					onClick={markCurrentQuestion}
-				>
-					{question.isMarked ? "Unmark" : "Mark"} Question
-				</Button>
+				<h2 className="text-xl font-semibold">{question.question}</h2>
 			</CardHeader>
 			<CardBody className="pt-4">
-				<h2 className="text-xl font-semibold mb-4">
-					{question.question}
-				</h2>
-				<Spacer y={2} />
 				<RadioGroup
 					value={tempSelectedOption}
 					onValueChange={setTempSelectedOption}
