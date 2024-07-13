@@ -1,4 +1,4 @@
-// app/ssc/[quizId]/QuizContent.js
+// app/ssc/[quizId]/QuizContent.jsx
 "use client";
 
 import React, { useEffect } from "react";
@@ -17,15 +17,14 @@ export default function QuizContent({ initialQuiz }) {
 		setCurrentQuestionIndex,
 		userAnswers,
 		setUserAnswer,
+		getCurrentSectionQuestions,
+		setShowExplanations,
+		showExplanations,
 	} = useQuizStore();
 
 	useEffect(() => {
 		setQuiz(initialQuiz);
 	}, [initialQuiz, setQuiz]);
-
-	useEffect(() => {
-		setCurrentQuestionIndex(0);
-	}, [currentSectionIndex, setCurrentQuestionIndex]);
 
 	const handleSaveAndNext = (selectedOption) => {
 		if (selectedOption !== null) {
@@ -36,8 +35,8 @@ export default function QuizContent({ initialQuiz }) {
 			);
 		}
 
-		const currentSection = quiz.sections[currentSectionIndex];
-		if (currentQuestionIndex < currentSection.questions.length - 1) {
+		const currentSectionQuestions = getCurrentSectionQuestions();
+		if (currentQuestionIndex < currentSectionQuestions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 		} else if (currentSectionIndex < quiz.sections.length - 1) {
 			setCurrentSectionIndex(currentSectionIndex + 1);
@@ -45,20 +44,9 @@ export default function QuizContent({ initialQuiz }) {
 		}
 	};
 
-	const handlePreviousQuestion = () => {
-		if (currentQuestionIndex > 0) {
-			setCurrentQuestionIndex(currentQuestionIndex - 1);
-		} else if (currentSectionIndex > 0) {
-			setCurrentSectionIndex(currentSectionIndex - 1);
-			setCurrentQuestionIndex(
-				quiz.sections[currentSectionIndex - 1].questions.length - 1
-			);
-		}
-	};
-
 	const handleSubmitQuiz = () => {
 		console.log("Quiz submitted", userAnswers);
-		// Implement quiz submission logic here
+		setShowExplanations(true);
 	};
 
 	if (!quiz) {
@@ -77,12 +65,7 @@ export default function QuizContent({ initialQuiz }) {
 	}
 
 	return (
-		<div className="flex flex-row-reverse">
-			<QuizSidebar
-				currentSection={currentSection}
-				currentQuestionIndex={currentQuestionIndex}
-				onQuestionSelect={setCurrentQuestionIndex}
-			/>
+		<div className="flex">
 			<div className="flex-1 p-4">
 				<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
 				<Tabs
@@ -111,32 +94,27 @@ export default function QuizContent({ initialQuiz }) {
 								]
 							}
 							onSaveAndNext={handleSaveAndNext}
+							showExplanation={showExplanations}
 						/>
 						<div className="flex justify-between mt-4">
 							<Button
-								onClick={handlePreviousQuestion}
-								disabled={
-									currentSectionIndex === 0 &&
-									currentQuestionIndex === 0
-								}
+								size="sm"
+								onClick={handleSubmitQuiz}
+								disabled={showExplanations}
 							>
-								Previous
+								{showExplanations
+									? "Quiz Submitted"
+									: "Submit Quiz"}
 							</Button>
-							{currentSectionIndex < quiz.sections.length - 1 ||
-							currentQuestionIndex <
-								currentSection.questions.length - 1 ? (
-								<Button onClick={() => handleSaveAndNext(null)}>
-									Next
-								</Button>
-							) : (
-								<Button onClick={handleSubmitQuiz}>
-									Submit Quiz
-								</Button>
-							)}
 						</div>
 					</CardBody>
 				</Card>
 			</div>
+			<QuizSidebar
+				currentSection={currentSection}
+				currentQuestionIndex={currentQuestionIndex}
+				onQuestionSelect={setCurrentQuestionIndex}
+			/>
 		</div>
 	);
 }
