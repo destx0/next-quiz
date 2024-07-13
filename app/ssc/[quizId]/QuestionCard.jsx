@@ -8,7 +8,7 @@ import {
 	Button,
 	Spacer,
 } from "@nextui-org/react";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, Clock } from "lucide-react";
 
 export default function QuestionCard({
 	question,
@@ -18,12 +18,24 @@ export default function QuestionCard({
 	setTempSelectedOption,
 	markCurrentQuestion,
 }) {
+	const formatTime = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+	};
+
 	return (
 		<Card className="w-full">
 			<CardHeader className="flex justify-between items-center bg-default-100 border-b border-default-200">
-				<p className="text-small text-default-500">
-					Question {question.index + 1} of {sectionQuestionCount}
-				</p>
+				<div className="flex items-center">
+					<p className="text-small text-default-500 mr-4">
+						Question {question.index + 1} of {sectionQuestionCount}
+					</p>
+					<div className="flex items-center text-small text-default-500">
+						<Clock size={16} className="mr-1" />
+						{formatTime(question.timeSpent)}
+					</div>
+				</div>
 				<Button
 					color={question.isMarked ? "warning" : "secondary"}
 					variant="flat"

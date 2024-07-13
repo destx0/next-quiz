@@ -19,6 +19,8 @@ const useQuizStore = create((set, get) => ({
 						isVisited: false,
 						isMarked: false,
 						selectedOption: null,
+						timeSpent: 0,
+						isActive: false,
 					})),
 				})),
 			},
@@ -26,6 +28,56 @@ const useQuizStore = create((set, get) => ({
 			showAnswers: false,
 			remainingTime: data.duration * 60, // Convert duration to seconds
 		})),
+
+	setCurrentIndices: (sectionIndex, questionIndex) =>
+		set((state) => {
+			const { sections } = state.quizData;
+			const updatedSections = sections.map((section, sIndex) => ({
+				...section,
+				questions: section.questions.map((question, qIndex) => ({
+					...question,
+					isActive:
+						sIndex === sectionIndex && qIndex === questionIndex,
+				})),
+			}));
+
+			return {
+				quizData: {
+					...state.quizData,
+					currentSectionIndex: sectionIndex,
+					currentQuestionIndex: questionIndex,
+					sections: updatedSections,
+				},
+			};
+		}),
+
+	incrementActiveQuestionTime: () =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex, sections } =
+				state.quizData;
+			const updatedSections = sections.map((section, sIndex) => ({
+				...section,
+				questions: section.questions.map((question, qIndex) => {
+					if (
+						sIndex === currentSectionIndex &&
+						qIndex === currentQuestionIndex
+					) {
+						return {
+							...question,
+							timeSpent: question.timeSpent + 1,
+						};
+					}
+					return question;
+				}),
+			}));
+
+			return {
+				quizData: {
+					...state.quizData,
+					sections: updatedSections,
+				},
+			};
+		}),
 
 	setCurrentIndices: (sectionIndex, questionIndex) =>
 		set((state) => ({

@@ -22,6 +22,7 @@ export default function QuizPage({ params }) {
 		submitQuiz,
 		calculateScore,
 		isSubmitted,
+		incrementActiveQuestionTime,
 	} = useQuizStore();
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
@@ -53,6 +54,16 @@ export default function QuizPage({ params }) {
 			);
 		}
 	}, [quizData]);
+
+	useEffect(() => {
+		if (quizData && !isSubmitted) {
+			const timer = setInterval(() => {
+				incrementActiveQuestionTime();
+			}, 1000);
+
+			return () => clearInterval(timer);
+		}
+	}, [quizData, isSubmitted, incrementActiveQuestionTime]);
 
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
