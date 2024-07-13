@@ -3,7 +3,7 @@
 import { getQuizWithQuestions } from "@/lib/firestore";
 import useQuizStore from "@/stores/quizStore";
 import { useEffect, useState } from "react";
-import { Tabs, Tab, Button, Spacer } from "@nextui-org/react";
+import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
 import { RefreshCw } from "lucide-react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
@@ -110,7 +110,7 @@ export default function QuizPage({ params }) {
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
 	return (
-		<div className="p-4 max-w-6xl mx-auto">
+		<div className="flex flex-col h-[calc(100vh-10rem)]">
 			<div className="flex justify-between items-center mb-4">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
@@ -147,9 +147,9 @@ export default function QuizPage({ params }) {
 			>
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
-						<div className="flex mt-4">
+						<div className="flex mt-4 flex-grow overflow-hidden">
 							{/* Vertical navigation */}
-							<div className="w-16 mr-4">
+							<div className="w-16 mr-4 overflow-y-auto">
 								<div className="flex flex-col items-center space-y-2">
 									{section.questions.map((_, index) => (
 										<Button
@@ -175,7 +175,7 @@ export default function QuizPage({ params }) {
 							</div>
 
 							{/* Question content */}
-							<div className="flex-1">
+							<div className="flex-1 overflow-y-auto pr-4">
 								<QuestionCard
 									question={{
 										...currentQuestion,
@@ -191,45 +191,38 @@ export default function QuizPage({ params }) {
 									}
 									markCurrentQuestion={markCurrentQuestion}
 								/>
-								<Spacer y={4} />
-								<div className="flex justify-between">
-									<Button
-										color="primary"
-										onClick={handleNextQuestion}
-									>
-										Next
-									</Button>
-									{!isSubmitted && (
-										<>
-											<Button
-												color="secondary"
-												onClick={handleClearResponse}
-											>
-												<RefreshCw
-													size={20}
-													className="mr-2"
-												/>
-												Clear Response
-											</Button>
-											<Button
-												color="success"
-												onClick={handleSubmitQuiz}
-											>
-												Submit Quiz
-											</Button>
-										</>
-									)}
-									{isSubmitted && (
-										<p className="text-lg font-semibold">
-											Your Score: {calculateScore()}
-										</p>
-									)}
-								</div>
 							</div>
 						</div>
 					</Tab>
 				))}
 			</Tabs>
+			<div className="mt-auto pt-4 ">
+				<Divider className="my-4" />
+				<div className="flex justify-between">
+					<Button color="primary" onClick={handleNextQuestion}>
+						Next
+					</Button>
+					{!isSubmitted && (
+						<>
+							<Button
+								color="secondary"
+								onClick={handleClearResponse}
+							>
+								<RefreshCw size={20} className="mr-2" />
+								Clear Response
+							</Button>
+							<Button color="success" onClick={handleSubmitQuiz}>
+								Submit Quiz
+							</Button>
+						</>
+					)}
+					{isSubmitted && (
+						<p className="text-lg font-semibold">
+							Your Score: {calculateScore()}
+						</p>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 }
