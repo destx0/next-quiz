@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, CardBody, Button } from "@nextui-org/react";
-
+import Link from "next/link";
 const QuizCard = ({ quiz, onStartTest }) => {
 	useEffect(() => {
 		console.log("Quiz data:", quiz);
@@ -27,14 +27,11 @@ const QuizCard = ({ quiz, onStartTest }) => {
 					<p>Duration: {quiz.duration} min</p>
 				</div>
 
-				<Button
-					size="sm"
-					color="primary"
-					onClick={() => onStartTest(quiz.id)}
-					className="mt-2"
-				>
-					Start
-				</Button>
+				<Link href={`/ssc/${quiz.id}`} passHref>
+					<Button size="sm" color="primary" className="mt-2">
+						Start Test
+					</Button>
+				</Link>
 			</CardBody>
 		</Card>
 	);

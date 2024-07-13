@@ -1,70 +1,186 @@
-// @/stores/quizStore.js
-"use client";
+import create from "zustand";
 
-import { create } from "zustand";
+const useQuizStore = create((set, get) => ({
+	quizData: null,
 
-export const useQuizStore = create((set, get) => ({
-	quiz: null,
-	currentSectionIndex: 0,
-	currentQuestionIndex: 0,
-	userAnswers: {},
-	visitedQuestions: {},
-	markedQuestions: {},
-	showExplanations: false,
-	score: null,
-	setQuiz: (quiz) => set({ quiz }),
-	setCurrentSectionIndex: (index) => set({ currentSectionIndex: index }),
-	setCurrentQuestionIndex: (index) => set({ currentQuestionIndex: index }),
-	setUserAnswer: (sectionIndex, questionIndex, answer) => {
+	setQuizData: (data) =>
 		set((state) => ({
-			userAnswers: {
-				...state.userAnswers,
-				[`${sectionIndex}-${questionIndex}`]: answer,
+			quizData: {
+				...data,
+				currentSectionIndex: 0,
+				currentQuestionIndex: 0,
+				sections: data.sections.map((section) => ({
+					...section,
+					questions: section.questions.map((question) => ({
+						...question,
+						isVisited: false,
+						isMarked: false,
+						selectedOption: null,
+					})),
+				})),
 			},
-			visitedQuestions: {
-				...state.visitedQuestions,
-				[`${sectionIndex}-${questionIndex}`]: true,
-			},
-		}));
-	},
-	toggleMarkedQuestion: (sectionIndex, questionIndex) => {
+		})),
+
+	setCurrentIndices: (sectionIndex, questionIndex) =>
 		set((state) => ({
-			markedQuestions: {
-				...state.markedQuestions,
-				[`${sectionIndex}-${questionIndex}`]:
-					!state.markedQuestions[`${sectionIndex}-${questionIndex}`],
+			quizData: {
+				...state.quizData,
+				currentSectionIndex: sectionIndex,
+				currentQuestionIndex: questionIndex,
 			},
-		}));
-	},
-	getCurrentSectionQuestions: () => {
-		const state = get();
-		return state.quiz?.sections[state.currentSectionIndex]?.questions || [];
-	},
-	setShowExplanations: (show) => set({ showExplanations: show }),
-	calculateScore: () => {
-		const state = get();
-		let score = 0;
-		let totalQuestions = 0;
+		})),
 
-		state.quiz.sections.forEach((section, sectionIndex) => {
-			section.questions.forEach((question, questionIndex) => {
-				const userAnswer =
-					state.userAnswers[`${sectionIndex}-${questionIndex}`];
-				const correctAnswer = state.quiz.questions.find(
-					(q) => q.id === question.id
-				).correctAnswer;
+	updateQuestionState: (sectionIndex, questionIndex, newState) =>
+		set((state) => ({
+			quizData: {
+				...state.quizData,
+				sections: state.quizData.sections.map((section, sIndex) =>
+					sIndex === sectionIndex
+						? {
+								...section,
+								questions: section.questions.map(
+									(question, qIndex) =>
+										qIndex === questionIndex
+											? { ...question, ...newState }
+											: question
+								),
+							}
+						: section
+				),
+			},
+		})),
 
-				totalQuestions++;
-				if (userAnswer !== undefined) {
-					if (userAnswer === correctAnswer) {
-						score += state.quiz.positiveScore || 1;
-					} else {
-						score -= state.quiz.negativeScore || 0;
-					}
-				}
-			});
-		});
+	markCurrentQuestion: () =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex } =
+				state.quizData;
+			return {
+				quizData: {
+					...state.quizData,
+					sections: state.quizData.sections.map((section, sIndex) =>
+						sIndex === currentSectionIndex
+							? {
+									...section,
+									questions: section.questions.map(
+										(question, qIndex) =>
+											qIndex === currentQuestionIndex
+												? {
+														...question,
+														isMarked:
+															!question.isMarked,
+													}
+												: question
+									),
+								}
+							: section
+					),
+				},
+			};
+		}),
 
-		set({ score, totalQuestions });
-	},
+	setSelectedOption: (optionIndex) =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex } =
+				state.quizData;
+			return {
+				quizData: {
+					...state.quizData,
+					sections: state.quizData.sections.map((section, sIndex) =>
+						sIndex === currentSectionIndex
+							? {
+									...section,
+									questions: section.questions.map(
+										(question, qIndex) =>
+											qIndex === currentQuestionIndex
+												? {
+														...question,
+														selectedOption:
+															optionIndex,
+													}
+												: question
+									),
+								}
+							: section
+					),
+				},
+			};
+		}),
+
+	visitCurrentQuestion: () =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex } =
+				state.quizData;
+			return {
+				quizData: {
+					...state.quizData,
+					sections: state.quizData.sections.map((section, sIndex) =>
+						sIndex === currentSectionIndex
+							? {
+									...section,
+									questions: section.questions.map(
+										(question, qIndex) =>
+											qIndex === currentQuestionIndex
+												? {
+														...question,
+														isVisited: true,
+													}
+												: question
+									),
+								}
+							: section
+					),
+				},
+			};
+		}),
+
+	nextQuestion: () =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex, sections } =
+				state.quizData;
+			const currentSection = sections[currentSectionIndex];
+			if (currentQuestionIndex < currentSection.questions.length - 1) {
+				return {
+					quizData: {
+						...state.quizData,
+						currentQuestionIndex: currentQuestionIndex + 1,
+					},
+				};
+			} else if (currentSectionIndex < sections.length - 1) {
+				return {
+					quizData: {
+						...state.quizData,
+						currentSectionIndex: currentSectionIndex + 1,
+						currentQuestionIndex: 0,
+					},
+				};
+			}
+			return state; // No change if we're at the last question
+		}),
+
+	previousQuestion: () =>
+		set((state) => {
+			const { currentSectionIndex, currentQuestionIndex, sections } =
+				state.quizData;
+			if (currentQuestionIndex > 0) {
+				return {
+					quizData: {
+						...state.quizData,
+						currentQuestionIndex: currentQuestionIndex - 1,
+					},
+				};
+			} else if (currentSectionIndex > 0) {
+				const previousSection = sections[currentSectionIndex - 1];
+				return {
+					quizData: {
+						...state.quizData,
+						currentSectionIndex: currentSectionIndex - 1,
+						currentQuestionIndex:
+							previousSection.questions.length - 1,
+					},
+				};
+			}
+			return state; // No change if we're at the first question
+		}),
 }));
+
+export default useQuizStore;
