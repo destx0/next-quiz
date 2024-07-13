@@ -7,6 +7,7 @@ import {
 	Tabs,
 	Tab,
 	Card,
+	CardHeader,
 	CardBody,
 	Radio,
 	RadioGroup,
@@ -70,7 +71,7 @@ export default function QuizPage({ params }) {
 	};
 
 	const handleJumpToQuestion = (questionIndex) => {
-		setCurrentIndices(quizData.currentSectionIndex, questionIndex - 1);
+		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
 		visitCurrentQuestion();
 		setTempSelectedOption(null);
 	};
@@ -82,100 +83,123 @@ export default function QuizPage({ params }) {
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
 	return (
-		<div className="p-4 max-w-6xl mx-auto flex">
-			<div className="w-16 mr-4">
-				<div className="flex flex-col items-center space-y-2">
-					{currentSection.questions.map((_, index) => (
-						<Button
-							key={index}
-							size="sm"
-							isIconOnly
-							className={`w-10 h-10 rounded-full ${
-								index === currentQuestionIndex
-									? "bg-primary text-white"
-									: "bg-default-100"
-							}`}
-							onClick={() => handleJumpToQuestion(index + 1)}
-						>
-							{index + 1}
-						</Button>
-					))}
-				</div>
-			</div>
+		<div className="p-4 max-w-6xl mx-auto">
+			<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
+			<Tabs
+				selectedKey={currentSectionIndex.toString()}
+				onSelectionChange={handleJumpToSection}
+				aria-label="Quiz sections"
+				color="primary"
+				variant="underlined"
+				classNames={{
+					tabList:
+						"gap-6 w-full relative rounded-none p-0 border-b border-divider",
+					cursor: "w-full bg-primary",
+					tab: "max-w-fit px-0 h-12",
+					tabContent: "group-data-[selected=true]:text-primary",
+				}}
+			>
+				{sections.map((section, sectionIndex) => (
+					<Tab key={sectionIndex.toString()} title={section.name}>
+						<div className="flex mt-4">
+							{/* Vertical navigation */}
+							<div className="w-16 mr-4">
+								<div className="flex flex-col items-center space-y-2">
+									{section.questions.map((_, index) => (
+										<Button
+											key={index}
+											size="sm"
+											isIconOnly
+											className={`w-10 h-10 rounded-full ${
+												index ===
+													currentQuestionIndex &&
+												sectionIndex ===
+													currentSectionIndex
+													? "bg-primary text-white"
+													: "bg-default-100"
+											}`}
+											onClick={() =>
+												handleJumpToQuestion(index)
+											}
+										>
+											{index + 1}
+										</Button>
+									))}
+								</div>
+							</div>
 
-			{/* Main content */}
-			<div className="flex-1">
-				<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
-				<Tabs
-					selectedKey={currentSectionIndex.toString()}
-					onSelectionChange={handleJumpToSection}
-					aria-label="Quiz sections"
-					color="primary"
-					variant="underlined"
-					classNames={{
-						tabList:
-							"gap-6 w-full relative rounded-none p-0 border-b border-divider",
-						cursor: "w-full bg-primary",
-						tab: "max-w-fit px-0 h-12",
-						tabContent: "group-data-[selected=true]:text-primary",
-					}}
-				>
-					{sections.map((section, index) => (
-						<Tab key={index.toString()} title={section.name}>
-							<Card>
-								<CardBody>
-									<p className="text-small text-default-500">
-										Question {currentQuestionIndex + 1} of{" "}
-										{section.questions.length}
-									</p>
-								</CardBody>
-							</Card>
-						</Tab>
-					))}
-				</Tabs>
-				<Spacer y={4} />
-				<Card>
-					<CardBody>
-						<h2 className="text-xl font-semibold mb-2">
-							{currentQuestion.text}
-						</h2>
-						<Spacer y={2} />
-						<RadioGroup
-							value={tempSelectedOption}
-							onValueChange={setTempSelectedOption}
-						>
-							{currentQuestion.options.map((option, index) => (
-								<Radio key={index} value={index.toString()}>
-									{option}
-								</Radio>
-							))}
-						</RadioGroup>
-					</CardBody>
-				</Card>
-				<Spacer y={4} />
-				<div className="flex justify-between">
-					<Button color="primary" onClick={handleNextQuestion}>
-						Next
-					</Button>
-					<Button
-						color={
-							currentQuestion.isMarked ? "warning" : "secondary"
-						}
-						variant="flat"
-						onClick={markCurrentQuestion}
-					>
-						{currentQuestion.isMarked ? "Unmark" : "Mark"} Question
-					</Button>
-				</div>
-				<Spacer y={4} />
-				<Card>
-					<CardBody>
-						<pre className="text-small overflow-auto">
-							{JSON.stringify(quizData, null, 2)}
-						</pre>
-					</CardBody>
-				</Card>
-			</div>
+							{/* Question content */}
+							<div className="flex-1">
+								<Card className="w-full">
+									<CardHeader className="flex justify-between items-center bg-default-100 border-b border-default-200">
+										<p className="text-small text-default-500">
+											Question {currentQuestionIndex + 1}{" "}
+											of {section.questions.length}
+										</p>
+										<Button
+											color={
+												currentQuestion.isMarked
+													? "warning"
+													: "secondary"
+											}
+											variant="flat"
+											size="sm"
+											onClick={markCurrentQuestion}
+										>
+											{currentQuestion.isMarked
+												? "Unmark"
+												: "Mark"}{" "}
+											Question
+										</Button>
+									</CardHeader>
+									<CardBody className="pt-4">
+										<h2 className="text-xl font-semibold mb-4">
+											{currentQuestion.question}
+										</h2>
+										<Spacer y={2} />
+										<RadioGroup
+											value={tempSelectedOption}
+											onValueChange={
+												setTempSelectedOption
+											}
+										>
+											{currentQuestion.options.map(
+												(option, index) => (
+													<Radio
+														key={index}
+														value={index.toString()}
+														className="py-2"
+													>
+														{option}
+													</Radio>
+												)
+											)}
+										</RadioGroup>
+									</CardBody>
+								</Card>
+								<Spacer y={4} />
+								<div className="flex justify-between">
+									<Button
+										color="primary"
+										onClick={handleNextQuestion}
+									>
+										Next
+									</Button>
+								</div>
+							</div>
+						</div>
+					</Tab>
+				))}
+			</Tabs>
+
+			<Spacer y={4} />
+			<Card>
+				<CardBody>
+					<pre className="text-small overflow-auto">
+						{JSON.stringify(quizData, null, 2)}
+					</pre>
+				</CardBody>
+			</Card>
 		</div>
 	);
 }
