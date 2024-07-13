@@ -1,16 +1,28 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Button, Radio, RadioGroup } from "@nextui-org/react";
+import {
+	Card,
+	CardBody,
+	Button,
+	Radio,
+	RadioGroup,
+	Tabs,
+	Tab,
+} from "@nextui-org/react";
 
 export default function QuizContent({ quiz }) {
+	const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [userAnswers, setUserAnswers] = useState({});
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	useEffect(() => {
 		// Reset selected option when moving to a new question
-		setSelectedOption(userAnswers[currentQuestionIndex] ?? null);
-	}, [currentQuestionIndex, userAnswers]);
+		setSelectedOption(
+			userAnswers[`${currentSectionIndex}-${currentQuestionIndex}`] ??
+				null
+		);
+	}, [currentSectionIndex, currentQuestionIndex, userAnswers]);
 
 	const handleAnswerChange = (value) => {
 		setSelectedOption(value);
@@ -20,18 +32,28 @@ export default function QuizContent({ quiz }) {
 		if (selectedOption !== null) {
 			setUserAnswers((prevAnswers) => ({
 				...prevAnswers,
-				[currentQuestionIndex]: selectedOption,
+				[`${currentSectionIndex}-${currentQuestionIndex}`]:
+					selectedOption,
 			}));
 		}
 
-		if (currentQuestionIndex < quiz.questions.length - 1) {
+		const currentSection = quiz.sections[currentSectionIndex];
+		if (currentQuestionIndex < currentSection.questions.length - 1) {
 			setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+		} else if (currentSectionIndex < quiz.sections.length - 1) {
+			setCurrentSectionIndex((prevIndex) => prevIndex + 1);
+			setCurrentQuestionIndex(0);
 		}
 	};
 
 	const handlePreviousQuestion = () => {
 		if (currentQuestionIndex > 0) {
 			setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+		} else if (currentSectionIndex > 0) {
+			setCurrentSectionIndex((prevIndex) => prevIndex - 1);
+			setCurrentQuestionIndex(
+				quiz.sections[currentSectionIndex - 1].questions.length - 1
+			);
 		}
 	};
 
@@ -40,23 +62,42 @@ export default function QuizContent({ quiz }) {
 		if (selectedOption !== null) {
 			setUserAnswers((prevAnswers) => ({
 				...prevAnswers,
-				[currentQuestionIndex]: selectedOption,
+				[`${currentSectionIndex}-${currentQuestionIndex}`]:
+					selectedOption,
 			}));
 		}
 		console.log("Quiz submitted", userAnswers);
 		// Implement quiz submission logic here
 	};
 
-	const currentQuestion = quiz.questions[currentQuestionIndex];
+	const currentSection = quiz.sections[currentSectionIndex];
+	const currentQuestion = quiz.questions.find(
+		(q) => q.id === currentSection.questions[currentQuestionIndex].id
+	);
 
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
-			<Card>
+			<Tabs
+				aria-label="Quiz sections"
+				selectedKey={currentSectionIndex.toString()}
+				onSelectionChange={(key) => {
+					setCurrentSectionIndex(Number(key));
+					setCurrentQuestionIndex(0);
+				}}
+			>
+				{quiz.sections.map((section, index) => (
+					<Tab
+						key={index}
+						title={section.name || `Section ${index + 1}`}
+					/>
+				))}
+			</Tabs>
+			<Card className="mt-4">
 				<CardBody>
 					<h2 className="text-xl mb-2">
 						Question {currentQuestionIndex + 1} of{" "}
-						{quiz.questions.length}
+						{currentSection.questions.length}
 					</h2>
 					<p className="mb-4">{currentQuestion.question}</p>
 					<RadioGroup
@@ -72,11 +113,16 @@ export default function QuizContent({ quiz }) {
 					<div className="flex justify-between mt-4">
 						<Button
 							onClick={handlePreviousQuestion}
-							disabled={currentQuestionIndex === 0}
+							disabled={
+								currentSectionIndex === 0 &&
+								currentQuestionIndex === 0
+							}
 						>
 							Previous
 						</Button>
-						{currentQuestionIndex < quiz.questions.length - 1 ? (
+						{currentSectionIndex < quiz.sections.length - 1 ||
+						currentQuestionIndex <
+							currentSection.questions.length - 1 ? (
 							<Button onClick={handleSaveAndNext}>
 								Save and Next
 							</Button>
