@@ -1,8 +1,18 @@
 "use client";
 
 import { getQuizWithQuestions } from "@/lib/firestore";
-import useQuizStore from "@/stores/quizStore"; // Adjust the import path as needed
+import useQuizStore from "@/stores/quizStore";
 import { useEffect, useState } from "react";
+import {
+	Tabs,
+	Tab,
+	Card,
+	CardBody,
+	Radio,
+	RadioGroup,
+	Button,
+	Spacer,
+} from "@nextui-org/react";
 
 export default function QuizPage({ params }) {
 	const {
@@ -23,7 +33,7 @@ export default function QuizPage({ params }) {
 			try {
 				const data = await getQuizWithQuestions(params.quizId);
 				setQuizData(data);
-				visitCurrentQuestion(); // Mark the first question as visited
+				visitCurrentQuestion();
 			} catch (error) {
 				console.error("Error fetching quiz:", error);
 			}
@@ -38,13 +48,15 @@ export default function QuizPage({ params }) {
 				quizData;
 			const currentQuestion =
 				sections[currentSectionIndex].questions[currentQuestionIndex];
-			setTempSelectedOption(currentQuestion.selectedOption);
+			setTempSelectedOption(
+				currentQuestion.selectedOption?.toString() || null
+			);
 		}
 	}, [quizData]);
 
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null) {
-			setSelectedOption(tempSelectedOption);
+			setSelectedOption(parseInt(tempSelectedOption));
 		}
 		nextQuestion();
 		visitCurrentQuestion();
@@ -52,7 +64,13 @@ export default function QuizPage({ params }) {
 	};
 
 	const handleJumpToSection = (sectionIndex) => {
-		setCurrentIndices(sectionIndex, 0);
+		setCurrentIndices(Number(sectionIndex), 0);
+		visitCurrentQuestion();
+		setTempSelectedOption(null);
+	};
+
+	const handleJumpToQuestion = (questionIndex) => {
+		setCurrentIndices(quizData.currentSectionIndex, questionIndex - 1);
 		visitCurrentQuestion();
 		setTempSelectedOption(null);
 	};
@@ -64,63 +82,100 @@ export default function QuizPage({ params }) {
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
 	return (
-		<div className="p-4">
-			<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
-			<div className="mb-4">
-				<select
-					value={currentSectionIndex}
-					onChange={(e) =>
-						handleJumpToSection(Number(e.target.value))
-					}
-					className="mr-2 p-2 border rounded"
+		<div className="p-4 max-w-6xl mx-auto flex">
+			<div className="w-16 mr-4">
+				<div className="flex flex-col items-center space-y-2">
+					{currentSection.questions.map((_, index) => (
+						<Button
+							key={index}
+							size="sm"
+							isIconOnly
+							className={`w-10 h-10 rounded-full ${
+								index === currentQuestionIndex
+									? "bg-primary text-white"
+									: "bg-default-100"
+							}`}
+							onClick={() => handleJumpToQuestion(index + 1)}
+						>
+							{index + 1}
+						</Button>
+					))}
+				</div>
+			</div>
+
+			{/* Main content */}
+			<div className="flex-1">
+				<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
+				<Tabs
+					selectedKey={currentSectionIndex.toString()}
+					onSelectionChange={handleJumpToSection}
+					aria-label="Quiz sections"
+					color="primary"
+					variant="underlined"
+					classNames={{
+						tabList:
+							"gap-6 w-full relative rounded-none p-0 border-b border-divider",
+						cursor: "w-full bg-primary",
+						tab: "max-w-fit px-0 h-12",
+						tabContent: "group-data-[selected=true]:text-primary",
+					}}
 				>
 					{sections.map((section, index) => (
-						<option key={index} value={index}>
-							{section.name}
-						</option>
+						<Tab key={index.toString()} title={section.name}>
+							<Card>
+								<CardBody>
+									<p className="text-small text-default-500">
+										Question {currentQuestionIndex + 1} of{" "}
+										{section.questions.length}
+									</p>
+								</CardBody>
+							</Card>
+						</Tab>
 					))}
-				</select>
-				<span>
-					Question {currentQuestionIndex + 1} of{" "}
-					{currentSection.questions.length}
-				</span>
+				</Tabs>
+				<Spacer y={4} />
+				<Card>
+					<CardBody>
+						<h2 className="text-xl font-semibold mb-2">
+							{currentQuestion.text}
+						</h2>
+						<Spacer y={2} />
+						<RadioGroup
+							value={tempSelectedOption}
+							onValueChange={setTempSelectedOption}
+						>
+							{currentQuestion.options.map((option, index) => (
+								<Radio key={index} value={index.toString()}>
+									{option}
+								</Radio>
+							))}
+						</RadioGroup>
+					</CardBody>
+				</Card>
+				<Spacer y={4} />
+				<div className="flex justify-between">
+					<Button color="primary" onClick={handleNextQuestion}>
+						Next
+					</Button>
+					<Button
+						color={
+							currentQuestion.isMarked ? "warning" : "secondary"
+						}
+						variant="flat"
+						onClick={markCurrentQuestion}
+					>
+						{currentQuestion.isMarked ? "Unmark" : "Mark"} Question
+					</Button>
+				</div>
+				<Spacer y={4} />
+				<Card>
+					<CardBody>
+						<pre className="text-small overflow-auto">
+							{JSON.stringify(quizData, null, 2)}
+						</pre>
+					</CardBody>
+				</Card>
 			</div>
-			<div className="mb-4">
-				<h2 className="text-xl font-semibold mb-2">
-					{currentQuestion.text}
-				</h2>
-				{currentQuestion.options.map((option, index) => (
-					<div key={index} className="mb-2">
-						<input
-							type="radio"
-							id={`option-${index}`}
-							name="question-option"
-							checked={tempSelectedOption === index}
-							onChange={() => setTempSelectedOption(index)}
-						/>
-						<label htmlFor={`option-${index}`} className="ml-2">
-							{option}
-						</label>
-					</div>
-				))}
-			</div>
-			<div className="flex space-x-2">
-				<button
-					onClick={handleNextQuestion}
-					className="px-4 py-2 bg-blue-500 text-white rounded"
-				>
-					Next
-				</button>
-				<button
-					onClick={markCurrentQuestion}
-					className="px-4 py-2 bg-yellow-500 text-white rounded"
-				>
-					{currentQuestion.isMarked ? "Unmark" : "Mark"} Question
-				</button>
-			</div>
-			<pre className="bg-gray-100 p-4 rounded-md overflow-auto mt-4">
-				{JSON.stringify(quizData, null, 2)}
-			</pre>
 		</div>
 	);
 }
