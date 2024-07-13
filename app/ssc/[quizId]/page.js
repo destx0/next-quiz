@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { Tabs, Tab, Button, Spacer } from "@nextui-org/react";
 import { RefreshCw } from "lucide-react";
 import QuestionCard from "./QuestionCard";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 
 export default function QuizPage({ params }) {
 	const {
@@ -20,11 +22,10 @@ export default function QuizPage({ params }) {
 		submitQuiz,
 		calculateScore,
 		isSubmitted,
-		remainingTime,
-		decrementRemainingTime,
 	} = useQuizStore();
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
+	const [endTime, setEndTime] = useState(null);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -32,6 +33,7 @@ export default function QuizPage({ params }) {
 				const data = await getQuizWithQuestions(params.quizId);
 				setQuizData(data);
 				visitCurrentQuestion();
+				setEndTime(new Date().getTime() + data.duration * 60 * 1000);
 			} catch (error) {
 				console.error("Error fetching quiz:", error);
 			}
@@ -39,26 +41,6 @@ export default function QuizPage({ params }) {
 
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
-
-	useEffect(() => {
-		if (quizData && !isSubmitted) {
-			const timer = setInterval(() => {
-				decrementRemainingTime();
-				if (remainingTime <= 0) {
-					submitQuiz();
-					clearInterval(timer);
-				}
-			}, 1000);
-
-			return () => clearInterval(timer);
-		}
-	}, [
-		quizData,
-		isSubmitted,
-		remainingTime,
-		decrementRemainingTime,
-		submitQuiz,
-	]);
 
 	useEffect(() => {
 		if (quizData) {
@@ -104,24 +86,39 @@ export default function QuizPage({ params }) {
 		}
 	};
 
-	if (!quizData) return <div>Loading...</div>;
+	const handleComplete = () => {
+		if (!isSubmitted) {
+			submitQuiz();
+		}
+	};
+
+	if (!quizData || !endTime) return <div>Loading...</div>;
 
 	const { currentSectionIndex, currentQuestionIndex, sections } = quizData;
 	const currentSection = sections[currentSectionIndex];
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
-	const formatTime = (seconds) => {
-		const minutes = Math.floor(seconds / 60);
-		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-	};
-
 	return (
 		<div className="p-4 max-w-6xl mx-auto">
 			<div className="flex justify-between items-center mb-4">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
-				<div className="text-xl font-semibold">
-					Time Remaining: {formatTime(remainingTime)}
+				<div className="flex items-center">
+					<FlipClockCountdown
+						to={endTime}
+						labels={["Hours", "Minutes", "Seconds"]}
+						labelStyle={{ fontSize: 8, fontWeight: 500 }}
+						digitBlockStyle={{
+							width: 20,
+							height: 30,
+							fontSize: 14,
+						}}
+						dividerStyle={{ color: "white", height: 1 }}
+						separatorStyle={{ color: "red", size: "3px" }}
+						duration={0.5}
+						onComplete={handleComplete}
+						className="flex-shrink-0"
+						renderMap={[false, true, true, true]}
+					/>
 				</div>
 			</div>
 			<Tabs
