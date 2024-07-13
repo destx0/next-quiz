@@ -4,7 +4,7 @@ import { getQuizWithQuestions } from "@/lib/firestore";
 import useQuizStore from "@/stores/quizStore";
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Check, Flag, Eye } from "lucide-react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -54,16 +54,6 @@ export default function QuizPage({ params }) {
 			);
 		}
 	}, [quizData]);
-
-	useEffect(() => {
-		if (quizData && !isSubmitted) {
-			const timer = setInterval(() => {
-				incrementActiveQuestionTime();
-			}, 1000);
-
-			return () => clearInterval(timer);
-		}
-	}, [quizData, isSubmitted, incrementActiveQuestionTime]);
 
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
@@ -117,13 +107,18 @@ export default function QuizPage({ params }) {
 					<FlipClockCountdown
 						to={endTime}
 						labels={["Hours", "Minutes", "Seconds"]}
-						labelStyle={{ fontSize: 0, fontWeight: 500 }}
-						digitBlockStyle={{
-							width: 20,
-							height: 30,
-							fontSize: 14,
+						labelStyle={{
+							fontSize: 0,
+							fontWeight: 500,
+							color: "#4B5563",
 						}}
-						separatorStyle={{ size: "2px" }}
+						digitBlockStyle={{
+							width: 30,
+							height: 40,
+							fontSize: 20,
+							backgroundColor: "#3B82F6",
+						}}
+						separatorStyle={{ color: "#4B5563", size: "6px" }}
 						duration={0.5}
 						onComplete={handleComplete}
 						className="flex-shrink-0"
@@ -148,29 +143,65 @@ export default function QuizPage({ params }) {
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
 						<div className="flex mt-4 flex-grow overflow-hidden">
-							{/* Vertical navigation */}
+							{/* Updated Vertical navigation */}
 							<div className="w-16 mr-4 overflow-y-auto">
 								<div className="flex flex-col items-center space-y-2">
-									{section.questions.map((_, index) => (
-										<Button
-											key={index}
-											size="sm"
-											isIconOnly
-											className={`w-10 h-10 rounded-full ${
+									{section.questions.map(
+										(question, index) => {
+											const isActive =
 												index ===
 													currentQuestionIndex &&
 												sectionIndex ===
-													currentSectionIndex
-													? "bg-primary text-white"
-													: "bg-default-100"
-											}`}
-											onClick={() =>
-												handleJumpToQuestion(index)
+													currentSectionIndex;
+											const isAnswered =
+												question.selectedOption !==
+												null;
+											const isMarked = question.isMarked;
+											const isVisited =
+												question.isVisited;
+
+											let buttonClass =
+												"w-12 h-12 rounded-full relative ";
+											let ringClass = "";
+
+											if (isActive) {
+												buttonClass +=
+													"bg-blue-500 text-white ";
+											} else if (isAnswered) {
+												buttonClass +=
+													"bg-green-500 text-white ";
+											} else if (isVisited) {
+												buttonClass +=
+													"bg-orange-500 text-white ";
+											} else {
+												buttonClass +=
+													"bg-gray-200 text-gray-800 ";
 											}
-										>
-											{index + 1}
-										</Button>
-									))}
+
+											if (isMarked) {
+												ringClass =
+													"ring-2 ring-yellow-400 ring-offset-2 ";
+											}
+
+											return (
+												<Button
+													key={index}
+													size="sm"
+													isIconOnly
+													className={`${buttonClass} ${ringClass} transition-all duration-300 hover:scale-110`}
+													onClick={() =>
+														handleJumpToQuestion(
+															index
+														)
+													}
+												>
+													<span className="text-sm font-semibold">
+														{index + 1}
+													</span>
+												</Button>
+											);
+										}
+									)}
 								</div>
 							</div>
 
