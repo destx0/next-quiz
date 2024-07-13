@@ -2,6 +2,8 @@ import create from "zustand";
 
 const useQuizStore = create((set, get) => ({
 	quizData: null,
+	isSubmitted: false,
+	showAnswers: false,
 
 	setQuizData: (data) =>
 		set((state) => ({
@@ -19,6 +21,8 @@ const useQuizStore = create((set, get) => ({
 					})),
 				})),
 			},
+			isSubmitted: false,
+			showAnswers: false,
 		})),
 
 	setCurrentIndices: (sectionIndex, questionIndex) =>
@@ -181,6 +185,30 @@ const useQuizStore = create((set, get) => ({
 			}
 			return state; // No change if we're at the first question
 		}),
+	submitQuiz: () =>
+		set((state) => ({
+			isSubmitted: true,
+		})),
+
+	toggleShowAnswers: () =>
+		set((state) => ({
+			showAnswers: !state.showAnswers,
+		})),
+
+	calculateScore: () => {
+		const state = get();
+		let totalScore = 0;
+		state.quizData.sections.forEach((section) => {
+			section.questions.forEach((question) => {
+				if (question.selectedOption === question.correctAnswer) {
+					totalScore += state.quizData.positiveScore;
+				} else if (question.selectedOption !== null) {
+					totalScore -= state.quizData.negativeScore;
+				}
+			});
+		});
+		return totalScore;
+	},
 }));
 
 export default useQuizStore;

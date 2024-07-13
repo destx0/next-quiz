@@ -3,17 +3,9 @@
 import { getQuizWithQuestions } from "@/lib/firestore";
 import useQuizStore from "@/stores/quizStore";
 import { useEffect, useState } from "react";
-import {
-	Tabs,
-	Tab,
-	Card,
-	CardHeader,
-	CardBody,
-	Radio,
-	RadioGroup,
-	Button,
-	Spacer,
-} from "@nextui-org/react";
+import { Tabs, Tab, Button, Spacer } from "@nextui-org/react";
+import { RefreshCw } from "lucide-react";
+import QuestionCard from "./QuestionCard";
 
 export default function QuizPage({ params }) {
 	const {
@@ -25,6 +17,9 @@ export default function QuizPage({ params }) {
 		setSelectedOption,
 		visitCurrentQuestion,
 		nextQuestion,
+		submitQuiz,
+		calculateScore,
+		isSubmitted,
 	} = useQuizStore();
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
@@ -56,7 +51,7 @@ export default function QuizPage({ params }) {
 	}, [quizData]);
 
 	const handleNextQuestion = () => {
-		if (tempSelectedOption !== null) {
+		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(parseInt(tempSelectedOption));
 		}
 		nextQuestion();
@@ -74,6 +69,17 @@ export default function QuizPage({ params }) {
 		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
 		visitCurrentQuestion();
 		setTempSelectedOption(null);
+	};
+
+	const handleSubmitQuiz = () => {
+		submitQuiz();
+	};
+
+	const handleClearResponse = () => {
+		if (!isSubmitted) {
+			setSelectedOption(null);
+			setTempSelectedOption(null);
+		}
 	};
 
 	if (!quizData) return <div>Loading...</div>;
@@ -130,53 +136,21 @@ export default function QuizPage({ params }) {
 
 							{/* Question content */}
 							<div className="flex-1">
-								<Card className="w-full">
-									<CardHeader className="flex justify-between items-center bg-default-100 border-b border-default-200">
-										<p className="text-small text-default-500">
-											Question {currentQuestionIndex + 1}{" "}
-											of {section.questions.length}
-										</p>
-										<Button
-											color={
-												currentQuestion.isMarked
-													? "warning"
-													: "secondary"
-											}
-											variant="flat"
-											size="sm"
-											onClick={markCurrentQuestion}
-										>
-											{currentQuestion.isMarked
-												? "Unmark"
-												: "Mark"}{" "}
-											Question
-										</Button>
-									</CardHeader>
-									<CardBody className="pt-4">
-										<h2 className="text-xl font-semibold mb-4">
-											{currentQuestion.question}
-										</h2>
-										<Spacer y={2} />
-										<RadioGroup
-											value={tempSelectedOption}
-											onValueChange={
-												setTempSelectedOption
-											}
-										>
-											{currentQuestion.options.map(
-												(option, index) => (
-													<Radio
-														key={index}
-														value={index.toString()}
-														className="py-2"
-													>
-														{option}
-													</Radio>
-												)
-											)}
-										</RadioGroup>
-									</CardBody>
-								</Card>
+								<QuestionCard
+									question={{
+										...currentQuestion,
+										index: currentQuestionIndex,
+									}}
+									sectionQuestionCount={
+										section.questions.length
+									}
+									isSubmitted={isSubmitted}
+									tempSelectedOption={tempSelectedOption}
+									setTempSelectedOption={
+										setTempSelectedOption
+									}
+									markCurrentQuestion={markCurrentQuestion}
+								/>
 								<Spacer y={4} />
 								<div className="flex justify-between">
 									<Button
@@ -185,21 +159,37 @@ export default function QuizPage({ params }) {
 									>
 										Next
 									</Button>
+									{!isSubmitted && (
+										<>
+											<Button
+												color="secondary"
+												onClick={handleClearResponse}
+											>
+												<RefreshCw
+													size={20}
+													className="mr-2"
+												/>
+												Clear Response
+											</Button>
+											<Button
+												color="success"
+												onClick={handleSubmitQuiz}
+											>
+												Submit Quiz
+											</Button>
+										</>
+									)}
+									{isSubmitted && (
+										<p className="text-lg font-semibold">
+											Your Score: {calculateScore()}
+										</p>
+									)}
 								</div>
 							</div>
 						</div>
 					</Tab>
 				))}
 			</Tabs>
-
-			<Spacer y={4} />
-			<Card>
-				<CardBody>
-					<pre className="text-small overflow-auto">
-						{JSON.stringify(quizData, null, 2)}
-					</pre>
-				</CardBody>
-			</Card>
 		</div>
 	);
 }
