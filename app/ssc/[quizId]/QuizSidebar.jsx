@@ -1,4 +1,3 @@
-// app/ssc/[quizId]/QuizSidebar.jsx
 "use client";
 
 import React from "react";
@@ -26,7 +25,7 @@ export default function QuizSidebar({
 	};
 
 	return (
-		<div className="w-64 p-4 fixed right-0 top-0 h-screen overflow-y-auto">
+		<div className="w-64 p-4 fixed right-0 top-0 h-screen overflow-y-auto bg-gray-200 bg-opacity-10">
 			<h2 className="text-xl font-bold mb-4">
 				{currentSection.name || "Current Section"}
 			</h2>

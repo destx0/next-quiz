@@ -1,4 +1,3 @@
-// app/ssc/[quizId]/QuizContent.jsx
 "use client";
 
 import React, { useEffect } from "react";
@@ -23,6 +22,8 @@ export default function QuizContent({ initialQuiz }) {
 		calculateScore,
 		score,
 		totalQuestions,
+		markedQuestions,
+		toggleMarkedQuestion,
 	} = useQuizStore();
 
 	useEffect(() => {
@@ -52,6 +53,10 @@ export default function QuizContent({ initialQuiz }) {
 		calculateScore();
 	};
 
+	const handleMarkForReview = () => {
+		toggleMarkedQuestion(currentSectionIndex, currentQuestionIndex);
+	};
+
 	if (!quiz) {
 		return <div>Loading...</div>;
 	}
@@ -67,9 +72,12 @@ export default function QuizContent({ initialQuiz }) {
 		return <div>Error: Question not found</div>;
 	}
 
+	const isMarked =
+		markedQuestions[`${currentSectionIndex}-${currentQuestionIndex}`];
+
 	return (
 		<div className="flex">
-			<div className="flex-1 p-4">
+			<div className="flex-1 p-4 pr-64">
 				<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
 				{showExplanations && score !== null && (
 					<div
@@ -117,6 +125,13 @@ export default function QuizContent({ initialQuiz }) {
 							showExplanation={showExplanations}
 						/>
 						<div className="flex justify-between mt-4">
+							<Button
+								size="sm"
+								color={isMarked ? "warning" : "primary"}
+								onClick={handleMarkForReview}
+							>
+								{isMarked ? "Unmark" : "Mark"} for Review
+							</Button>
 							<Button
 								size="sm"
 								onClick={handleSubmitQuiz}
