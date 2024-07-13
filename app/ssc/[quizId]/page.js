@@ -106,14 +106,13 @@ export default function QuizPage({ params }) {
 					<FlipClockCountdown
 						to={endTime}
 						labels={["Hours", "Minutes", "Seconds"]}
-						labelStyle={{ fontSize: 8, fontWeight: 500 }}
+						labelStyle={{ fontSize: 0, fontWeight: 500 }}
 						digitBlockStyle={{
 							width: 20,
 							height: 30,
 							fontSize: 14,
 						}}
-						dividerStyle={{ color: "white", height: 1 }}
-						separatorStyle={{ color: "red", size: "3px" }}
+						separatorStyle={{ size: "2px" }}
 						duration={0.5}
 						onComplete={handleComplete}
 						className="flex-shrink-0"
