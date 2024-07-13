@@ -1,4 +1,4 @@
-// app\ssc\[quizId]\page.js
+// app/ssc/[quizId]/page.js
 import { getQuiz, getQuestions } from "@/lib/firestore";
 import QuizContent from "./QuizContent";
 
@@ -8,7 +8,7 @@ export default async function QuizPage({ params }) {
 		const questions = await getQuestions(quizData.sections);
 		const quiz = { ...quizData, questions };
 
-		return <QuizContent quiz={quiz} />;
+		return <QuizContent initialQuiz={quiz} />;
 	} catch (error) {
 		console.error("Error fetching quiz:", error);
 		return (

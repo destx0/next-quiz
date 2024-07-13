@@ -1,56 +1,55 @@
+// app/ssc/[quizId]/QuizContent.js
 "use client";
-import React, { useState, useEffect } from "react";
-import {
-	Card,
-	CardBody,
-	Button,
-	Radio,
-	RadioGroup,
-	Tabs,
-	Tab,
-} from "@nextui-org/react";
 
-export default function QuizContent({ quiz }) {
-	const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [userAnswers, setUserAnswers] = useState({});
-	const [selectedOption, setSelectedOption] = useState(null);
+import React, { useEffect } from "react";
+import { Card, CardBody, Button, Tabs, Tab } from "@nextui-org/react";
+import QuizSidebar from "./QuizSidebar";
+import QuestionDisplay from "./QuestionDisplay";
+import { useQuizStore } from "@/stores/quizStore";
+
+export default function QuizContent({ initialQuiz }) {
+	const {
+		quiz,
+		setQuiz,
+		currentSectionIndex,
+		setCurrentSectionIndex,
+		currentQuestionIndex,
+		setCurrentQuestionIndex,
+		userAnswers,
+		setUserAnswer,
+	} = useQuizStore();
 
 	useEffect(() => {
-		// Reset selected option when moving to a new question
-		setSelectedOption(
-			userAnswers[`${currentSectionIndex}-${currentQuestionIndex}`] ??
-				null
-		);
-	}, [currentSectionIndex, currentQuestionIndex, userAnswers]);
+		setQuiz(initialQuiz);
+	}, [initialQuiz, setQuiz]);
 
-	const handleAnswerChange = (value) => {
-		setSelectedOption(value);
-	};
+	useEffect(() => {
+		setCurrentQuestionIndex(0);
+	}, [currentSectionIndex, setCurrentQuestionIndex]);
 
-	const handleSaveAndNext = () => {
+	const handleSaveAndNext = (selectedOption) => {
 		if (selectedOption !== null) {
-			setUserAnswers((prevAnswers) => ({
-				...prevAnswers,
-				[`${currentSectionIndex}-${currentQuestionIndex}`]:
-					selectedOption,
-			}));
+			setUserAnswer(
+				currentSectionIndex,
+				currentQuestionIndex,
+				selectedOption
+			);
 		}
 
 		const currentSection = quiz.sections[currentSectionIndex];
 		if (currentQuestionIndex < currentSection.questions.length - 1) {
-			setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+			setCurrentQuestionIndex(currentQuestionIndex + 1);
 		} else if (currentSectionIndex < quiz.sections.length - 1) {
-			setCurrentSectionIndex((prevIndex) => prevIndex + 1);
+			setCurrentSectionIndex(currentSectionIndex + 1);
 			setCurrentQuestionIndex(0);
 		}
 	};
 
 	const handlePreviousQuestion = () => {
 		if (currentQuestionIndex > 0) {
-			setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+			setCurrentQuestionIndex(currentQuestionIndex - 1);
 		} else if (currentSectionIndex > 0) {
-			setCurrentSectionIndex((prevIndex) => prevIndex - 1);
+			setCurrentSectionIndex(currentSectionIndex - 1);
 			setCurrentQuestionIndex(
 				quiz.sections[currentSectionIndex - 1].questions.length - 1
 			);
@@ -58,82 +57,86 @@ export default function QuizContent({ quiz }) {
 	};
 
 	const handleSubmitQuiz = () => {
-		// Save the answer for the last question if selected
-		if (selectedOption !== null) {
-			setUserAnswers((prevAnswers) => ({
-				...prevAnswers,
-				[`${currentSectionIndex}-${currentQuestionIndex}`]:
-					selectedOption,
-			}));
-		}
 		console.log("Quiz submitted", userAnswers);
 		// Implement quiz submission logic here
 	};
 
+	if (!quiz) {
+		return <div>Loading...</div>;
+	}
+
 	const currentSection = quiz.sections[currentSectionIndex];
+	const currentQuestionId =
+		currentSection?.questions[currentQuestionIndex]?.id;
 	const currentQuestion = quiz.questions.find(
-		(q) => q.id === currentSection.questions[currentQuestionIndex].id
+		(q) => q.id === currentQuestionId
 	);
 
+	if (!currentSection || !currentQuestion) {
+		return <div>Error: Question not found</div>;
+	}
+
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
-			<Tabs
-				aria-label="Quiz sections"
-				selectedKey={currentSectionIndex.toString()}
-				onSelectionChange={(key) => {
-					setCurrentSectionIndex(Number(key));
-					setCurrentQuestionIndex(0);
-				}}
-			>
-				{quiz.sections.map((section, index) => (
-					<Tab
-						key={index}
-						title={section.name || `Section ${index + 1}`}
-					/>
-				))}
-			</Tabs>
-			<Card className="mt-4">
-				<CardBody>
-					<h2 className="text-xl mb-2">
-						Question {currentQuestionIndex + 1} of{" "}
-						{currentSection.questions.length}
-					</h2>
-					<p className="mb-4">{currentQuestion.question}</p>
-					<RadioGroup
-						value={selectedOption}
-						onValueChange={handleAnswerChange}
-					>
-						{currentQuestion.options.map((option, index) => (
-							<Radio key={index} value={index.toString()}>
-								{option}
-							</Radio>
-						))}
-					</RadioGroup>
-					<div className="flex justify-between mt-4">
-						<Button
-							onClick={handlePreviousQuestion}
-							disabled={
-								currentSectionIndex === 0 &&
-								currentQuestionIndex === 0
+		<div className="flex flex-row-reverse">
+			<QuizSidebar
+				currentSection={currentSection}
+				currentQuestionIndex={currentQuestionIndex}
+				onQuestionSelect={setCurrentQuestionIndex}
+			/>
+			<div className="flex-1 p-4">
+				<h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
+				<Tabs
+					aria-label="Quiz sections"
+					selectedKey={currentSectionIndex.toString()}
+					onSelectionChange={(key) =>
+						setCurrentSectionIndex(Number(key))
+					}
+				>
+					{quiz.sections.map((section, index) => (
+						<Tab
+							key={index}
+							title={section.name || `Section ${index + 1}`}
+						/>
+					))}
+				</Tabs>
+				<Card className="mt-4">
+					<CardBody>
+						<QuestionDisplay
+							question={currentQuestion}
+							questionNumber={currentQuestionIndex + 1}
+							totalQuestions={currentSection.questions.length}
+							userAnswer={
+								userAnswers[
+									`${currentSectionIndex}-${currentQuestionIndex}`
+								]
 							}
-						>
-							Previous
-						</Button>
-						{currentSectionIndex < quiz.sections.length - 1 ||
-						currentQuestionIndex <
-							currentSection.questions.length - 1 ? (
-							<Button onClick={handleSaveAndNext}>
-								Save and Next
+							onSaveAndNext={handleSaveAndNext}
+						/>
+						<div className="flex justify-between mt-4">
+							<Button
+								onClick={handlePreviousQuestion}
+								disabled={
+									currentSectionIndex === 0 &&
+									currentQuestionIndex === 0
+								}
+							>
+								Previous
 							</Button>
-						) : (
-							<Button onClick={handleSubmitQuiz} color="success">
-								Submit Quiz
-							</Button>
-						)}
-					</div>
-				</CardBody>
-			</Card>
+							{currentSectionIndex < quiz.sections.length - 1 ||
+							currentQuestionIndex <
+								currentSection.questions.length - 1 ? (
+								<Button onClick={() => handleSaveAndNext(null)}>
+									Next
+								</Button>
+							) : (
+								<Button onClick={handleSubmitQuiz}>
+									Submit Quiz
+								</Button>
+							)}
+						</div>
+					</CardBody>
+				</Card>
+			</div>
 		</div>
 	);
 }
