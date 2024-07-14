@@ -9,19 +9,13 @@ module.exports = {
 		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./components/**/*.{js,ts,jsx,tsx,mdx}",
+
 		// Or if using `src` directory:
 		"./src/**/*.{js,ts,jsx,tsx,mdx}",
 	],
 	theme: {
-		extend: {
-			colors: {},
-			borderRadius: {
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
-				sm: "calc(var(--radius) - 4px)",
-			},
-		},
+		extend: {},
 	},
 	darkMode: "class",
-	plugins: [nextui(), require("tailwindcss-animate")],
+	plugins: [nextui()],
 };

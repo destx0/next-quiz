@@ -10,7 +10,6 @@ import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
-import AnalysisDrawer from "./AnalysisDrawer";
 import AnalysisModal from "./AnalysisModal";
 
 export default function QuizPage({ params }) {
