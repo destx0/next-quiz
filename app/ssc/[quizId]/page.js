@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
-import { RefreshCw, Check, Flag, Eye } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
+import SideNav from "./SideNav"; // Import the new SideNav component
 
 export default function QuizPage({ params }) {
 	const {
@@ -158,67 +159,13 @@ export default function QuizPage({ params }) {
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
 						<div className="flex pt-4 -mt-2 flex-grow overflow-hidden">
-							{/* Updated Vertical navigation */}
-							<div className="w-16  overflow-y-auto pt-1">
-								<div className="flex flex-col items-center space-y-2">
-									{section.questions.map(
-										(question, index) => {
-											const isActive =
-												index ===
-													currentQuestionIndex &&
-												sectionIndex ===
-													currentSectionIndex;
-											const isAnswered =
-												question.selectedOption !==
-												null;
-											const isMarked = question.isMarked;
-											const isVisited =
-												question.isVisited;
-
-											let buttonClass =
-												"w-8 h-8 rounded-full relative ";
-											let ringClass = "";
-
-											if (isActive) {
-												buttonClass +=
-													"bg-blue-600 w-10 h-20 ";
-											} else if (isAnswered) {
-												buttonClass +=
-													"bg-green-500/60  ";
-											} else if (isVisited) {
-												buttonClass +=
-													"bg-orange-500/60  ";
-											} else {
-												buttonClass += " ";
-											}
-
-											if (isMarked) {
-												ringClass =
-													"ring-2 ring-yellow-400 ring-offset-2 ";
-											}
-
-											return (
-												<Button
-													key={index}
-													size="sm"
-													variant="shadow"
-													isIconOnly
-													className={`${buttonClass} ${ringClass} transition-all duration-300 hover:scale-110`}
-													onClick={() =>
-														handleJumpToQuestion(
-															index
-														)
-													}
-												>
-													<span className="text-sm font-semibold">
-														{index + 1}
-													</span>
-												</Button>
-											);
-										}
-									)}
-								</div>
-							</div>
+							{/* Use the new SideNav component */}
+							<SideNav
+								questions={section.questions}
+								currentQuestionIndex={currentQuestionIndex}
+								currentSectionIndex={currentSectionIndex}
+								handleJumpToQuestion={handleJumpToQuestion}
+							/>
 
 							{/* Question content */}
 							<div className="flex-1 overflow-hidden p-16 -ml-16 -mt-16">
