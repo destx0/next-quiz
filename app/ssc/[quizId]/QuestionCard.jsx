@@ -23,7 +23,9 @@ export default function QuestionCard({
 		const remainingSeconds = seconds % 60;
 		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 	};
-
+  const handleOptionChange = (value) => {
+		setTempSelectedOption(value);
+  };
 	return (
 		<Card className="w-full h-full flex flex-col">
 			<CardHeader className="flex-shrink-0 flex flex-col bg-default-100 border-b border-default-200 p-4">

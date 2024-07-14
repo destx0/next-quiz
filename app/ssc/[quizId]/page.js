@@ -59,34 +59,45 @@ export default function QuizPage({ params }) {
 				quizData;
 			const currentQuestion =
 				sections[currentSectionIndex].questions[currentQuestionIndex];
-			setTempSelectedOption(
-				currentQuestion.selectedOption?.toString() || null
-			);
+			console.log(currentQuestion);
 		}
 	}, [quizData]);
 
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
-			setSelectedOption(parseInt(tempSelectedOption));
+			setSelectedOption(tempSelectedOption);
 		}
 		nextQuestion();
 		visitCurrentQuestion();
-		setTempSelectedOption(null);
+		const { currentSectionIndex, currentQuestionIndex, sections } =
+			quizData;
+		const nextQuestionObj =
+			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
+			sections[currentSectionIndex + 1]?.questions[0];
+		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
 	};
 
 	const handleJumpToSection = (sectionIndex) => {
 		setCurrentIndices(Number(sectionIndex), 0);
 		visitCurrentQuestion();
-		setTempSelectedOption(null);
+		const { sections } = quizData;
+		const firstQuestionInSection = sections[sectionIndex].questions[0];
+		setTempSelectedOption(firstQuestionInSection.selectedOption);
 	};
 
 	const handleJumpToQuestion = (questionIndex) => {
 		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
 		visitCurrentQuestion();
-		setTempSelectedOption(null);
+		const { currentSectionIndex, sections } = quizData;
+		const question = sections[currentSectionIndex].questions[questionIndex];
+		console.log(question);
+		setTempSelectedOption(question.selectedOption);
 	};
 
 	const handleSubmitQuiz = () => {
+		if (tempSelectedOption !== null && !isSubmitted) {
+			setSelectedOption(tempSelectedOption);
+		}
 		submitQuiz();
 	};
 
