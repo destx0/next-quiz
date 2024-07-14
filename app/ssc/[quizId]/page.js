@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
-import { RefreshCw } from "lucide-react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -11,6 +10,7 @@ import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function QuizPage({ params }) {
 	const {
@@ -31,6 +31,7 @@ export default function QuizPage({ params }) {
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -124,9 +125,16 @@ export default function QuizPage({ params }) {
 	const currentSection = sections[currentSectionIndex];
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
+	const formatTime = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+	};
+
 	return (
-		<div className="flex flex-col h-[calc(100vh-10rem)]">
-			<div className="flex justify-between items-center -mt-16 pl-4">
+		<div className="flex flex-col h-screen">
+			{/* Top Bar */}
+			<div className="bg-white border-b p-4 flex justify-between items-center sticky top-0 z-10">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					{!isSubmitted && (
@@ -153,90 +161,130 @@ export default function QuizPage({ params }) {
 					)}
 				</div>
 			</div>
-			<Tabs
-				selectedKey={currentSectionIndex.toString()}
-				onSelectionChange={handleJumpToSection}
-				aria-label="Quiz sections"
-				color="primary"
-				variant="underlined"
-				classNames={{}}
-			>
-				{sections.map((section, sectionIndex) => (
-					<Tab key={sectionIndex.toString()} title={section.name}>
-						<div className="flex pt-4 -mt-2 flex-grow overflow-hidden">
+
+			{/* Body Section - Full width and height */}
+			<div className="flex flex-grow overflow-hidden">
+				{/* Main Content - Takes up all available space */}
+				<div className="flex-grow overflow-auto flex flex-col">
+					{/* Sticky section tabs and question header */}
+					<div className="sticky top-0 bg-white z-10">
+						<div className="flex border-b">
+							{sections.map((section, sectionIndex) => (
+								<button
+									key={sectionIndex}
+									onClick={() =>
+										handleJumpToSection(sectionIndex)
+									}
+									className={`px-4 py-2 ${
+										currentSectionIndex === sectionIndex
+											? "border-b-2 border-blue-500"
+											: ""
+									}`}
+								>
+									{section.name}
+								</button>
+							))}
+						</div>
+						<div className="flex justify-between items-center p-4 border-b">
+							<div className="flex items-center">
+								<p className="text-sm text-gray-600 mr-4">
+									Question {currentQuestionIndex + 1} of{" "}
+									{currentSection.questions.length}
+								</p>
+								<div className="flex items-center text-sm text-gray-600">
+									<span className="mr-1">⏱</span>
+									{formatTime(currentQuestion.timeSpent)}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Question Card */}
+					<QuestionCard
+						question={{
+							...currentQuestion,
+							index: currentQuestionIndex,
+						}}
+						sectionQuestionCount={currentSection.questions.length}
+						isSubmitted={isSubmitted}
+						tempSelectedOption={tempSelectedOption}
+						setTempSelectedOption={setTempSelectedOption}
+					/>
+
+					{/* Bottom Bar */}
+					<div className="bg-white border-t p-4 sticky bottom-0 mt-auto">
+						<div className="flex justify-between items-center">
+							<div className="flex gap-2">
+								<button
+									className="px-4 py-2 bg-blue-500 text-white rounded"
+									onClick={handleNextQuestion}
+								>
+									Next
+								</button>
+								{!isSubmitted && (
+									<button
+										className="px-4 py-2 bg-red-500 text-white rounded"
+										onClick={handleClearResponse}
+									>
+										Clear Response
+									</button>
+								)}
+								<button
+									className={`px-4 py-2 rounded ${
+										currentQuestion.isMarked
+											? "bg-gray-300"
+											: "bg-yellow-500 text-white"
+									}`}
+									onClick={markCurrentQuestion}
+								>
+									{currentQuestion.isMarked
+										? "Unmark"
+										: "Mark"}
+								</button>
+							</div>
+
+							<div>
+								{!isSubmitted ? (
+									<button
+										className="px-4 py-2 bg-green-500 text-white rounded"
+										onClick={handleSubmitQuiz}
+									>
+										Submit Quiz
+									</button>
+								) : (
+									<div className="flex items-center gap-4">
+										<p className="text-lg font-semibold">
+											Your Score: {calculateScore()}
+										</p>
+										<AnalysisModal
+											quizData={quizData}
+											score={calculateScore()}
+										/>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Toggleable Sidebar - Fixed width, full height */}
+				<div className="relative">
+					<button
+						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-gray-200 text-gray-600 p-1 rounded-l"
+						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+					>
+						{isSidebarOpen ? ">" : "<"}
+					</button>
+					{isSidebarOpen && (
+						<div className="w-64 bg-gray-100 overflow-auto border-l h-full">
 							<SideNav
-								questions={section.questions}
+								questions={currentSection.questions}
 								currentQuestionIndex={currentQuestionIndex}
 								currentSectionIndex={currentSectionIndex}
 								handleJumpToQuestion={handleJumpToQuestion}
 							/>
-							<div className="flex-1 overflow-hidden p-16 -ml-16 -mt-16">
-								<QuestionCard
-									question={{
-										...currentQuestion,
-										index: currentQuestionIndex,
-									}}
-									sectionQuestionCount={
-										section.questions.length
-									}
-									isSubmitted={isSubmitted}
-									tempSelectedOption={tempSelectedOption}
-									setTempSelectedOption={
-										setTempSelectedOption
-									}
-									markCurrentQuestion={markCurrentQuestion}
-								/>
-							</div>
 						</div>
-					</Tab>
-				))}
-			</Tabs>
-			<div className="mt-auto pt-4 mx-12">
-				<Divider className="my-4" />
-				<div className="flex justify-between items-center">
-					<div className="flex gap-2">
-						<Button
-							color="primary"
-							variant="shadow"
-							size="sm"
-							onClick={handleNextQuestion}
-						>
-							Next
-						</Button>
-						{!isSubmitted && (
-							<Button
-								color="danger"
-								variant="shadow"
-								size="sm"
-								onClick={handleClearResponse}
-							>
-								Clear Response
-							</Button>
-						)}
-					</div>
-
-					<div>
-						{!isSubmitted ? (
-							<Button
-								color="success"
-								variant="shadow"
-								size="sm"
-								onClick={handleSubmitQuiz}
-							>
-								Submit Quiz
-							</Button>
-						) : (
-							<div className="flex items-center gap-4">
-								<p className="text-lg font-semibold">
-									Your Score: {calculateScore()}
-								</p>
-								<AnalysisModal
-									quizData={quizData}
-									score={calculateScore()}
-								/>
-							</div>
-						)}
-					</div>
+					)}
 				</div>
 			</div>
 		</div>
