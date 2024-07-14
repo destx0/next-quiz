@@ -10,7 +10,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button, Tabs, Tab } from "@nextui-org/react";
+import { Button, Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import {
 	PieChart,
 	Pie,
@@ -19,7 +19,6 @@ import {
 	Legend,
 	ResponsiveContainer,
 } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
 
 const COLORS = [
 	"#0088FE",
@@ -30,7 +29,6 @@ const COLORS = [
 	"#82CA9D",
 	"#FFA07A",
 ];
-
 const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 	const calculateStatistics = () => {
 		if (!quizData || !quizData.sections) {
@@ -120,7 +118,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 	const renderPieChart = (data, title) => {
 		return (
 			<Card className="w-full max-w-md mx-auto">
-				<CardContent className="p-4">
+				<CardBody className="p-4">
 					<h3 className="text-lg font-semibold mb-2 text-center">
 						{title}
 					</h3>
@@ -158,7 +156,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 							<p key={index}>{`${item.name}: ${item.value}`}</p>
 						))}
 					</div>
-				</CardContent>
+				</CardBody>
 			</Card>
 		);
 	};
@@ -194,7 +192,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 							)}
 						</div>
 						<Card className="w-full max-w-2xl mx-auto">
-							<CardContent className="p-4">
+							<CardBody className="p-4">
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 									<div>
 										<p>
@@ -221,7 +219,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 										<p>Score: {score}</p>
 									</div>
 								</div>
-							</CardContent>
+							</CardBody>
 						</Card>
 					</div>
 				</Tab>
@@ -248,7 +246,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 								"Question Distribution"
 							)}
 							<Card className="w-full max-w-2xl mx-auto">
-								<CardContent className="p-4">
+								<CardBody className="p-4">
 									<div className="flex flex-col md:flex-row justify-between">
 										<div className="flex flex-col space-y-2 md:w-1/2">
 											<p>
@@ -294,7 +292,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 											</p>
 										</div>
 									</div>
-								</CardContent>
+								</CardBody>
 							</Card>
 						</div>
 					</Tab>
