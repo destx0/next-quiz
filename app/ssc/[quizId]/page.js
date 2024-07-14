@@ -11,6 +11,7 @@ import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisDrawer from "./AnalysisDrawer";
+import AnalysisModal from "./AnalysisModal";
 
 export default function QuizPage({ params }) {
 	const {
@@ -230,9 +231,7 @@ export default function QuizPage({ params }) {
 								<p className="text-lg font-semibold">
 									Your Score: {calculateScore()}
 								</p>
-								<AnalysisDrawer
-									isOpen={isAnalysisOpen}
-									onOpenChange={setIsAnalysisOpen}
+								<AnalysisModal
 									quizData={quizData}
 									score={calculateScore()}
 								/>
