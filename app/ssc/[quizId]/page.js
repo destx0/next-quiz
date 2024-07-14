@@ -192,19 +192,30 @@ export default function QuizPage({ params }) {
 			<div className="mt-auto pt-4">
 				<Divider className="my-4" />
 				<div className="flex justify-between">
-					<Button color="primary" onClick={handleNextQuestion}>
+					<Button
+						color="primary"
+						variant="flat"
+						size="sm"
+						onClick={handleNextQuestion}
+					>
 						Next
 					</Button>
 					{!isSubmitted && (
 						<>
 							<Button
-								color="secondary"
+								color="danger"
+								variant="flat"
+								size="sm"
 								onClick={handleClearResponse}
 							>
-								<RefreshCw size={20} className="mr-2" />
 								Clear Response
 							</Button>
-							<Button color="success" onClick={handleSubmitQuiz}>
+							<Button
+								color="success"
+								variant="flat"
+								size="sm"
+								onClick={handleSubmitQuiz}
+							>
 								Submit Quiz
 							</Button>
 						</>

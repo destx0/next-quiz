@@ -36,8 +36,7 @@ export default function QuestionCard({
 				<div className="flex justify-between items-center w-full mb-4">
 					<div className="flex items-center">
 						<p className="text-small text-default-500 mr-4">
-							Question {question.index + 1} of{" "}
-							{sectionQuestionCount}
+							Question {question.index + 1} 
 						</p>
 						<div className="flex items-center text-small text-default-500">
 							<Clock size={16} className="mr-1" />
@@ -45,12 +44,12 @@ export default function QuestionCard({
 						</div>
 					</div>
 					<Button
-						color={question.isMarked ? "warning" : "secondary"}
+						color={question.isMarked ? "default" : "warning"}
 						variant="flat"
 						size="sm"
 						onClick={markCurrentQuestion}
 					>
-						{question.isMarked ? "Unmark" : "Mark"} Question
+						{question.isMarked ? "Unmark" : "Mark"}
 					</Button>
 				</div>
 				<div className="w-full">

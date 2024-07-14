@@ -29,7 +29,7 @@ const SideNav = ({
 					}
 
 					if (isMarked) {
-						ringClass = "ring-2 ring-yellow-400 ring-offset-2 ";
+						ringClass = "ring-2 ring-yellow-400  ";
 					}
 
 					return (
