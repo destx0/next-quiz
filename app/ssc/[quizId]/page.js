@@ -163,7 +163,7 @@ export default function QuizPage({ params }) {
 			>
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
-						<div className="flex mt-4 flex-grow overflow-hidden">
+						<div className="flex pt-8 flex-grow overflow-hidden">
 							{/* Updated Vertical navigation */}
 							<div className="w-16  overflow-y-auto pt-1">
 								<div className="flex flex-col items-center space-y-2">
@@ -227,7 +227,7 @@ export default function QuizPage({ params }) {
 							</div>
 
 							{/* Question content */}
-							<div className="flex-1 overflow-hidden">
+							<div className="flex-1 overflow-hidden p-16 -ml-16 -mt-16">
 								<QuestionCard
 									question={{
 										...currentQuestion,
