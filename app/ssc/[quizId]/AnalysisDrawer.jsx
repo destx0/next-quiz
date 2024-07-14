@@ -1,5 +1,5 @@
 // AnalysisDrawer.js
-import React from "react";
+import React, { useMemo } from "react";
 import {
 	Drawer,
 	DrawerClose,
@@ -10,37 +10,40 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "@nextui-org/react";
+import { Button, Tabs, Tab } from "@nextui-org/react";
 import {
 	PieChart,
 	Pie,
 	Cell,
-	BarChart,
-	Bar,
-	XAxis,
-	YAxis,
-	CartesianGrid,
 	Tooltip,
 	Legend,
 	ResponsiveContainer,
 } from "recharts";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+	"#0088FE",
+	"#00C49F",
+	"#FFBB28",
+	"#FF8042",
+	"#8884D8",
+	"#82CA9D",
+	"#FFA07A",
+];
 
 const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 	const calculateStatistics = () => {
+		if (!quizData || !quizData.sections) {
+			console.error("Invalid quizData structure");
+			return null;
+		}
+
 		let totalCorrect = 0;
 		let totalWrong = 0;
 		let totalAttempted = 0;
 		let totalTimeSpent = 0;
 		const sectionStats = [];
+		const timeData = [];
 
 		quizData.sections.forEach((section) => {
 			let sectionCorrect = 0;
@@ -52,7 +55,7 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 				if (question.selectedOption !== null) {
 					totalAttempted++;
 					sectionAttempted++;
-					if (question.isCorrect) {
+					if (question.selectedOption === question.correctAnswer) {
 						totalCorrect++;
 						sectionCorrect++;
 					} else {
@@ -71,6 +74,11 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 				unattempted: section.questions.length - sectionAttempted,
 				timeSpent: sectionTimeSpent,
 			});
+
+			timeData.push({
+				name: section.name,
+				value: sectionTimeSpent,
+			});
 		});
 
 		const totalQuestions = quizData.sections.reduce(
@@ -78,7 +86,15 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 			0
 		);
 		const totalUnattempted = totalQuestions - totalAttempted;
-		const remainingTime = quizData.duration * 60 - totalTimeSpent;
+		const remainingTime = Math.max(
+			0,
+			quizData.duration * 60 - totalTimeSpent
+		);
+
+		timeData.push({
+			name: "Remaining Time",
+			value: remainingTime,
+		});
 
 		return {
 			totalCorrect,
@@ -89,8 +105,11 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 			totalTimeSpent,
 			remainingTime,
 			sectionStats,
+			timeData,
 		};
 	};
+
+	const stats = useMemo(() => calculateStatistics(), [quizData]);
 
 	const formatTime = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
@@ -98,54 +117,62 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 		return `${minutes}m ${remainingSeconds}s`;
 	};
 
-	const renderPieChart = (data) => {
+	const renderPieChart = (data, title) => {
 		return (
-			<ResponsiveContainer width="100%" height={300}>
-				<PieChart>
-					<Pie
-						data={data}
-						cx="50%"
-						cy="50%"
-						labelLine={false}
-						outerRadius={80}
-						fill="#8884d8"
-						dataKey="value"
-						label={({ name, percent }) =>
-							`${name} ${(percent * 100).toFixed(0)}%`
-						}
-					>
-						{data.map((entry, index) => (
-							<Cell
-								key={`cell-${index}`}
-								fill={COLORS[index % COLORS.length]}
+			<Card className="w-full max-w-md mx-auto">
+				<CardContent className="p-4">
+					<h3 className="text-lg font-semibold mb-2 text-center">
+						{title}
+					</h3>
+					<ResponsiveContainer width="100%" height={300}>
+						<PieChart>
+							<Pie
+								data={data.filter((item) => item.value > 0)}
+								cx="50%"
+								cy="50%"
+								labelLine={false}
+								outerRadius={80}
+								fill="#8884d8"
+								dataKey="value"
+								label={({ name, percent }) =>
+									`${name} ${(percent * 100).toFixed(0)}%`
+								}
+							>
+								{data.map((entry, index) => (
+									<Cell
+										key={`cell-${index}`}
+										fill={COLORS[index % COLORS.length]}
+									/>
+								))}
+							</Pie>
+							<Tooltip />
+							<Legend
+								layout="vertical"
+								align="right"
+								verticalAlign="middle"
 							/>
+						</PieChart>
+					</ResponsiveContainer>
+					<div className="mt-4 text-sm">
+						{data.map((item, index) => (
+							<p key={index}>{`${item.name}: ${item.value}`}</p>
 						))}
-					</Pie>
-					<Tooltip />
-				</PieChart>
-			</ResponsiveContainer>
-		);
-	};
-
-	const renderBarChart = (data) => {
-		return (
-			<ResponsiveContainer width="100%" height={300}>
-				<BarChart data={data}>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Legend />
-					<Bar dataKey="correct" fill="#0088FE" />
-					<Bar dataKey="wrong" fill="#FF8042" />
-					<Bar dataKey="unattempted" fill="#FFBB28" />
-				</BarChart>
-			</ResponsiveContainer>
+					</div>
+				</CardContent>
+			</Card>
 		);
 	};
 
 	const renderAnalysis = () => {
-		const stats = calculateStatistics();
+		if (!stats) {
+			return (
+				<p>
+					Error: Unable to calculate statistics. Please check the quiz
+					data.
+				</p>
+			);
+		}
+
 		const overallData = [
 			{ name: "Correct", value: stats.totalCorrect },
 			{ name: "Wrong", value: stats.totalWrong },
@@ -153,151 +180,126 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 		];
 
 		return (
-			<div className="space-y-6">
-				<h2 className="text-xl font-semibold">Quiz Analysis</h2>
-
-				<Card>
-					<CardHeader>
-						<CardTitle>Overall Statistics</CardTitle>
-						<CardDescription>
-							Correct, Wrong, and Unattempted Questions
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						{renderPieChart(overallData)}
-						<div className="mt-4">
-							<p>Total Questions: {stats.totalQuestions}</p>
-							<p>Attempted: {stats.totalAttempted}</p>
-							<p>Correct: {stats.totalCorrect}</p>
-							<p>Wrong: {stats.totalWrong}</p>
-							<p>Unattempted: {stats.totalUnattempted}</p>
-							<p>
-								Total Time Taken:{" "}
-								{formatTime(stats.totalTimeSpent)}
-							</p>
-							<p>
-								Remaining Time:{" "}
-								{formatTime(stats.remainingTime)}
-							</p>
-							<p>Score: {score}</p>
+			<Tabs>
+				<Tab key="overall" title="Overall Analysis">
+					<div className="mt-4 space-y-6">
+						<div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 justify-center">
+							{renderPieChart(
+								overallData,
+								"Question Distribution"
+							)}
+							{renderPieChart(
+								stats.timeData,
+								"Time Distribution"
+							)}
 						</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader>
-						<CardTitle>Section-wise Statistics</CardTitle>
-						<CardDescription>
-							Correct, Wrong, and Unattempted Questions by Section
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						{renderBarChart(stats.sectionStats)}
-						<div className="mt-4 space-y-4">
-							{stats.sectionStats.map((sectionStat, index) => (
-								<div
-									key={index}
-									className="bg-gray-100 p-4 rounded"
-								>
-									<h4 className="font-medium">
-										{sectionStat.name}
-									</h4>
-									<p>
-										Attempted:{" "}
-										{sectionStat.correct +
-											sectionStat.wrong}
-									</p>
-									<p>Correct: {sectionStat.correct}</p>
-									<p>Wrong: {sectionStat.wrong}</p>
-									<p>
-										Unattempted: {sectionStat.unattempted}
-									</p>
-									<p>
-										Time Spent:{" "}
-										{formatTime(sectionStat.timeSpent)}
-									</p>
+						<Card className="w-full max-w-2xl mx-auto">
+							<CardContent className="p-4">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<div>
+										<p>
+											Total Questions:{" "}
+											{stats.totalQuestions}
+										</p>
+										<p>Attempted: {stats.totalAttempted}</p>
+										<p>Correct: {stats.totalCorrect}</p>
+										<p>Wrong: {stats.totalWrong}</p>
+										<p>
+											Unattempted:{" "}
+											{stats.totalUnattempted}
+										</p>
+									</div>
+									<div>
+										<p>
+											Total Time Taken:{" "}
+											{formatTime(stats.totalTimeSpent)}
+										</p>
+										<p>
+											Remaining Time:{" "}
+											{formatTime(stats.remainingTime)}
+										</p>
+										<p>Score: {score}</p>
+									</div>
 								</div>
-							))}
-						</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader>
-						<CardTitle>Detailed Question Analysis</CardTitle>
-					</CardHeader>
-					<CardContent>
-						{quizData.sections.map((section, sectionIndex) => (
-							<div key={sectionIndex} className="mb-6">
-								<h4 className="font-medium mb-2">
-									{section.name}
-								</h4>
-								{section.questions.map(
-									(question, questionIndex) => (
-										<div
-											key={questionIndex}
-											className="mb-4 p-4 bg-gray-100 rounded"
-										>
-											<p className="font-medium">
-												Question {questionIndex + 1}
+							</CardContent>
+						</Card>
+					</div>
+				</Tab>
+				{quizData.sections.map((section, index) => (
+					<Tab key={`section-${index}`} title={section.name}>
+						<div className="mt-4 space-y-6">
+							{renderPieChart(
+								[
+									{
+										name: "Correct",
+										value: stats.sectionStats[index]
+											.correct,
+									},
+									{
+										name: "Wrong",
+										value: stats.sectionStats[index].wrong,
+									},
+									{
+										name: "Unattempted",
+										value: stats.sectionStats[index]
+											.unattempted,
+									},
+								],
+								"Question Distribution"
+							)}
+							<Card className="w-full max-w-2xl mx-auto">
+								<CardContent className="p-4">
+									<div className="flex flex-col md:flex-row justify-between">
+										<div className="flex flex-col space-y-2 md:w-1/2">
+											<p>
+												Total Questions:{" "}
+												{section.questions.length}
 											</p>
-											<p className="mt-1">
-												{question.text}
+											<p>
+												Attempted:{" "}
+												{stats.sectionStats[index]
+													.correct +
+													stats.sectionStats[index]
+														.wrong}
 											</p>
-											<p className="mt-2">
-												Your answer:{" "}
-												<span
-													className={
-														question.isCorrect
-															? "text-green-600"
-															: "text-red-600"
-													}
-												>
-													{question.selectedOption !==
-													null
-														? question.options[
-																question
-																	.selectedOption
-															]
-														: "Not answered"}
-												</span>
+											<p>
+												Correct:{" "}
+												{
+													stats.sectionStats[index]
+														.correct
+												}
 											</p>
-											{!question.isCorrect && (
-												<p className="mt-1 text-green-600">
-													Correct answer:{" "}
-													{
-														question.options[
-															question
-																.correctOption
-														]
-													}
-												</p>
-											)}
-											<p className="mt-1">
-												Time spent:{" "}
+											<p>
+												Wrong:{" "}
+												{
+													stats.sectionStats[index]
+														.wrong
+												}
+											</p>
+											<p>
+												Unattempted:{" "}
+												{
+													stats.sectionStats[index]
+														.unattempted
+												}
+											</p>
+										</div>
+										<div className="flex flex-col space-y-2 md:w-1/2 md:items-end mt-4 md:mt-0">
+											<p>
+												Time Spent:{" "}
 												{formatTime(
-													question.timeSpent || 0
+													stats.sectionStats[index]
+														.timeSpent
 												)}
 											</p>
 										</div>
-									)
-								)}
-							</div>
-						))}
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader>
-						<CardTitle>Quiz Data JSON</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<pre className="bg-gray-100 p-4 rounded overflow-x-auto">
-							{JSON.stringify(quizData, null, 2)}
-						</pre>
-					</CardContent>
-				</Card>
-			</div>
+									</div>
+								</CardContent>
+							</Card>
+						</div>
+					</Tab>
+				))}
+			</Tabs>
 		);
 	};
 
