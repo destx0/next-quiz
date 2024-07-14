@@ -165,7 +165,7 @@ export default function QuizPage({ params }) {
 					<Tab key={sectionIndex.toString()} title={section.name}>
 						<div className="flex mt-4 flex-grow overflow-hidden">
 							{/* Updated Vertical navigation */}
-							<div className="w-16 mr-4 overflow-y-auto">
+							<div className="w-16  overflow-y-auto pt-1">
 								<div className="flex flex-col items-center space-y-2">
 									{section.questions.map(
 										(question, index) => {
@@ -182,21 +182,20 @@ export default function QuizPage({ params }) {
 												question.isVisited;
 
 											let buttonClass =
-												"w-12 h-12 rounded-full relative ";
+												"w-8 h-8 rounded-full relative ";
 											let ringClass = "";
 
 											if (isActive) {
 												buttonClass +=
-													"bg-blue-500 text-white ";
+													"bg-blue-600 w-10 h-20 ";
 											} else if (isAnswered) {
 												buttonClass +=
-													"bg-green-500 text-white ";
+													"bg-green-500/60  ";
 											} else if (isVisited) {
 												buttonClass +=
-													"bg-orange-500 text-white ";
+													"bg-orange-500/60  ";
 											} else {
-												buttonClass +=
-													"bg-gray-200 text-gray-800 ";
+												buttonClass += " ";
 											}
 
 											if (isMarked) {
@@ -208,6 +207,7 @@ export default function QuizPage({ params }) {
 												<Button
 													key={index}
 													size="sm"
+													variant="shadow"
 													isIconOnly
 													className={`${buttonClass} ${ringClass} transition-all duration-300 hover:scale-110`}
 													onClick={() =>
