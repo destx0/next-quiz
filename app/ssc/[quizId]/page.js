@@ -126,26 +126,28 @@ export default function QuizPage({ params }) {
 			<div className="flex justify-between items-center  -mt-16 pl-4">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
-					<FlipClockCountdown
-						to={endTime}
-						labels={["Hours", "Minutes", "Seconds"]}
-						labelStyle={{
-							fontSize: 0,
-							fontWeight: 500,
-							color: "#4B5563",
-						}}
-						digitBlockStyle={{
-							width: 18,
-							height: 26,
-							fontSize: 20,
-							backgroundColor: "#27272a",
-						}}
-						separatorStyle={{ color: "#4B5563", size: "3px" }}
-						duration={0.5}
-						onComplete={handleComplete}
-						className="flex-shrink-0"
-						renderMap={[false, true, true, true]}
-					/>
+					{!isSubmitted && (
+						<FlipClockCountdown
+							to={endTime}
+							labels={["Hours", "Minutes", "Seconds"]}
+							labelStyle={{
+								fontSize: 0,
+								fontWeight: 500,
+								color: "#4B5563",
+							}}
+							digitBlockStyle={{
+								width: 18,
+								height: 26,
+								fontSize: 20,
+								backgroundColor: "#27272a",
+							}}
+							separatorStyle={{ color: "#4B5563", size: "3px" }}
+							duration={0.5}
+							onComplete={handleComplete}
+							className="flex-shrink-0"
+							renderMap={[false, true, true, true]}
+						/>
+					)}
 				</div>
 			</div>
 			<Tabs
