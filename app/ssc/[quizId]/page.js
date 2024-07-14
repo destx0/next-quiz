@@ -212,47 +212,31 @@ export default function QuizPage({ params }) {
 					/>
 
 					{/* Bottom Bar */}
+					{/* Bottom Bar */}
 					<div className="bg-white border-t p-4 sticky bottom-0 mt-auto">
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2">
 								<button
-									className="px-4 py-2 bg-blue-500 text-white rounded"
-									onClick={handleNextQuestion}
-								>
-									Next
-								</button>
-								{!isSubmitted && (
-									<button
-										className="px-4 py-2 bg-red-500 text-white rounded"
-										onClick={handleClearResponse}
-									>
-										Clear Response
-									</button>
-								)}
-								<button
-									className={`px-4 py-2 rounded ${
-										currentQuestion.isMarked
-											? "bg-gray-300"
-											: "bg-yellow-500 text-white"
-									}`}
+									className={`px-4 py-2 rounded bg-[#92c4f2] text-black`}
 									onClick={markCurrentQuestion}
 								>
 									{currentQuestion.isMarked
 										? "Unmark"
 										: "Mark"}
 								</button>
+								{!isSubmitted && (
+									<button
+										className="px-4 py-2 bg-[#92c4f2] text-black rounded"
+										onClick={handleClearResponse}
+									>
+										Clear Response
+									</button>
+								)}
 							</div>
 
-							<div>
-								{!isSubmitted ? (
-									<button
-										className="px-4 py-2 bg-green-500 text-white rounded"
-										onClick={handleSubmitQuiz}
-									>
-										Submit Quiz
-									</button>
-								) : (
-									<div className="flex items-center gap-4">
+							<div className="flex items-center gap-4">
+								{isSubmitted && (
+									<>
 										<p className="text-lg font-semibold">
 											Your Score: {calculateScore()}
 										</p>
@@ -260,7 +244,15 @@ export default function QuizPage({ params }) {
 											quizData={quizData}
 											score={calculateScore()}
 										/>
-									</div>
+									</>
+								)}
+								{!isSubmitted && (
+									<button
+										className="px-4 py-2 bg-[#1ca7c0] text-white rounded"
+										onClick={handleNextQuestion}
+									>
+										Next
+									</button>
 								)}
 							</div>
 						</div>
@@ -282,6 +274,8 @@ export default function QuizPage({ params }) {
 								currentQuestionIndex={currentQuestionIndex}
 								currentSectionIndex={currentSectionIndex}
 								handleJumpToQuestion={handleJumpToQuestion}
+								handleSubmitQuiz={handleSubmitQuiz}
+								isSubmitted={isSubmitted}
 							/>
 						</div>
 					)}
