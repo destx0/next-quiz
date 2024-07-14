@@ -1,3 +1,4 @@
+// QuizPage.js
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,7 +9,8 @@ import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
-import SideNav from "./SideNav"; // Import the new SideNav component
+import SideNav from "./SideNav";
+import AnalysisDrawer from "./AnalysisDrawer";
 
 export default function QuizPage({ params }) {
 	const {
@@ -28,6 +30,7 @@ export default function QuizPage({ params }) {
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 	const [endTime, setEndTime] = useState(null);
+	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -123,7 +126,7 @@ export default function QuizPage({ params }) {
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-10rem)]">
-			<div className="flex justify-between items-center  -mt-16 pl-4">
+			<div className="flex justify-between items-center -mt-16 pl-4">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					{!isSubmitted && (
@@ -161,15 +164,12 @@ export default function QuizPage({ params }) {
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
 						<div className="flex pt-4 -mt-2 flex-grow overflow-hidden">
-							{/* Use the new SideNav component */}
 							<SideNav
 								questions={section.questions}
 								currentQuestionIndex={currentQuestionIndex}
 								currentSectionIndex={currentSectionIndex}
 								handleJumpToQuestion={handleJumpToQuestion}
 							/>
-
-							{/* Question content */}
 							<div className="flex-1 overflow-hidden p-16 -ml-16 -mt-16">
 								<QuestionCard
 									question={{
@@ -226,9 +226,17 @@ export default function QuizPage({ params }) {
 								Submit Quiz
 							</Button>
 						) : (
-							<p className="text-lg font-semibold">
-								Your Score: {calculateScore()}
-							</p>
+							<div className="flex items-center gap-4">
+								<p className="text-lg font-semibold">
+									Your Score: {calculateScore()}
+								</p>
+								<AnalysisDrawer
+									isOpen={isAnalysisOpen}
+									onOpenChange={setIsAnalysisOpen}
+									quizData={quizData}
+									score={calculateScore()}
+								/>
+							</div>
 						)}
 					</div>
 				</div>
