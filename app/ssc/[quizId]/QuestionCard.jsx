@@ -28,7 +28,7 @@ export default function QuestionCard({
 	};
 	return (
 		<Card
-			shadow="lg"
+			shadow="md"
 			isBlurred="true"
 			className="w-full h-full flex flex-col "
 		>
@@ -59,7 +59,7 @@ export default function QuestionCard({
 					</h2>
 				</div>
 			</CardHeader>
-			<CardBody className="flex-grow overflow-y-auto pt-4">
+			<CardBody className="flex-grow overflow-y-auto m-4 mb-8">
 				<RadioGroup
 					value={tempSelectedOption}
 					onValueChange={setTempSelectedOption}

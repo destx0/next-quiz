@@ -122,7 +122,7 @@ export default function QuizPage({ params }) {
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-10rem)]">
-			<div className="flex justify-between items-center mb-4">
+			<div className="flex justify-between items-center  -mt-16 pl-4">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					<FlipClockCountdown
@@ -153,17 +153,11 @@ export default function QuizPage({ params }) {
 				aria-label="Quiz sections"
 				color="primary"
 				variant="underlined"
-				classNames={{
-					tabList:
-						"gap-6 w-full relative rounded-none p-0 border-b border-divider",
-					cursor: "w-full bg-primary",
-					tab: "max-w-fit px-0 h-12",
-					tabContent: "group-data-[selected=true]:text-primary",
-				}}
+				classNames={{}}
 			>
 				{sections.map((section, sectionIndex) => (
 					<Tab key={sectionIndex.toString()} title={section.name}>
-						<div className="flex pt-8 flex-grow overflow-hidden">
+						<div className="flex pt-4 -mt-2 flex-grow overflow-hidden">
 							{/* Updated Vertical navigation */}
 							<div className="w-16  overflow-y-auto pt-1">
 								<div className="flex flex-col items-center space-y-2">
