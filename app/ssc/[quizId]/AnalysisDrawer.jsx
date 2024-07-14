@@ -302,13 +302,17 @@ const AnalysisDrawer = ({ isOpen, onOpenChange, quizData, score }) => {
 	};
 
 	return (
-		<Drawer open={isOpen} onOpenChange={onOpenChange}>
+		<Drawer
+			open={isOpen}
+			onOpenChange={onOpenChange}
+			className="bg-background text-foreground"
+		>
 			<DrawerTrigger asChild>
 				<Button color="primary" variant="shadow" size="sm">
 					Show Analysis
 				</Button>
 			</DrawerTrigger>
-			<DrawerContent>
+			<DrawerContent className="bg-red text-foreground">
 				<DrawerHeader>
 					<DrawerTitle>Quiz Analysis</DrawerTitle>
 					<DrawerDescription>
