@@ -135,10 +135,10 @@ export default function QuizPage({ params }) {
 							color: "#4B5563",
 						}}
 						digitBlockStyle={{
-							width: 20,
-							height: 30,
-							fontSize: 16,
-							backgroundColor: "#3B82F6",
+							width: 18,
+							height: 26,
+							fontSize: 20,
+							backgroundColor: "#27272a",
 						}}
 						separatorStyle={{ color: "#4B5563", size: "3px" }}
 						duration={0.5}
@@ -189,42 +189,46 @@ export default function QuizPage({ params }) {
 					</Tab>
 				))}
 			</Tabs>
-			<div className="mt-auto pt-4">
+			<div className="mt-auto pt-4 mx-12">
 				<Divider className="my-4" />
-				<div className="flex justify-between">
-					<Button
-						color="primary"
-						variant="flat"
-						size="sm"
-						onClick={handleNextQuestion}
-					>
-						Next
-					</Button>
-					{!isSubmitted && (
-						<>
+				<div className="flex justify-between items-center">
+					<div className="flex gap-2">
+						<Button
+							color="primary"
+							variant="shadow"
+							size="sm"
+							onClick={handleNextQuestion}
+						>
+							Next
+						</Button>
+						{!isSubmitted && (
 							<Button
 								color="danger"
-								variant="flat"
+								variant="shadow"
 								size="sm"
 								onClick={handleClearResponse}
 							>
 								Clear Response
 							</Button>
+						)}
+					</div>
+
+					<div>
+						{!isSubmitted ? (
 							<Button
 								color="success"
-								variant="flat"
+								variant="shadow"
 								size="sm"
 								onClick={handleSubmitQuiz}
 							>
 								Submit Quiz
 							</Button>
-						</>
-					)}
-					{isSubmitted && (
-						<p className="text-lg font-semibold">
-							Your Score: {calculateScore()}
-						</p>
-					)}
+						) : (
+							<p className="text-lg font-semibold">
+								Your Score: {calculateScore()}
+							</p>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
