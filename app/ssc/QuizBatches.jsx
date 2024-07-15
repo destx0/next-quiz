@@ -60,8 +60,9 @@ const QuizCard = ({ quiz, batchId, index }) => {
 					<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
 						<Button
 							size="sm"
-							color="shadow"
-							className="transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-700 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+							variant="shadow"
+							color="primary"
+							className="transition-all duration-300 ease-in-out transform group-hover:scale-110  bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
 						>
 							Start Test
 						</Button>
