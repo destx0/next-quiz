@@ -1,24 +1,42 @@
-// ClientLayout.tsx
 "use client";
 
 import React from "react";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
-
+import { ThemeProvider } from "next-themes";
+import { useTheme } from "next-themes";
 export default function ClientLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
 	const pathname = usePathname();
-	const isQuizPage = pathname.startsWith("/ssc");
+	const searchParams = useSearchParams();
+	const isQuizPage = searchParams.get("quiz") === "true";
+
+	return (
+		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+			<LayoutContent isQuizPage={isQuizPage}>{children}</LayoutContent>
+		</ThemeProvider>
+	);
+}
+
+// Separate component to handle layout and theme
+function LayoutContent({ children, isQuizPage }) {
+	const { setTheme } = useTheme();
+
+	React.useEffect(() => {
+		if (isQuizPage) {
+			setTheme("light");
+		}
+	}, [isQuizPage, setTheme]);
 
 	return (
 		<div
 			className={clsx(
-				"min-h-screen bg-transparent font-sans antialiased",
+				"min-h-screen font-sans antialiased",
 				isQuizPage && "overflow-hidden"
 			)}
 		>
@@ -34,14 +52,6 @@ export default function ClientLayout({
 					<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
 						{children}
 					</main>
-					<footer className="w-full flex items-center justify-center py-3">
-						<Link
-							isExternal
-							className="flex items-center gap-1 text-current"
-							href="https://nextui.org"
-							title="nextui.org homepage"
-						></Link>
-					</footer>
 				</div>
 			)}
 		</div>
