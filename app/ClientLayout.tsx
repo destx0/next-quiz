@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
@@ -26,7 +24,13 @@ export default function ClientLayout({
 }
 
 // Separate component to handle layout and theme
-function LayoutContent({ children, isQuizPage }) {
+function LayoutContent({
+	children,
+	isQuizPage,
+}: {
+	children: React.ReactNode;
+	isQuizPage: boolean;
+}) {
 	const { theme, setTheme } = useTheme();
 
 	React.useEffect(() => {
