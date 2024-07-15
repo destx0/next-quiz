@@ -124,7 +124,7 @@ const LanguageSelection = ({
 							understood them. I agree not to cheat or use unfair
 							means in this examination. I understand that using
 							unfair means of any sort for my own or someone
-							else's advantage will lead to my immediate
+							else&apos;s advantage will lead to my immediate
 							disqualification. The decision of Testbook.com will
 							be final in these matters and cannot be appealed.
 						</span>

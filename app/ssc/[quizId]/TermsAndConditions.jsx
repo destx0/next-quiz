@@ -121,12 +121,7 @@ const QuestionStatusIcon = ({
 	);
 };
 
-const InstructionItem = ({ number, children }) => (
-	<li className="mb-4">
-		<span className="font-semibold"> </span>
-		{children}
-	</li>
-);
+const InstructionItem = ({ children }) => <li className="mb-4">{children}</li>;
 
 const StatusItem = ({ icon, description }) => (
 	<div className="flex items-center mb-2">
@@ -143,7 +138,7 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 					General Instructions:
 				</h2>
 				<ol className="list-decimal list-inside space-y-4 mb-6">
-					<InstructionItem number={1}>
+					<InstructionItem>
 						The clock will be set at the server. The countdown timer
 						at the top right corner of the screen will display the
 						remaining time available for you to complete the
@@ -152,7 +147,7 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 						the examination or submit your paper.
 					</InstructionItem>
 
-					<InstructionItem number={2}>
+					<InstructionItem>
 						The Question Palette displayed on the right side of the
 						screen will show the status of each question using one
 						of the following symbols:
@@ -214,7 +209,7 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 					Navigating to a Question:
 				</h2>
 				<ol className="list-decimal list-inside space-y-2 mb-6">
-					<InstructionItem number={1}>
+					<InstructionItem>
 						To answer a question, do the following:
 						<ol className="list-alpha list-inside ml-4 mt-2">
 							<li>
@@ -225,13 +220,14 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 								current question.
 							</li>
 							<li>
-								Click on <strong>Save & Next</strong> to save
-								your answer for the current question and then go
-								to the next question.
+								Click on <strong>Save &amp; Next</strong> to
+								save your answer for the current question and
+								then go to the next question.
 							</li>
 							<li>
-								Click on <strong>Mark for Review & Next</strong>{" "}
-								to save your answer for the current question and
+								Click on{" "}
+								<strong>Mark for Review &amp; Next</strong> to
+								save your answer for the current question and
 								also mark it for review, and then go to the next
 								question.
 							</li>
@@ -255,7 +251,7 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 					Answering a Question:
 				</h2>
 				<ol className="list-decimal list-inside space-y-4">
-					<InstructionItem number={1}>
+					<InstructionItem>
 						Procedure for answering a multiple choice (MCQ) type
 						question:
 						<ol className="list-alpha list-inside ml-4 mt-2">
@@ -275,12 +271,12 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 							</li>
 							<li>
 								To save your answer, you MUST click on the{" "}
-								<strong>Save & Next</strong> button.
+								<strong>Save &amp; Next</strong> button.
 							</li>
 						</ol>
 					</InstructionItem>
 
-					<InstructionItem number={2}>
+					<InstructionItem>
 						Procedure for answering a numerical answer type
 						question:
 						<ol className="list-alpha list-inside ml-4 mt-2">
@@ -290,10 +286,10 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 							</li>
 							<li>
 								A fraction (e.g. -0.3 or -.3) can be entered as
-								an answer with or without "0" before the decimal
-								point. As many as four decimal points, e.g.
-								12.5435 or 0.003 or -932.6711 or 12.82 can be
-								entered.
+								an answer with or without &quot;0&quot; before
+								the decimal point. As many as four decimal
+								points, e.g. 12.5435 or 0.003 or -932.6711 or
+								12.82 can be entered.
 							</li>
 							<li>
 								To clear your answer, click on the{" "}
@@ -301,7 +297,7 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 							</li>
 							<li>
 								To save your answer, you MUST click on the{" "}
-								<strong>Save & Next</strong> button.
+								<strong>Save &amp; Next</strong> button.
 							</li>
 						</ol>
 					</InstructionItem>
@@ -311,40 +307,40 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 					Additional Instructions:
 				</h2>
 				<ol className="list-decimal list-inside space-y-2">
-					<InstructionItem number={3}>
+					<InstructionItem>
 						To mark a question for review, click on the{" "}
-						<strong>Mark for Review & Next</strong> button. If an
-						answer is selected (for MCQ/MCAQ) entered (for numerical
-						answer type) for a question that is{" "}
+						<strong>Mark for Review &amp; Next</strong> button. If
+						an answer is selected (for MCQ/MCAQ) entered (for
+						numerical answer type) for a question that is{" "}
 						<strong>Marked for Review</strong>, that answer will be
 						considered in the evaluation unless the status is
 						modified by the candidate.
 					</InstructionItem>
-					<InstructionItem number={4}>
+					<InstructionItem>
 						To change your answer to a question that has already
 						been answered, first select that question for answering
 						and then follow the procedure for answering that type of
 						question.
 					</InstructionItem>
-					<InstructionItem number={5}>
+					<InstructionItem>
 						Note that ONLY Questions for which answers are{" "}
 						<strong>saved</strong> or{" "}
 						<strong>marked for review after answering</strong> will
 						be considered for evaluation.
 					</InstructionItem>
-					<InstructionItem number={6}>
+					<InstructionItem>
 						Sections in this question paper are displayed on the top
 						bar of the screen. Questions in a Section can be viewed
 						by clicking on the name of that Section. The Section you
 						are currently viewing will be highlighted.
 					</InstructionItem>
-					<InstructionItem number={7}>
-						After clicking the <strong>Save & Next</strong> button
-						for the last question in a Section, you will
+					<InstructionItem>
+						After clicking the <strong>Save &amp; Next</strong>{" "}
+						button for the last question in a Section, you will
 						automatically be taken to the first question of the next
 						Section in sequence.
 					</InstructionItem>
-					<InstructionItem number={8}>
+					<InstructionItem>
 						You can move the mouse cursor over the name of a Section
 						to view the answering status for that Section.
 					</InstructionItem>
