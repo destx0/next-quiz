@@ -7,6 +7,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
+import Background from "@/components/Background";
+
 export default function ClientLayout({
 	children,
 }: {
@@ -25,13 +27,15 @@ export default function ClientLayout({
 
 // Separate component to handle layout and theme
 function LayoutContent({ children, isQuizPage }) {
-	const { setTheme } = useTheme();
+	const { theme, setTheme } = useTheme();
 
 	React.useEffect(() => {
 		if (isQuizPage) {
 			setTheme("light");
+		} else if (theme !== "dark") {
+			setTheme("dark");
 		}
-	}, [isQuizPage, setTheme]);
+	}, [isQuizPage, setTheme, theme]);
 
 	return (
 		<div
@@ -47,12 +51,15 @@ function LayoutContent({ children, isQuizPage }) {
 				</div>
 			) : (
 				// Regular layout for other pages
-				<div className="relative flex flex-col min-h-screen">
-					<Navbar />
-					<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-						{children}
-					</main>
-				</div>
+				<>
+					<Background />
+					<div className="relative flex flex-col min-h-screen">
+						<Navbar />
+						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+							{children}
+						</main>
+					</div>
+				</>
 			)}
 		</div>
 	);
