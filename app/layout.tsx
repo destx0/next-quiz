@@ -20,7 +20,7 @@ export default function RootLayout({
 			<head />
 			<body>
 				<Providers>
-					<Background />
+					{/* <Background /> */}
 					<ClientLayout>{children}</ClientLayout>
 				</Providers>
 			</body>

@@ -16,7 +16,7 @@ export default function QuestionCard({
 	};
 
 	return (
-		<div className="w-full h-full flex flex-col">
+		<div className="w-full h-full flex flex-col ">
 			<div className="flex-grow overflow-y-auto p-4">
 				<h2 className="text-xl font-semibold mb-4">
 					{question.question}

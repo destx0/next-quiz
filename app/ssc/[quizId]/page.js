@@ -144,13 +144,13 @@ export default function QuizPage({ params }) {
 							labelStyle={{
 								fontSize: 0,
 								fontWeight: 500,
-								color: "#4B5563",
+								color: "#777777",
 							}}
 							digitBlockStyle={{
 								width: 18,
 								height: 26,
 								fontSize: 20,
-								backgroundColor: "#27272a",
+								backgroundColor: "#777777",
 							}}
 							separatorStyle={{ color: "#4B5563", size: "3px" }}
 							duration={0.5}
@@ -188,8 +188,7 @@ export default function QuizPage({ params }) {
 						<div className="flex justify-between items-center p-4 border-b">
 							<div className="flex items-center">
 								<p className="text-sm text-gray-600 mr-4">
-									Question {currentQuestionIndex + 1} of{" "}
-									{currentSection.questions.length}
+									Question {currentQuestionIndex + 1}
 								</p>
 								<div className="flex items-center text-sm text-gray-600">
 									<span className="mr-1">⏱</span>
@@ -222,7 +221,8 @@ export default function QuizPage({ params }) {
 								>
 									{currentQuestion.isMarked
 										? "Unmark"
-										: "Mark"}
+										: "Mark"}{" "}
+									for Review
 								</button>
 								{!isSubmitted && (
 									<button
@@ -251,7 +251,7 @@ export default function QuizPage({ params }) {
 										className="px-4 py-2 bg-[#1ca7c0] text-white rounded"
 										onClick={handleNextQuestion}
 									>
-										Next
+										Save & Next
 									</button>
 								)}
 							</div>
@@ -262,13 +262,13 @@ export default function QuizPage({ params }) {
 				{/* Toggleable Sidebar - Fixed width, full height */}
 				<div className="relative">
 					<button
-						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-gray-200 text-gray-600 p-1 rounded-l"
+						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-[#333333] text-gray-100 p-1 "
 						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
 					>
 						{isSidebarOpen ? ">" : "<"}
 					</button>
 					{isSidebarOpen && (
-						<div className="w-64 bg-gray-100 overflow-auto border-l h-full">
+						<div className="w-80 bg-gray-100 overflow-auto border-l h-full">
 							<SideNav
 								questions={currentSection.questions}
 								currentQuestionIndex={currentQuestionIndex}
@@ -276,6 +276,7 @@ export default function QuizPage({ params }) {
 								handleJumpToQuestion={handleJumpToQuestion}
 								handleSubmitQuiz={handleSubmitQuiz}
 								isSubmitted={isSubmitted}
+								sections={quizData.sections}
 							/>
 						</div>
 					)}
