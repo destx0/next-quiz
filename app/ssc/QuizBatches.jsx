@@ -11,8 +11,19 @@ const getRandomColor = () => {
 	return `hsl(${hue}, 90%, 85%)`;
 };
 
+const getRandomRotationClass = () => {
+	const rotations = [
+		"rotate-[-17deg]",
+		"rotate-[17deg]",
+		"rotate-[37deg]",
+		"rotate-[-37deg]",
+	];
+	return rotations[Math.floor(Math.random() * rotations.length)];
+};
+
 const QuizCard = ({ quiz, batchId, index }) => {
 	const backgroundColor = useMemo(() => getRandomColor(), []);
+	const rotationClass = useMemo(() => getRandomRotationClass(), []);
 
 	if (quiz.error) {
 		return (
@@ -40,7 +51,9 @@ const QuizCard = ({ quiz, batchId, index }) => {
 				}}
 			></div>
 			<div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-				<span className="text-[10rem] font-bold text-white opacity-30 transform -translate-y-8 translate-x-16">
+				<span
+					className={`text-[10rem] font-bold text-white opacity-30 transform -translate-y-8 translate-x-16 ${rotationClass}`}
+				>
 					{index + 1}
 				</span>
 			</div>
@@ -62,7 +75,7 @@ const QuizCard = ({ quiz, batchId, index }) => {
 							size="sm"
 							variant="shadow"
 							color="primary"
-							className="transition-all duration-300 ease-in-out transform group-hover:scale-110  bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+							className="transition-all duration-300 ease-in-out transform group-hover:scale-110 bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
 						>
 							Start Test
 						</Button>
