@@ -11,7 +11,7 @@ const getRandomColor = () => {
 	return `hsl(${hue}, 70%, 80%)`;
 };
 
-const QuizCard = ({ quiz, batchId }) => {
+const QuizCard = ({ quiz, batchId, index }) => {
 	const backgroundColor = useMemo(() => getRandomColor(), []);
 
 	if (quiz.error) {
@@ -25,7 +25,7 @@ const QuizCard = ({ quiz, batchId }) => {
 	}
 
 	return (
-		<Card className="h-full overflow-hidden relative group">
+		<Card className="h-full overflow-hidden relative group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
 			<div
 				className="absolute inset-0 bg-opacity-80 transition-all duration-300 ease-in-out group-hover:bg-opacity-100"
 				style={{
@@ -37,15 +37,20 @@ const QuizCard = ({ quiz, batchId }) => {
 					animation: "pulse 3s infinite alternate",
 				}}
 			></div>
+			<div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+				<span className="text-[10rem] font-bold text-white opacity-30 transform -translate-y-8 translate-x-16">
+					{index + 1}
+				</span>
+			</div>
 			<CardBody className="p-4 flex flex-col justify-between relative z-10">
 				<div>
-					<h4 className="text-lg font-semibold mb-2 truncate text-gray-800">
+					<h4 className="text-lg font-semibold mb-2 truncate text-gray-800 group-hover:text-gray-900">
 						{quiz.title || "Untitled Quiz"}
 					</h4>
-					<p className="text-sm mb-2 truncate text-gray-600">
+					<p className="text-sm mb-2 truncate text-gray-600 group-hover:text-gray-700">
 						{quiz.description}
 					</p>
-					<div className="text-xs text-gray-700">
+					<div className="text-xs text-gray-700 group-hover:text-gray-800">
 						<p>Duration: {quiz.duration} min</p>
 					</div>
 				</div>
@@ -53,7 +58,7 @@ const QuizCard = ({ quiz, batchId }) => {
 					<Button
 						size="sm"
 						color="primary"
-						className="mt-4 transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+						className="mt-4 transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:shadow-md"
 					>
 						Start Test
 					</Button>
@@ -64,14 +69,19 @@ const QuizCard = ({ quiz, batchId }) => {
 };
 
 const BatchContainer = ({ batch }) => (
-	<Card className="mb-8 overflow-hidden">
+	<Card className="mb-8 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl">
 		<CardBody className="p-6">
-			<h3 className="text-2xl font-bold mb-4 ">
+			<h3 className="text-2xl font-bold mb-4 transition-all duration-300 ease-in-out hover:text-primary">
 				{batch.title}
 			</h3>
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-				{batch.quizzes.map((quiz) => (
-					<QuizCard key={quiz.id} quiz={quiz} batchId={batch.id} />
+				{batch.quizzes.map((quiz, index) => (
+					<QuizCard
+						key={quiz.id}
+						quiz={quiz}
+						batchId={batch.id}
+						index={index}
+					/>
 				))}
 			</div>
 		</CardBody>
@@ -163,12 +173,12 @@ const QuizBatches = () => {
 		);
 
 	return (
-		<div className="space-y-8 p-6  min-h-screen">
-			<h2 className="text-3xl font-bold mb-6 ">
+		<div className="space-y-8 p-6 min-h-screen">
+			<h2 className="text-3xl font-bold mb-6 transition-all duration-300 ease-in-out hover:text-primary">
 				Available Quiz Batches
 			</h2>
 			{testBatches.length === 0 ? (
-				<p className="text-center text-xl ">
+				<p className="text-center text-xl">
 					No quiz batches available at the moment.
 				</p>
 			) : (
