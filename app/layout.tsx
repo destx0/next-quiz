@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { Providers } from "./providers";
 import Background from "@/components/Background";
 import { ClientLayout } from "@/app/ClientLayout";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
 	title: "NextUI App",
@@ -21,7 +22,10 @@ export default function RootLayout({
 			<body>
 				<Providers>
 					{/* <Background /> */}
-					<ClientLayout>{children}</ClientLayout>
+					<ClientLayout>
+						{children}
+						<Analytics />
+					</ClientLayout>
 				</Providers>
 			</body>
 		</html>
