@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -9,14 +9,24 @@ import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import Background from "@/components/Background";
 
-export function ClientLayout({ children }: { children: React.ReactNode }) {
-	const pathname = usePathname();
+function SearchParamsWrapper({ children }: { children: React.ReactNode }) {
 	const searchParams = useSearchParams();
 	const isQuizPage = searchParams.get("quiz") === "true";
+	return children({ isQuizPage });
+}
 
+export function ClientLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-			<LayoutContent isQuizPage={isQuizPage}>{children}</LayoutContent>
+			<Suspense fallback={<div>Loading...</div>}>
+				<SearchParamsWrapper>
+					{({ isQuizPage }) => (
+						<LayoutContent isQuizPage={isQuizPage}>
+							{children}
+						</LayoutContent>
+					)}
+				</SearchParamsWrapper>
+			</Suspense>
 		</ThemeProvider>
 	);
 }
@@ -29,12 +39,13 @@ function LayoutContent({
 	isQuizPage: boolean;
 }) {
 	const { theme, setTheme } = useTheme();
+	const pathname = usePathname();
 
 	React.useEffect(() => {
 		if (isQuizPage) {
 			setTheme("light");
 		}
-	}, [isQuizPage, setTheme, theme]);
+	}, [isQuizPage, setTheme]);
 
 	return (
 		<div
