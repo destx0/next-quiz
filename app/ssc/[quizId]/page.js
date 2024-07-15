@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -9,6 +10,7 @@ import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 import LanguageSelection from "./LanguageSelection";
 
@@ -32,9 +34,8 @@ export default function QuizPage({ params }) {
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [currentStep, setCurrentStep] = useState("terms"); // 'terms', 'language', or 'quiz'
+	const [currentStep, setCurrentStep] = useState("terms");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
-	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -43,15 +44,23 @@ export default function QuizPage({ params }) {
 				setQuizData(data);
 				visitCurrentQuestion();
 				setEndTime(new Date().getTime() + data.duration * 60 * 1000);
-				setIsLoading(false);
 			} catch (error) {
 				console.error("Error fetching quiz:", error);
-				setIsLoading(false);
 			}
 		};
 
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
+
+	useEffect(() => {
+		if (quizData && !isSubmitted && currentStep === "quiz") {
+			const timer = setInterval(() => {
+				incrementActiveQuestionTime();
+			}, 1000);
+
+			return () => clearInterval(timer);
+		}
+	}, [quizData, isSubmitted, incrementActiveQuestionTime, currentStep]);
 
 	const handleAcceptTerms = () => {
 		setCurrentStep("language");
@@ -66,9 +75,57 @@ export default function QuizPage({ params }) {
 		setCurrentStep("quiz");
 	};
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	const handleNextQuestion = () => {
+		if (tempSelectedOption !== null && !isSubmitted) {
+			setSelectedOption(tempSelectedOption);
+		}
+		nextQuestion();
+		visitCurrentQuestion();
+		const { currentSectionIndex, currentQuestionIndex, sections } =
+			quizData;
+		const nextQuestionObj =
+			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
+			sections[currentSectionIndex + 1]?.questions[0];
+		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
+	};
+
+	const handleJumpToSection = (sectionIndex) => {
+		setCurrentIndices(Number(sectionIndex), 0);
+		visitCurrentQuestion();
+		const { sections } = quizData;
+		const firstQuestionInSection = sections[sectionIndex].questions[0];
+		setTempSelectedOption(firstQuestionInSection.selectedOption);
+	};
+
+	const handleJumpToQuestion = (questionIndex) => {
+		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
+		visitCurrentQuestion();
+		const { currentSectionIndex, sections } = quizData;
+		const question = sections[currentSectionIndex].questions[questionIndex];
+		setTempSelectedOption(question.selectedOption);
+	};
+
+	const handleSubmitQuiz = () => {
+		if (tempSelectedOption !== null && !isSubmitted) {
+			setSelectedOption(tempSelectedOption);
+		}
+		submitQuiz();
+	};
+
+	const handleClearResponse = () => {
+		if (!isSubmitted) {
+			setSelectedOption(null);
+			setTempSelectedOption(null);
+		}
+	};
+
+	const handleComplete = () => {
+		if (!isSubmitted) {
+			submitQuiz();
+		}
+	};
+
+	if (!quizData) return <div>Loading...</div>;
 
 	if (currentStep === "terms") {
 		return (
@@ -78,18 +135,17 @@ export default function QuizPage({ params }) {
 			/>
 		);
 	}
-	if (!quizData) return <div>Loading...</div>;
+
 	if (currentStep === "language") {
 		return (
 			<LanguageSelection
 				onPrevious={handlePreviousToTerms}
 				onStart={handleStartQuiz}
 				testName={quizData.title}
+				duration={quizData.duration}
 			/>
 		);
 	}
-
-	if (!quizData || !endTime) return <div>Loading...</div>;
 
 	const { currentSectionIndex, currentQuestionIndex, sections } = quizData;
 	const currentSection = sections[currentSectionIndex];
@@ -114,13 +170,13 @@ export default function QuizPage({ params }) {
 							labelStyle={{
 								fontSize: 0,
 								fontWeight: 500,
-								color: "#777777",
+								color: "#4B5563",
 							}}
 							digitBlockStyle={{
 								width: 18,
 								height: 26,
 								fontSize: 20,
-								backgroundColor: "#777777",
+								backgroundColor: "#27272a",
 							}}
 							separatorStyle={{ color: "#4B5563", size: "3px" }}
 							duration={0.5}
@@ -158,7 +214,8 @@ export default function QuizPage({ params }) {
 						<div className="flex justify-between items-center p-4 border-b">
 							<div className="flex items-center">
 								<p className="text-sm text-gray-600 mr-4">
-									Question {currentQuestionIndex + 1}
+									Question {currentQuestionIndex + 1} of{" "}
+									{currentSection.questions.length}
 								</p>
 								<div className="flex items-center text-sm text-gray-600">
 									<span className="mr-1">⏱</span>
@@ -181,7 +238,6 @@ export default function QuizPage({ params }) {
 					/>
 
 					{/* Bottom Bar */}
-					{/* Bottom Bar */}
 					<div className="bg-white border-t p-4 sticky bottom-0 mt-auto">
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2">
@@ -191,8 +247,7 @@ export default function QuizPage({ params }) {
 								>
 									{currentQuestion.isMarked
 										? "Unmark"
-										: "Mark"}{" "}
-									for Review
+										: "Mark"}
 								</button>
 								{!isSubmitted && (
 									<button
@@ -221,7 +276,7 @@ export default function QuizPage({ params }) {
 										className="px-4 py-2 bg-[#1ca7c0] text-white rounded"
 										onClick={handleNextQuestion}
 									>
-										Save & Next
+										Next
 									</button>
 								)}
 							</div>
@@ -232,13 +287,13 @@ export default function QuizPage({ params }) {
 				{/* Toggleable Sidebar - Fixed width, full height */}
 				<div className="relative">
 					<button
-						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-[#333333] text-gray-100 p-1 "
+						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-gray-200 text-gray-600 p-1 rounded-l"
 						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
 					>
-						{isSidebarOpen ? ">" : "<"}
+						{isSidebarOpen ? <ChevronRight /> : <ChevronLeft />}
 					</button>
 					{isSidebarOpen && (
-						<div className="w-80 bg-gray-100 overflow-auto border-l h-full">
+						<div className="w-64 bg-gray-100 overflow-auto border-l h-full">
 							<SideNav
 								questions={currentSection.questions}
 								currentQuestionIndex={currentQuestionIndex}
@@ -246,7 +301,7 @@ export default function QuizPage({ params }) {
 								handleJumpToQuestion={handleJumpToQuestion}
 								handleSubmitQuiz={handleSubmitQuiz}
 								isSubmitted={isSubmitted}
-								sections={quizData.sections}
+								sections={sections}
 							/>
 						</div>
 					)}
