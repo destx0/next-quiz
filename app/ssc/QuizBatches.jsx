@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const getRandomColor = () => {
 	const hue = Math.floor(Math.random() * 360);
-	return `hsl(${hue}, 70%, 80%)`;
+	return `hsl(${hue}, 90%, 85%)`;
 };
 
 const QuizCard = ({ quiz, batchId, index }) => {
@@ -58,8 +58,8 @@ const QuizCard = ({ quiz, batchId, index }) => {
 					<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
 						<Button
 							size="sm"
-							color="primary"
-							className="transition-all duration-300 ease-in-out  transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-600 hover:to-purple-600"
+							color="shadow"
+							className="transition-all duration-300 ease-in-out  transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-700 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
 						>
 							Start Test
 						</Button>
