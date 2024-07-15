@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Button } from "@nextui-org/react";
 import { collection, getDocs } from "firebase/firestore";
@@ -13,7 +11,7 @@ const BatchContainer = ({ batch }) => (
 	<Card className="mb-4">
 		<CardBody>
 			<h3 className="text-lg font-semibold mb-2">{batch.title}</h3>
-			<div className="flex overflow-x-auto py-2">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 				{batch.quizzes.map((quiz) => (
 					<QuizCard key={quiz.id} quiz={quiz} batchId={batch.id} />
 				))}
@@ -49,11 +47,7 @@ const QuizBatches = () => {
 							console.warn(
 								`Batch ${doc.id} has no quizzes or quizzes is not an array`
 							);
-							return {
-								id: doc.id,
-								...batchData,
-								quizzes: [],
-							};
+							return { id: doc.id, ...batchData, quizzes: [] };
 						}
 						const quizzesWithDetails = await Promise.all(
 							batchData.quizzes.map(async (quizId) => {

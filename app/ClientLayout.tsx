@@ -32,8 +32,6 @@ function LayoutContent({ children, isQuizPage }) {
 	React.useEffect(() => {
 		if (isQuizPage) {
 			setTheme("light");
-		} else if (theme !== "dark") {
-			setTheme("dark");
 		}
 	}, [isQuizPage, setTheme, theme]);
 
