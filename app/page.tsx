@@ -1,8 +1,9 @@
+"use client";
 import { Link } from "@nextui-org/link";
 import { Snippet } from "@nextui-org/snippet";
 import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-
+import { button as buttonStyles, user } from "@nextui-org/theme";
+import { Card, CardBody, Button } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 
@@ -10,37 +11,39 @@ export default function Home() {
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
 			<div className="inline-block max-w-lg text-center justify-center">
+				<h2 className={title({ color: "pink" })}>Free&nbsp;</h2>
 				<h1 className={title()}>SSC&nbsp;</h1>
-				<h1 className={title({ color: "violet" })}>
-					Preparation&nbsp;
-				</h1>
+				<h1 className={title()}>Mock&nbsp;</h1>
 				<br />
-				<h1 className={title()}>Quiz</h1>
+				<h1 className={title()}>Tests</h1>
 				<h2 className={subtitle({ class: "mt-4" })}>
-					Ace your SSC exams with our comprehensive quiz platform!
+					Ace your SSC exams with our comprehensive Mock platform!
 				</h2>
 			</div>
 
 			<div className="flex gap-3">
-				<Link
-					className={buttonStyles({
-						color: "primary",
-						radius: "full",
-						variant: "shadow",
-					})}
-					href="/ssc"
-				>
-					Start Quiz
+				<Link href={`/ssc`}>
+					<Button
+						size="md"
+						variant="shadow"
+						color="primary"
+						className="transition-all duration-300 ease-in-out transform group-hover:scale-110  bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+					>
+						All Mocks
+					</Button>
 				</Link>
-				<Link
-					className={buttonStyles({
-						variant: "bordered",
-						radius: "full",
-					})}
-					href="/login"
-				>
-					Login
+
+				<Link href={`/login`}>
+					<Button
+						size="md"
+						variant="shadow"
+						color="primary"
+						className="transition-all duration-300 ease-in-out transform group-hover:scale-110  bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+					>
+						log in
+					</Button>
 				</Link>
+
 				<Link
 					className={buttonStyles({
 						variant: "bordered",
