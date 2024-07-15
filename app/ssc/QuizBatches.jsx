@@ -191,8 +191,8 @@ const QuizBatches = () => {
 		);
 
 	return (
-		<div className="space-y-8 p-6 min-h-screen">
-			<h2 className="text-3xl font-bold mb-6 transition-all duration-300 ease-in-out hover:text-primary">
+		<div className="space-y-8 -mt-6 min-h-screen">
+			<h2 className="text-3xl font-bold  ">
 				Available Quiz Batches
 			</h2>
 			{testBatches.length === 0 ? (

@@ -11,7 +11,7 @@ import Background from "@/components/Background";
 
 function SearchParamsWrapper({ children }: { children: React.ReactNode }) {
 	const searchParams = useSearchParams();
-	const isQuizPage = searchParams.get("quiz") === "true";
+	const isQuizPage = searchParams.get("quiz") == "true";
 	return <>{children}</>; // Just render children, passing isQuizPage via context
 }
 
@@ -68,7 +68,7 @@ function LayoutContent({
 					<Background />
 					<div className="relative flex flex-col min-h-screen">
 						<Navbar />
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+						<main className="container mx-auto max-w-7xl  p-4 flex-grow">
 							{children}
 						</main>
 					</div>
