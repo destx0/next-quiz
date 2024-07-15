@@ -31,9 +31,11 @@ const QuizCard = ({ quiz, batchId, index }) => {
 				style={{
 					backgroundColor,
 					backgroundImage: `
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
             radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%),
             radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 50%)
           `,
+					backgroundBlendMode: "overlay, normal, normal",
 					animation: "pulse 3s infinite alternate",
 				}}
 			></div>
@@ -59,7 +61,7 @@ const QuizCard = ({ quiz, batchId, index }) => {
 						<Button
 							size="sm"
 							color="shadow"
-							className="transition-all duration-300 ease-in-out  transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-700 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+							className="transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-700 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
 						>
 							Start Test
 						</Button>
