@@ -59,15 +59,6 @@ export default function Home() {
 					</Link>
 				)}
 			</div>
-
-			<div className="mt-8">
-				<Snippet hideCopyButton hideSymbol variant="bordered">
-					<span>
-						Get started by taking a{" "}
-						<Code color="primary">sample quiz</Code>
-					</span>
-				</Snippet>
-			</div>
 		</section>
 	);
 }
