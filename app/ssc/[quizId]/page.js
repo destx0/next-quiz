@@ -10,6 +10,7 @@ import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
 import TermsAndConditions from "./TermsAndConditions";
+import LanguageSelection from "./LanguageSelection";
 
 export default function QuizPage({ params }) {
 	const {
@@ -31,7 +32,8 @@ export default function QuizPage({ params }) {
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [termsAccepted, setTermsAccepted] = useState(false);
+	const [currentStep, setCurrentStep] = useState("terms"); // 'terms', 'language', or 'quiz'
+	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -52,86 +54,39 @@ export default function QuizPage({ params }) {
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
 
 	const handleAcceptTerms = () => {
-		setTermsAccepted(true);
+		setCurrentStep("language");
 	};
 
-	useEffect(() => {
-		if (quizData && !isSubmitted) {
-			const timer = setInterval(() => {
-				incrementActiveQuestionTime();
-			}, 1000);
-
-			return () => clearInterval(timer);
-		}
-	}, [quizData, isSubmitted, incrementActiveQuestionTime]);
-
-	useEffect(() => {
-		if (quizData) {
-			const { currentSectionIndex, currentQuestionIndex, sections } =
-				quizData;
-			const currentQuestion =
-				sections[currentSectionIndex].questions[currentQuestionIndex];
-			console.log(currentQuestion);
-		}
-	}, [quizData]);
-
-	const handleNextQuestion = () => {
-		if (tempSelectedOption !== null && !isSubmitted) {
-			setSelectedOption(tempSelectedOption);
-		}
-		nextQuestion();
-		visitCurrentQuestion();
-		const { currentSectionIndex, currentQuestionIndex, sections } =
-			quizData;
-		const nextQuestionObj =
-			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
-			sections[currentSectionIndex + 1]?.questions[0];
-		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
+	const handlePreviousToTerms = () => {
+		setCurrentStep("terms");
 	};
 
-	const handleJumpToSection = (sectionIndex) => {
-		setCurrentIndices(Number(sectionIndex), 0);
-		visitCurrentQuestion();
-		const { sections } = quizData;
-		const firstQuestionInSection = sections[sectionIndex].questions[0];
-		setTempSelectedOption(firstQuestionInSection.selectedOption);
-	};
-
-	const handleJumpToQuestion = (questionIndex) => {
-		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
-		visitCurrentQuestion();
-		const { currentSectionIndex, sections } = quizData;
-		const question = sections[currentSectionIndex].questions[questionIndex];
-		console.log(question);
-		setTempSelectedOption(question.selectedOption);
-	};
-
-	const handleSubmitQuiz = () => {
-		if (tempSelectedOption !== null && !isSubmitted) {
-			setSelectedOption(tempSelectedOption);
-		}
-		submitQuiz();
-	};
-
-	const handleClearResponse = () => {
-		if (!isSubmitted) {
-			setSelectedOption(null);
-			setTempSelectedOption(null);
-		}
-	};
-
-	const handleComplete = () => {
-		if (!isSubmitted) {
-			submitQuiz();
-		}
+	const handleStartQuiz = (language) => {
+		setSelectedLanguage(language);
+		setCurrentStep("quiz");
 	};
 
 	if (isLoading) {
 		return <div>Loading...</div>;
 	}
 
-	if (!termsAccepted) {
-		return <TermsAndConditions onAccept={handleAcceptTerms} />;
+	if (currentStep === "terms") {
+		return (
+			<TermsAndConditions
+				onAccept={handleAcceptTerms}
+				onNext={handleAcceptTerms}
+			/>
+		);
+	}
+	if (!quizData) return <div>Loading...</div>;
+	if (currentStep === "language") {
+		return (
+			<LanguageSelection
+				onPrevious={handlePreviousToTerms}
+				onStart={handleStartQuiz}
+				testName={quizData.title}
+			/>
+		);
 	}
 
 	if (!quizData || !endTime) return <div>Loading...</div>;
