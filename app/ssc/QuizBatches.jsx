@@ -54,15 +54,17 @@ const QuizCard = ({ quiz, batchId, index }) => {
 						<p>Duration: {quiz.duration} min</p>
 					</div>
 				</div>
-				<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
-					<Button
-						size="sm"
-						color="primary"
-						className="mt-4 transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:shadow-md"
-					>
-						Start Test
-					</Button>
-				</Link>
+				<div className="flex justify-end">
+					<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
+						<Button
+							size="sm"
+							color="primary"
+							className="transition-all duration-300 ease-in-out  transform group-hover:scale-110 group-hover:shadow-md bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-600 hover:to-purple-600"
+						>
+							Start Test
+						</Button>
+					</Link>
+				</div>
 			</CardBody>
 		</Card>
 	);
