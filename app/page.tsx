@@ -1,14 +1,15 @@
 "use client";
 import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
 import { Button } from "@nextui-org/react";
+import { button as buttonStyles } from "@nextui-org/theme";
 import { title, subtitle } from "@/components/primitives";
 import useAuthStore from "@/lib/zustand";
 
 export default function Home() {
-	const { user, loading } = useAuthStore();
+	const { user, loading } = useAuthStore((state) => ({
+		user: state.user,
+		loading: state.loading,
+	}));
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
