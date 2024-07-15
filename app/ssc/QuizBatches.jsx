@@ -1,17 +1,75 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardBody, Button } from "@nextui-org/react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
 import Link from "next/link";
-import QuizCard from "./QuizCard";
+
+const getRandomColor = () => {
+	const hue = Math.floor(Math.random() * 360);
+	return `hsl(${hue}, 70%, 80%)`;
+};
+
+const QuizCard = ({ quiz, batchId }) => {
+	const backgroundColor = useMemo(() => getRandomColor(), []);
+
+	if (quiz.error) {
+		return (
+			<Card className="h-full bg-red-100">
+				<CardBody>
+					<p className="text-red-500">{quiz.error}</p>
+				</CardBody>
+			</Card>
+		);
+	}
+
+	return (
+		<Card className="h-full overflow-hidden relative group">
+			<div
+				className="absolute inset-0 bg-opacity-80 transition-all duration-300 ease-in-out group-hover:bg-opacity-100"
+				style={{
+					backgroundColor,
+					backgroundImage: `
+            radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%),
+            radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 50%)
+          `,
+					animation: "pulse 3s infinite alternate",
+				}}
+			></div>
+			<CardBody className="p-4 flex flex-col justify-between relative z-10">
+				<div>
+					<h4 className="text-lg font-semibold mb-2 truncate text-gray-800">
+						{quiz.title || "Untitled Quiz"}
+					</h4>
+					<p className="text-sm mb-2 truncate text-gray-600">
+						{quiz.description}
+					</p>
+					<div className="text-xs text-gray-700">
+						<p>Duration: {quiz.duration} min</p>
+					</div>
+				</div>
+				<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
+					<Button
+						size="sm"
+						color="primary"
+						className="mt-4 transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+					>
+						Start Test
+					</Button>
+				</Link>
+			</CardBody>
+		</Card>
+	);
+};
 
 const BatchContainer = ({ batch }) => (
-	<Card className="mb-4">
-		<CardBody>
-			<h3 className="text-lg font-semibold mb-2">{batch.title}</h3>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+	<Card className="mb-8 overflow-hidden">
+		<CardBody className="p-6">
+			<h3 className="text-2xl font-bold mb-4 ">
+				{batch.title}
+			</h3>
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 				{batch.quizzes.map((quiz) => (
 					<QuizCard key={quiz.id} quiz={quiz} batchId={batch.id} />
 				))}
@@ -87,15 +145,32 @@ const QuizBatches = () => {
 		fetchTestBatches();
 	}, [user]);
 
-	if (loading) return <div>Loading quiz batches...</div>;
-	if (error) return <div className="text-red-500">{error}</div>;
-	if (!user) return <div>Please log in to view quiz batches.</div>;
+	if (loading)
+		return (
+			<div className="text-center py-8 text-xl">
+				Loading quiz batches...
+			</div>
+		);
+	if (error)
+		return (
+			<div className="text-center py-8 text-xl text-red-500">{error}</div>
+		);
+	if (!user)
+		return (
+			<div className="text-center py-8 text-xl">
+				Please log in to view quiz batches.
+			</div>
+		);
 
 	return (
-		<div className="space-y-4">
-			<h2 className="text-xl font-bold mb-4">Available Quiz Batches</h2>
+		<div className="space-y-8 p-6  min-h-screen">
+			<h2 className="text-3xl font-bold mb-6 ">
+				Available Quiz Batches
+			</h2>
 			{testBatches.length === 0 ? (
-				<p>No quiz batches available at the moment.</p>
+				<p className="text-center text-xl ">
+					No quiz batches available at the moment.
+				</p>
 			) : (
 				testBatches.map((batch) => (
 					<BatchContainer key={batch.id} batch={batch} />
