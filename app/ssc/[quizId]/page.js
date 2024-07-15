@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -10,7 +9,7 @@ import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import TermsAndConditions from "./TermsAndConditions";
 
 export default function QuizPage({ params }) {
 	const {
@@ -32,6 +31,8 @@ export default function QuizPage({ params }) {
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [termsAccepted, setTermsAccepted] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -40,13 +41,19 @@ export default function QuizPage({ params }) {
 				setQuizData(data);
 				visitCurrentQuestion();
 				setEndTime(new Date().getTime() + data.duration * 60 * 1000);
+				setIsLoading(false);
 			} catch (error) {
 				console.error("Error fetching quiz:", error);
+				setIsLoading(false);
 			}
 		};
 
 		fetchQuizData();
 	}, [params.quizId, setQuizData, visitCurrentQuestion]);
+
+	const handleAcceptTerms = () => {
+		setTermsAccepted(true);
+	};
 
 	useEffect(() => {
 		if (quizData && !isSubmitted) {
@@ -118,6 +125,14 @@ export default function QuizPage({ params }) {
 			submitQuiz();
 		}
 	};
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!termsAccepted) {
+		return <TermsAndConditions onAccept={handleAcceptTerms} />;
+	}
 
 	if (!quizData || !endTime) return <div>Loading...</div>;
 
