@@ -12,19 +12,24 @@ import Background from "@/components/Background";
 function SearchParamsWrapper({ children }: { children: React.ReactNode }) {
 	const searchParams = useSearchParams();
 	const isQuizPage = searchParams.get("quiz") === "true";
-	return children({ isQuizPage });
+	return <>{children}</>; // Just render children, passing isQuizPage via context
 }
+
+// Create a context for isQuizPage
+const QuizContext = React.createContext(false);
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 			<Suspense fallback={<div>Loading...</div>}>
 				<SearchParamsWrapper>
-					{({ isQuizPage }) => (
-						<LayoutContent isQuizPage={isQuizPage}>
-							{children}
-						</LayoutContent>
-					)}
+					<QuizContext.Consumer>
+						{(isQuizPage) => (
+							<LayoutContent isQuizPage={isQuizPage}>
+								{children}
+							</LayoutContent>
+						)}
+					</QuizContext.Consumer>
 				</SearchParamsWrapper>
 			</Suspense>
 		</ThemeProvider>
