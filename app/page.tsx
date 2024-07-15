@@ -37,15 +37,6 @@ export default function Home() {
 								All Mocks
 							</Button>
 						</Link>
-						<Link
-							className={buttonStyles({
-								variant: "bordered",
-								radius: "full",
-							})}
-							href="/upload"
-						>
-							Upload Questions
-						</Link>
 					</>
 				) : (
 					<Link href={`/login`}>
