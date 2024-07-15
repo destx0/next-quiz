@@ -57,7 +57,7 @@ const AnalysisModal = ({ quizData, score }) => {
 				if (question.selectedOption !== null) {
 					totalAttempted++;
 					sectionAttempted++;
-					if (question.selectedOption === question.correctAnswer) {
+					if (question.selectedOption == question.correctAnswer) {
 						totalCorrect++;
 						sectionCorrect++;
 					} else {
