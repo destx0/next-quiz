@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
@@ -7,11 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import Background from "@/components/Background";
 
-export default function ClientLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export function ClientLayout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const isQuizPage = searchParams.get("quiz") === "true";
@@ -23,7 +21,6 @@ export default function ClientLayout({
 	);
 }
 
-// Separate component to handle layout and theme
 function LayoutContent({
 	children,
 	isQuizPage,
@@ -47,12 +44,10 @@ function LayoutContent({
 			)}
 		>
 			{isQuizPage ? (
-				// Full-screen layout for quiz page
 				<div className="h-screen w-screen overflow-hidden">
 					{children}
 				</div>
 			) : (
-				// Regular layout for other pages
 				<>
 					<Background />
 					<div className="relative flex flex-col min-h-screen">
