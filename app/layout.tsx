@@ -3,7 +3,7 @@ import React from "react";
 import "@/styles/globals.css";
 import { Providers } from "./providers";
 import Background from "@/components/Background";
-import { ClientLayout } from "./ClientLayout";
+import { ClientLayout } from "@/app/ClientLayout";
 
 export const metadata = {
 	title: "NextUI App",
