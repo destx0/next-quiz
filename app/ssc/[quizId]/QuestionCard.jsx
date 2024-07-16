@@ -1,6 +1,7 @@
 import React from "react";
 import { Radio, RadioGroup, Divider } from "@nextui-org/react";
 import { Clock } from "lucide-react";
+import LatexRenderer from "@/components/LatexRenderer";
 
 export default function QuestionCard({
 	question,
@@ -12,15 +13,18 @@ export default function QuestionCard({
 	const formatTime = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+			.toString()
+			.padStart(2, "0")}`;
 	};
 
 	return (
 		<div className="w-full h-full flex flex-col ">
 			<div className="flex-grow overflow-y-auto p-4">
 				<h2 className="text-xl font-semibold mb-4">
-					{question.question}
+					<LatexRenderer>{question.question}</LatexRenderer>
 				</h2>
+
 				<RadioGroup
 					value={tempSelectedOption}
 					onValueChange={setTempSelectedOption}
@@ -40,7 +44,7 @@ export default function QuestionCard({
 									: ""
 							}`}
 						>
-							{option}
+							<LatexRenderer>{option}</LatexRenderer>
 							{isSubmitted &&
 								index === question.correctAnswer && (
 									<span className="ml-2 text-success">✓</span>
@@ -56,7 +60,7 @@ export default function QuestionCard({
 				{isSubmitted && (
 					<div className="mt-4 p-4 bg-default-100 rounded-lg">
 						<h3 className="font-semibold">Explanation:</h3>
-						<p>{question.explanation}</p>
+						<LatexRenderer>{question.explanation}</LatexRenderer>
 					</div>
 				)}
 			</div>
