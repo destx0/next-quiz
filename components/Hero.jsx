@@ -30,7 +30,7 @@ export default function Hero() {
 			</div>
 			<div className="md:w-1/2">
 				<Image
-					src="/people.png"
+					src="/anish.png"
 					alt="SSC Exam Preparation"
 					width={500}
 					height={300}
