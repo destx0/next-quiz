@@ -21,6 +21,7 @@ export default function Hero() {
 					<Button
 						color="primary"
 						size="lg"
+						variant="shadow"
 						className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
 					>
 						{user ? "Start Mock Test" : "Sign Up Now"}

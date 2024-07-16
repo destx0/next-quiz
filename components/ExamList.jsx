@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Badge } from "@nextui-org/react";
+import { Card, Chip } from "@nextui-org/react";
 import { title } from "@/components/primitives";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -21,18 +21,19 @@ export default function ExamList() {
 			<h2 className={title({ size: "sm", class: "text-center mb-12" })}>
 				SSC Exams We Cover
 			</h2>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 justify-items-center">
 				{exams.map((exam, index) => (
 					<motion.div
 						key={exam.name}
 						initial={{ opacity: 0, scale: 0.9 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ duration: 0.3, delay: index * 0.05 }}
+						className="w-full max-w-[250px]"
 					>
 						<Card className="overflow-hidden relative group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
 							<Card className="relative z-10 p-4 bg-transparent">
 								<div className="flex items-center justify-between">
-									<div className="flex justify-center  space-x-4">
+									<div className="flex items-center space-x-2">
 										<Image
 											src="/ssc.png"
 											alt={`${exam.name} logo`}
@@ -44,10 +45,7 @@ export default function ExamList() {
 										</p>
 									</div>
 									{exam.upcoming && (
-										<Badge
-											content="Upcoming"
-											className="mr-10"
-										></Badge>
+										<Chip size="sm">Upcoming</Chip>
 									)}
 								</div>
 							</Card>
