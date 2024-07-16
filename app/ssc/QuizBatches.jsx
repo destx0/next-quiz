@@ -47,7 +47,6 @@ const QuizCard = ({ quiz, batchId, index }) => {
             radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 50%)
           `,
 					backgroundBlendMode: "overlay, normal, normal",
-					animation: "pulse 3s infinite alternate",
 				}}
 			></div>
 			<div className="absolute inset-0 flex items-center justify-center overflow-hidden">
@@ -192,9 +191,7 @@ const QuizBatches = () => {
 
 	return (
 		<div className="space-y-8 -mt-6 min-h-screen">
-			<h2 className="text-3xl font-bold  ">
-				Available Quiz Batches
-			</h2>
+			<h2 className="text-3xl font-bold  ">Available Quiz Batches</h2>
 			{testBatches.length === 0 ? (
 				<p className="text-center text-xl">
 					No quiz batches available at the moment.
