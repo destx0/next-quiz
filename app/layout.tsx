@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import Background from "@/components/Background";
 import { ClientLayout } from "@/app/ClientLayout";
 import { Analytics } from "@vercel/analytics/react";
+import "katex/dist/katex.min.css";
 
 export const metadata = {
 	title: "NextUI App",
