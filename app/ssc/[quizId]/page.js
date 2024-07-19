@@ -33,7 +33,7 @@ export default function QuizPage({ params }) {
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
-	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [currentStep, setCurrentStep] = useState("terms");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 
