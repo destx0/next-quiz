@@ -1,0 +1,1086 @@
+{
+    "title": "Infinity Mock 1",
+    "description": "General Knowledge Quiz - Test your knowledge!",
+    "thumbnailLink": "https://example.com/thumbnail.jpg",
+    "duration": 60,
+    "positiveScore": 1,
+    "negativeScore": 0.25,
+    "sections": [
+        {
+            "name": "General Awareness",
+            "questions": [
+                {
+                    "question": "Which of the following is the State Tree of Maharashtra?",
+                    "options": [
+                        "Mango",
+                        "Jammi",
+                        "Banyan",
+                        "Ashok"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Mango is the State Tree of Maharashtra."
+                },
+                {
+                    "question": "What is the full form of PPLO with respect to bacteria?",
+                    "options": [
+                        "Pleuro Pneumonia Like Organisms",
+                        "Platelet Prone Like Organisms",
+                        "Pleuro Platelet Like Organisms",
+                        "Pneumonia Platelet Like Organisms"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "PPLO refers to Pleuro Pneumonia Like Organisms."
+                },
+                {
+                    "question": "Among the following, which city is known as the 'Manchester of India'?",
+                    "options": [
+                        "Ludhiana",
+                        "Visakhapatnam",
+                        "Hyderabad",
+                        "Ahmedabad"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Ahmedabad is known as the 'Manchester of India' due to its large textile industry, which is similar to the textile industry in Manchester, UK."
+                },
+                {
+                    "question": "'Ong' and 'Tel' are tributaries of which river?",
+                    "options": [
+                        "Krishna",
+                        "Ganga",
+                        "Kaveri",
+                        "Mahanadi"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Ong and Tel are tributaries of the Mahanadi River, which flows through the Indian states of Chhattisgarh and Odisha."
+                },
+                {
+                    "question": "Number of players in a volleyball game",
+                    "options": [
+                        "5",
+                        "8",
+                        "6",
+                        "7"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Each team in volleyball comprises 6 players."
+                },
+                {
+                    "question": "Who emerged victorious in 'The Siege of Arcot' in 1751 AD?",
+                    "options": [
+                        "French",
+                        "Dutch",
+                        "Portuguese",
+                        "British"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The British emerged victorious in 'The Siege of Arcot' in 1751 AD. The siege was a significant conflict during the Second Carnatic War, where Robert Clive's defense of Arcot marked a turning point in British fortunes in India."
+                },
+                {
+                    "question": "Which of the following sentences is/are correct?\ni. According to the Census of India 2011, the total population of India is 141 crores.\nii. Between 1911 and 1921, there was a negative rate of growth of India's population.\niii. Between 1901 and 1951, the average annual growth of India's population did not exceed 1.33%.",
+                    "options": [
+                        "Only i and ii",
+                        "Only i and iii",
+                        "Only i",
+                        "Only ii and iii"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "According to the Census of India 2011, the total population of India was approximately 121 crores, not 141 crores. The second statement is correct as India experienced a negative population growth rate between 1911 and 1921 due to the influenza epidemic and World War I. The third statement is also correct as the average annual growth rate did not exceed 1.33% between 1901 and 1951."
+                },
+                {
+                    "question": "'Let Ball', 'Stroke Ball' and 'No Let' are part of which game?",
+                    "options": [
+                        "Squash",
+                        "Rugby",
+                        "Handball",
+                        "Polo"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "These terms are used in the game of squash to describe different types of decisions and situations during play."
+                },
+                {
+                    "question": "What is the primary function of the Golgi apparatus?",
+                    "options": [
+                        "Protein synthesis",
+                        "Lipid production",
+                        "Sorting and packaging of cellular products",
+                        "Cellular respiration"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The Golgi apparatus is responsible for sorting, modifying, and packaging proteins and lipids that have been synthesized in the cell. These cellular products are then transported to their designated locations either within the cell or to the extracellular environment. This function is crucial for maintaining the organization and proper functioning of the cell."
+                },
+                {
+                    "question": "When two nuclei fuse together forming one nucleus during cell fusion, it is known as:",
+                    "options": [
+                        "synkaryon",
+                        "eukaryon",
+                        "heterokaryon",
+                        "syncytium"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Karyogamy is the fusion of two nuclei, typically during the process of sexual reproduction."
+                },
+                {
+                    "question": "The process by which molecules from a region of higher concentration move to a region of lower concentration is known as:",
+                    "options": [
+                        "evaporation",
+                        "boiling",
+                        "diffusion",
+                        "melting"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Diffusion is the movement of molecules from an area of higher concentration to an area of lower concentration."
+                },
+                {
+                    "question": "How do estuaries serve as critical habitats for various species?",
+                    "options": [
+                        "Estuaries have no ecological significance.",
+                        "Estuaries provide breeding grounds and nurseries for marine organisms.",
+                        "Estuaries contribute to desertification.",
+                        "Estuaries are only important for recreational activities"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Estuaries are rich in nutrients and provide critical habitats for many species, serving as nurseries for young fish and other marine organisms."
+                },
+                {
+                    "question": "The Standard Meridian of India (82° 30'E) passes through which state of India?",
+                    "options": [
+                        "Karnataka",
+                        "Madhya Pradesh",
+                        "West Bengal",
+                        "Punjab"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Standard Meridian of India passes through the state of Uttar Pradesh, helping to standardize time across the country."
+                },
+                {
+                    "question": "_____ is defined as the study of behavior of individual decision-making units, such as consumers, resources owners and firms.",
+                    "options": [
+                        "Microeconomics",
+                        "Macroeconomics",
+                        "Health economics",
+                        "Econometrics"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Microeconomics is the study of individual decision-making units such as consumers and firms."
+                },
+                {
+                    "question": "What is the primary focus of the ASPIRE scheme of the Ministry of Micro, Small & Medium Enterprises, Government of India?",
+                    "options": [
+                        "Urban development",
+                        "Technology innovation",
+                        "Environmental conservation",
+                        "Establishment of livelihoods business incubation centres"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The ASPIRE scheme focuses on promoting innovation and rural entrepreneurship, particularly in the agriculture and industry sectors."
+                },
+                {
+                    "question": "________ is referred to as paper taxes.",
+                    "options": [
+                        "Gift tax",
+                        "Corporation tax",
+                        "Customs duty",
+                        "Excise tax"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Gift tax is referred to as a paper tax because it is imposed on the transfer of ownership of property or money between individuals without receiving anything or less than the full value in return. It is often documented through paperwork rather than physical goods or services being exchanged."
+                },
+                {
+                    "question": "Based on which committee recommendations, RBI introduced a comprehensive regulatory framework for NBFC-MFIs?",
+                    "options": [
+                        "Gadgil committee",
+                        "Malegam committee",
+                        "Kelkar committee",
+                        "Rangarajan committee"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Malegam Committee provided recommendations that led to the RBI's comprehensive regulatory framework for NBFC-MFIs."
+                },
+                {
+                    "question": "According to archaeologists, in Harappan cities the part to the west was smaller but higher, and was known as ________.",
+                    "options": [
+                        "Citadel",
+                        "Olympus",
+                        "Lower Town",
+                        "Colosseum"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "In Harappan cities, the part to the west, known as the citadel, was smaller but higher, typically used for administrative and religious purposes."
+                },
+                {
+                    "question": "Who said \"a cherry that will drop into our mouth one day\" about the kingdom of Awadh?",
+                    "options": [
+                        "Lord Mountbatten",
+                        "Lord Curzon",
+                        "Lord Lytton",
+                        "Lord Dalhousie"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Lord Dalhousie referred to the kingdom of Awadh as 'a cherry that will drop into our mouth one day' due to its strategic and economic importance."
+                },
+                {
+                    "question": "Who was the leader of the temple entry movement in 1930 at Kalaram temple, Nashik?",
+                    "options": [
+                        "Swami Achhutanand",
+                        "NG Ranga",
+                        "Mahatma Gandhi",
+                        "Dr. BR Ambedkar"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Dr. B.R. Ambedkar was the leader of the temple entry movement in 1930 at Kalaram temple, Nashik, fighting for Dalit rights."
+                },
+                {
+                    "question": "The Mahabharata translated from Sanskrit to Persian in the Mughal Period is known as ____.",
+                    "options": [
+                        "Tutinama",
+                        "Shahnama",
+                        "Razmnama",
+                        "Badshahnama"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The Mahabharata was translated into Persian during the Mughal period and is known as the 'Razmnama.'"
+                },
+                {
+                    "question": "In the 1830's, which Scottish man was Commissioned by the East India Company to prepare reports on Education and progress in the native schools of Bengal and Bihar?",
+                    "options": [
+                        "Anthony Mc Donnel",
+                        "John Sargent",
+                        "William Adam",
+                        "Joseph Hartog"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "William Adam was commissioned by the East India Company in the 1830s to report on education in Bengal and Bihar."
+                },
+                {
+                    "question": "Which Chief Justice of India was sworn in as the acting President of India on 20th July 1969?",
+                    "options": [
+                        "Justice Harilal Jekisundas Kania",
+                        "Justice M Patanjali Sastri",
+                        "Justice Sudhi Ranjan Das",
+                        "Justice Mohammad Hidayatullah"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Justice Mohammad Hidayatullah served as the acting President of India on 20th July 1969."
+                },
+                {
+                    "question": "Which of the following provisions and the constitutions of different countries from which they have been adopted in the Constitution of India has been INCORRECTLY paired?",
+                    "options": [
+                        "The idea of the rule of law – British Constitution",
+                        "Charter of Fundamental rights – United States Constitution",
+                        "Directive Principles of State Policy – Irish Constitution",
+                        "Principles of Liberty, Equality and Fraternity – Canadian Constitution"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The statement incorrectly pairs Directive Principles of State Policy with the Irish Constitution. The correct pairing is: Directive Principles of State Policy - Irish Constitution."
+                },
+                {
+                    "question": "Which of the following articles of the Constitution of India provides measures to ensure the enforcement of Fundamental Rights?",
+                    "options": [
+                        "Article 19",
+                        "Article 14",
+                        "Article 32",
+                        "Article 29"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Article 32 of the Indian Constitution provides the right to individuals to move the Supreme Court for the enforcement of Fundamental Rights."
+                }
+            ]
+        },
+        {
+            "name": "Quant",
+            "questions": [
+                {
+                    "question": "If the ratio of the mode and median of a certain data is $9:8$, then the ratio of its mean and median is:",
+                    "options": [
+                        "$15:17$",
+                        "$13:15$",
+                        "$15:16$",
+                        "$11:15$"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Mode $=3$ (Median) -2 (Mean)\n\n$9=3$ (8) -2 (Mean) $\\Rightarrow 2$ (Mean) $=24-9$\n\n2 (Mean) $=15 \\Rightarrow$ Mean $=\\frac{15}{2}$\n\nMean : Median $=\\frac{15}{2}: 8=15: 16$"
+                },
+                {
+                    "question": "If the cost price of 20 articles is equal to the selling price of 16 articles, what is the profit percentage?",
+                    "options": [
+                        "20%",
+                        "25%",
+                        "16.66%",
+                        "30%"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Let the cost price of one article be \\( \\text{CP} \\).\n\nSo, the cost price of 20 articles = \\( 20 \\times \\text{CP} \\).\n\nLet the selling price of one article be \\( \\text{SP} \\).\n\nSo, the selling price of 16 articles = \\( 16 \\times \\text{SP} \\).\n\nAccording to the question,\n\\[ 20 \\times \\text{CP} = 16 \\times \\text{SP} \\]\n\n\\[\n\\frac{\\text{SP}}{\\text{CP}} = \\frac{20}{16}\n\\]\n\n\\[\n\\frac{\\text{SP}}{\\text{CP}} = \\frac{5}{4}\n\\]\n\n\\[\n\\text{SP} = \\frac{5}{4} \\text{CP}\n\\]\n\nProfit = \\( \\text{SP} - \\text{CP} \\)\n\nProfit = \\( \\frac{5}{4} \\text{CP} - \\text{CP} \\)\n\nProfit = \\( \\frac{5\\text{CP} - 4\\text{CP}}{4} \\)\n\nProfit = \\( \\frac{\\text{CP}}{4} \\)\n\nProfit percentage = \\( \\left( \\frac{\\text{Profit}}{\\text{CP}} \\times 100 \\right) \\)\n\n\\[\n\\text{Profit percentage} = \\left( \\frac{\\frac{\\text{CP}}{4}}{\\text{CP}} \\times 100 \\right)\n\\]\n\n\\[\n\\text{Profit percentage} = \\left( \\frac{1}{4} \\times 100 \\right)\n\\]\n\n\\[\n\\text{Profit percentage} = 25\\%\n\\]"
+                },
+                {
+                    "question": "15 men and 21 women, working together, can do a job in 56 days, while 12 men and 24 women, working together, can do the same job in 64 days. In how many days can the same job be done by 18 men and 24 women, working together?",
+                    "options": [
+                        "$47 \\frac{6}{19}$",
+                        "$47 \\frac{5}{19}$",
+                        "$47 \\frac{9}{19}$",
+                        "$47 \\frac{3}{19}$"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "According to the question,\n\n$m_{1} \\times w_{1} \\times h_{1}=m_{2} \\times w_{2} \\times h_{2}$\n\n( 15 men +21 women) $\\times 56$\n\n$=(12$ men +24 women $) \\times 64$\\\n( 15 men +21 women) $\\times 7$\n\n$=(12$ men +24 women $) \\times 8$\n\n105 men +147 women\n\n$=96$ men +192 women\n\n9 men $=45$ women\n\n$\\frac{\\text { men }}{\\text { women }}=\\frac{5}{1}$\n\nTotal work $=(15 \\times 5+21 \\times 1) \\times 56$\n\n$=96 \\times 56$\n\nRequired time\n\n$=\\frac{96 \\times 56}{(18 \\times 5)+(24 \\times 1)}=\\frac{96 \\times 56}{114}$\n\n$=47 \\frac{3}{19}$ days"
+                },
+                {
+                    "question": "A can do $20\\%$ of a job in 7 days and $B$ can do $25\\%$ of the job in 7 days if they worked alone. How much of the job (in percentage) can they complete in 7 days if they worked together?",
+                    "options": [
+                        "38%",
+                        "52%",
+                        "56%",
+                        "45%"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "According to the question, Time taken by A to done whole work $=7 \\times 5=35$ days\n\nTime taken by $B$ to done whole work\n\n$=7 \\times 4=28$ days\n\n![Efficiency calculation](https://example.com/efficiency_calculation.jpg)\n\nTotal efficiency of $A$ and $B$\n\n$=4+5=9$ units\n\nWork done by $\\mathrm{A}$ and $\\mathrm{B}$ in 7 days\n\n$=9 \\times 7=63$ units\n\nRequired $\\%=\\frac{63}{140} \\times 100=45\\%$"
+                },
+                {
+                    "question": "Pipes $A$ and $B$ can fill a tank in 18 minutes and 30 minutes, respectively. Pipe C, attached to the tank, can drain off 125 litres of water per minute. If all the pipes are opened together, the tank is filled in 45 minutes. The capacity of the tank in litres, is:",
+                    "options": [
+                        "1500",
+                        "1375",
+                        "1875",
+                        "2000"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "![Pipe problem explanation](https://example.com/pipe_problem_explanation.jpg)\n\nEfficiency of $\\mathrm{C}=5+3-2=6$ unit\n\nSo, $C$ can empty entire tank in $=\\frac{90}{6}$\n\n$=15$ minutes\n\nWater drain by $C$ in 1 minute $=125$ litres\n\nWater drain by $C$ in 15 minute $=125 \\times 15$\n\n$=1875$ litres\n\nCapacity of tank $=1875$ litres"
+                },
+                {
+                    "question": "What is the area (in unit squares) of the triangle enclosed by the graphs of the equations $2x+5y=12$, $x+y=3$ and the $x$-axis?",
+                    "options": [
+                        "2.5",
+                        "3.5",
+                        "3",
+                        "4"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Intersection point of $2x+5y=12$ and $x+y=3$ is $(1,2)$\n\nIntersection point of $2x+5y=12$ and $y=0$ is $(6,0)$\n\nIntersection point of $x+y=3$ and $y=0$ is $(3,0)$\n\nArea of triangle $\\left.=\\frac{1}{2} \\right\\vert\\,\\left[x_{1}\\left(y_{2}-y_{3}\\right)+\\right.$\n\n$\\left.x_{2}\\left(y_{3}-y_{1}\\right)+x_{3}\\left(y_{1}-y_{2}\\right)\\right]$\n\n$\\Rightarrow \\frac{1}{2}|[1(0-0)+6(0-2)+3(2-0)]|$\n\n$\\Rightarrow \\frac{1}{2}|[-12+6]|=3$ unit$^{2}$"
+                },
+                {
+                    "question": "In the given figure, if $AD=3$, $DE=4$, $AB=12$, $BF=2$, $FG=6$, $BC=10$, then the value of $\\frac{M}{N}$ is: (Assume: $M$ is the area of the quadrilateral FGDE and $N$ is the area of the triangle $ABC$.)",
+                    "options": [
+                        "$\\frac{31}{60}$",
+                        "$\\frac{1}{2}$",
+                        "$\\frac{25}{49}$",
+                        "$\\frac{1}{3}$"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "![Triangle and quadrilateral](https://example.com/triangle_quadrilateral.jpg)\n\nShort trick:\n\nBy sin formula,\n\narea of triangle $ABC$\n\narea of quadrilateral DEFG\n\n$\\frac{\\frac{1}{2} \\times(5+4+3) \\times(2+6+2) \\sin B}{\\frac{1}{2} \\times(5+4) \\times(2+6) \\sin B-\\frac{1}{2} \\times 5 \\times 2 \\sin B}$\n\n$=\\frac{12 \\times 10}{(9 \\times 8)-(2 \\times 5)}=\\frac{120}{62}=\\frac{N}{M}$\n\n$\\Rightarrow \\frac{M}{N}=\\frac{62}{120}=\\frac{31}{60}$"
+                },
+                {
+                    "question": "Water is pouring into a cuboidal reservoir at the rate of 50 litres per minute. The volume of the reservoir is $120 \\mathrm{m}^{3}$. How many hours will it take to fill the reservoir?",
+                    "options": [
+                        "35",
+                        "45",
+                        "40",
+                        "30"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "According to the question, 1 liter $=1000 \\mathrm{cm}^{3}$\n\n50 liter $=50,000 \\mathrm{cm}^{3}$\n\n50 liter $=50,000 \\times \\frac{1}{1000000}=0.05 \\mathrm{m}^{3}$\n\nRequired time $=\\frac{120}{0.05}$\n\n$=2400$ min. or 40 hours"
+                },
+                {
+                    "question": "Find the number of solid lead balls each $2 \\mathrm{cm}$ in diameter that can be made from solid sphere made up of lead of diameter $14 \\mathrm{cm}$.",
+                    "options": [
+                        "433",
+                        "343",
+                        "430",
+                        "340"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "According to the question, Volume of solid lead balls $=$ Volume of solid sphere\n\nNumber of solid lead balls\n$=\\frac{\\frac{4}{3} \\times \\pi \\times 7 \\times 7 \\times 7}{\\frac{4}{3} \\times \\pi \\times 1 \\times 1 \\times 1}=343$"
+                },
+                {
+                    "question": "If $3 \\sin \\theta=2 \\cos ^{2} \\theta, 0^{\\circ}<\\theta<90^{\\circ}$, then the value of $\\left(\\tan ^{2} \\theta+\\sec ^{2} \\theta-\\operatorname{cosec}^{2} \\theta\\right)$ is :",
+                    "options": [
+                        "-2",
+                        "$-\\frac{7}{3}$",
+                        "$\\frac{7}{3}$",
+                        "2"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Put $\\theta=30^{\\circ}$\n\n$3 \\sin \\theta=2 \\cos ^{2} \\theta=3 \\times \\frac{1}{2}=2 \\times\\left(\\frac{\\sqrt{3}}{2}\\right)^{2}$\n\n$=\\frac{3}{2}=\\frac{3}{2}$ (Condition satisfied)\n\n$\\left(\\tan ^{2} \\theta+\\sec ^{2} \\theta-\\operatorname{cosec}^{2} \\theta\\right)$\n\n$=\\left(\\frac{1}{\\sqrt{3}}\\right)^{2}+\\left(\\frac{2}{\\sqrt{3}}\\right)^{2}$\n\n$-(2)^{2}$\n\n$\\Rightarrow \\frac{1}{3}+\\frac{4}{3}-4=-\\frac{7}{3}$"
+                },
+                {
+                    "question": "A retailer buys 50 pens at the marked price of 44 pens. If he sells these pens at a discount of $1\\%$ on the marked price, what is the profit per cent?",
+                    "options": [
+                        "10%",
+                        "12.5%",
+                        "12%",
+                        "15%"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Let the marked price of one pen $=1 \\mathrm{Rs}$\n\nC.P. of 50 pen $=1 \\times 44=44$ Rs.\n\nS.P. of 50 pen $=1 \\times 50 \\times 99\\%=49.5$ Rs.\n\nRequired profit $=\\frac{49.5-44}{44} \\times 100=\\frac{550}{44}$ $=12.5\\%$"
+                },
+                {
+                    "question": "If the ratio of the mode and median of a certain data is $9:8$, then the ratio of its mean and median is:",
+                    "options": [
+                        "$15:17$",
+                        "$13:15$",
+                        "$15:16$",
+                        "$11:15$"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Mode $=3$ (Median) -2 (Mean)\n\n$9=3$ (8) -2 (Mean) $\\Rightarrow 2$ (Mean) $=24-9$\n\n2 (Mean) $=15 \\Rightarrow$ Mean $=\\frac{15}{2}$\n\nMean : Median $=\\frac{15}{2}: 8=15: 16$"
+                },
+                {
+                    "question": "If the cost price of 20 articles is equal to the selling price of 16 articles, what is the profit percentage?",
+                    "options": [
+                        "20%",
+                        "25%",
+                        "16.66%",
+                        "30%"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Let the cost price of one article be \\( \\text{CP} \\).\n\nSo, the cost price of 20 articles = \\( 20 \\times \\text{CP} \\).\n\nLet the selling price of one article be \\( \\text{SP} \\).\n\nSo, the selling price of 16 articles = \\( 16 \\times \\text{SP} \\).\n\nAccording to the question,\n\\[ 20 \\times \\text{CP} = 16 \\times \\text{SP} \\]\n\n\\[\n\\frac{\\text{SP}}{\\text{CP}} = \\frac{20}{16}\n\\]\n\n\\[\n\\frac{\\text{SP}}{\\text{CP}} = \\frac{5}{4}\n\\]\n\n\\[\n\\text{SP} = \\frac{5}{4} \\text{CP}\n\\]\n\nProfit = \\( \\text{SP} - \\text{CP} \\)\n\nProfit = \\( \\frac{5}{4} \\text{CP} - \\text{CP} \\)\n\nProfit = \\( \\frac{5\\text{CP} - 4\\text{CP}}{4} \\)\n\nProfit = \\( \\frac{\\text{CP}}{4} \\)\n\nProfit percentage = \\( \\left( \\frac{\\text{Profit}}{\\text{CP}} \\times 100 \\right) \\)\n\n\\[\n\\text{Profit percentage} = \\left( \\frac{\\frac{\\text{CP}}{4}}{\\text{CP}} \\times 100 \\right)\n\\]\n\n\\[\n\\text{Profit percentage} = \\left( \\frac{1}{4} \\times 100 \\right)\n\\]\n\n\\[\n\\text{Profit percentage} = 25\\%\n\\]"
+                },
+                {
+                    "question": "15 men and 21 women, working together, can do a job in 56 days, while 12 men and 24 women, working together, can do the same job in 64 days. In how many days can the same job be done by 18 men and 24 women, working together?",
+                    "options": [
+                        "$47 \\frac{6}{19}$",
+                        "$47 \\frac{5}{19}$",
+                        "$47 \\frac{9}{19}$",
+                        "$47 \\frac{3}{19}$"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "According to the question,\n\n$m_{1} \\times w_{1} \\times h_{1}=m_{2} \\times w_{2} \\times h_{2}$\n\n( 15 men +21 women) $\\times 56$\n\n$=(12$ men +24 women $) \\times 64$\\\n( 15 men +21 women) $\\times 7$\n\n$=(12$ men +24 women $) \\times 8$\n\n105 men +147 women\n\n$=96$ men +192 women\n\n9 men $=45$ women\n\n$\\frac{\\text { men }}{\\text { women }}=\\frac{5}{1}$\n\nTotal work $=(15 \\times 5+21 \\times 1) \\times 56$\n\n$=96 \\times 56$\n\nRequired time\n\n$=\\frac{96 \\times 56}{(18 \\times 5)+(24 \\times 1)}=\\frac{96 \\times 56}{114}$\n\n$=47 \\frac{3}{19}$ days"
+                },
+                {
+                    "question": "A can do $20\\%$ of a job in 7 days and $B$ can do $25\\%$ of the job in 7 days if they worked alone. How much of the job (in percentage) can they complete in 7 days if they worked together?",
+                    "options": [
+                        "38%",
+                        "52%",
+                        "56%",
+                        "45%"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "According to the question, Time taken by A to done whole work $=7 \\times 5=35$ days\n\nTime taken by $B$ to done whole work\n\n$=7 \\times 4=28$ days\n\n![Efficiency calculation](https://example.com/efficiency_calculation.jpg)\n\nTotal efficiency of $A$ and $B$\n\n$=4+5=9$ units\n\nWork done by $\\mathrm{A}$ and $\\mathrm{B}$ in 7 days\n\n$=9 \\times 7=63$ units\n\nRequired $\\%=\\frac{63}{140} \\times 100=45\\%$"
+                },
+                {
+                    "question": "Pipes $A$ and $B$ can fill a tank in 18 minutes and 30 minutes, respectively. Pipe C, attached to the tank, can drain off 125 litres of water per minute. If all the pipes are opened together, the tank is filled in 45 minutes. The capacity of the tank in litres, is:",
+                    "options": [
+                        "1500",
+                        "1375",
+                        "1875",
+                        "2000"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "![Pipe problem explanation](https://example.com/pipe_problem_explanation.jpg)\n\nEfficiency of $\\mathrm{C}=5+3-2=6$ unit\n\nSo, $C$ can empty entire tank in $=\\frac{90}{6}$\n\n$=15$ minutes\n\nWater drain by $C$ in 1 minute $=125$ litres\n\nWater drain by $C$ in 15 minute $=125 \\times 15$\n\n$=1875$ litres\n\nCapacity of tank $=1875$ litres"
+                },
+                {
+                    "question": "What is the area (in unit squares) of the triangle enclosed by the graphs of the equations $2x+5y=12$, $x+y=3$ and the $x$-axis?",
+                    "options": [
+                        "2.5",
+                        "3.5",
+                        "3",
+                        "4"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Intersection point of $2x+5y=12$ and $x+y=3$ is $(1,2)$\n\nIntersection point of $2x+5y=12$ and $y=0$ is $(6,0)$\n\nIntersection point of $x+y=3$ and $y=0$ is $(3,0)$\n\nArea of triangle $\\left.=\\frac{1}{2} \\right\\vert\\,\\left[x_{1}\\left(y_{2}-y_{3}\\right)+\\right.$\n\n$\\left.x_{2}\\left(y_{3}-y_{1}\\right)+x_{3}\\left(y_{1}-y_{2}\\right)\\right]$\n\n$\\Rightarrow \\frac{1}{2}|[1(0-0)+6(0-2)+3(2-0)]|$\n\n$\\Rightarrow \\frac{1}{2}|[-12+6]|=3$ unit$^{2}$"
+                },
+                {
+                    "question": "In the given figure, if $AD=3$, $DE=4$, $AB=12$, $BF=2$, $FG=6$, $BC=10$, then the value of $\\frac{M}{N}$ is: (Assume: $M$ is the area of the quadrilateral FGDE and $N$ is the area of the triangle $ABC$.)",
+                    "options": [
+                        "$\\frac{31}{60}$",
+                        "$\\frac{1}{2}$",
+                        "$\\frac{25}{49}$",
+                        "$\\frac{1}{3}$"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "![Triangle and quadrilateral](https://example.com/triangle_quadrilateral.jpg)\n\nShort trick:\n\nBy sin formula,\n\narea of triangle $ABC$\n\narea of quadrilateral DEFG\n\n$\\frac{\\frac{1}{2} \\times(5+4+3) \\times(2+6+2) \\sin B}{\\frac{1}{2} \\times(5+4) \\times(2+6) \\sin B-\\frac{1}{2} \\times 5 \\times 2 \\sin B}$\n\n$=\\frac{12 \\times 10}{(9 \\times 8)-(2 \\times 5)}=\\frac{120}{62}=\\frac{N}{M}$\n\n$\\Rightarrow \\frac{M}{N}=\\frac{62}{120}=\\frac{31}{60}$"
+                },
+                {
+                    "question": "Water is pouring into a cuboidal reservoir at the rate of 50 litres per minute. The volume of the reservoir is $120 \\mathrm{m}^{3}$. How many hours will it take to fill the reservoir?",
+                    "options": [
+                        "35",
+                        "45",
+                        "40",
+                        "30"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "According to the question, 1 liter $=1000 \\mathrm{cm}^{3}$\n\n50 liter $=50,000 \\mathrm{cm}^{3}$\n\n50 liter $=50,000 \\times \\frac{1}{1000000}=0.05 \\mathrm{m}^{3}$\n\nRequired time $=\\frac{120}{0.05}$\n\n$=2400$ min. or 40 hours"
+                },
+                {
+                    "question": "Find the number of solid lead balls each $2 \\mathrm{cm}$ in diameter that can be made from solid sphere made up of lead of diameter $14 \\mathrm{cm}$.",
+                    "options": [
+                        "433",
+                        "343",
+                        "430",
+                        "340"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "According to the question, Volume of solid lead balls $=$ Volume of solid sphere\n\nNumber of solid lead balls\n$=\\frac{\\frac{4}{3} \\times \\pi \\times 7 \\times 7 \\times 7}{\\frac{4}{3} \\times \\pi \\times 1 \\times 1 \\times 1}=343$"
+                },
+                {
+                    "question": "If $3 \\sin \\theta=2 \\cos ^{2} \\theta, 0^{\\circ}<\\theta<90^{\\circ}$, then the value of $\\left(\\tan ^{2} \\theta+\\sec ^{2} \\theta-\\operatorname{cosec}^{2} \\theta\\right)$ is :",
+                    "options": [
+                        "-2",
+                        "$-\\frac{7}{3}$",
+                        "$\\frac{7}{3}$",
+                        "2"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Put $\\theta=30^{\\circ}$\n\n$3 \\sin \\theta=2 \\cos ^{2} \\theta=3 \\times \\frac{1}{2}=2 \\times\\left(\\frac{\\sqrt{3}}{2}\\right)^{2}$\n\n$=\\frac{3}{2}=\\frac{3}{2}$ (Condition satisfied)\n\n$\\left(\\tan ^{2} \\theta+\\sec ^{2} \\theta-\\operatorname{cosec}^{2} \\theta\\right)$\n\n$=\\left(\\frac{1}{\\sqrt{3}}\\right)^{2}+\\left(\\frac{2}{\\sqrt{3}}\\right)^{2}$\n\n$-(2)^{2}$\n\n$\\Rightarrow \\frac{1}{3}+\\frac{4}{3}-4=-\\frac{7}{3}$"
+                },
+                {
+                    "question": "A retailer buys 50 pens at the marked price of 44 pens. If he sells these pens at a discount of $1\\%$ on the marked price, what is the profit per cent?",
+                    "options": [
+                        "10%",
+                        "12.5%",
+                        "12%",
+                        "15%"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Let the marked price of one pen $=1 \\mathrm{Rs}$\n\nC.P. of 50 pen $=1 \\times 44=44$ Rs.\n\nS.P. of 50 pen $=1 \\times 50 \\times 99\\%=49.5$ Rs.\n\nRequired profit $=\\frac{49.5-44}{44} \\times 100=\\frac{550}{44}$ $=12.5\\%$"
+                }
+            ]
+        },
+        {
+            "name": "English",
+            "questions": [
+                {
+                    "question": "Select the correctly spelt word.",
+                    "options": [
+                        "Succesfuly",
+                        "Successfully",
+                        "Successfaly",
+                        "Successfullly"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The correct spelling is 'Successfully' which means achieving or having achieved success. For example: She completed the project successfully."
+                },
+                {
+                    "question": "She enjoyed a glass of wine with her desert.",
+                    "options": [
+                        "dessert",
+                        "deserts",
+                        "desserts",
+                        "No improvement"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The correct word is 'dessert' which means a sweet course eaten at the end of a meal. 'Desert' refers to a barren area of land. For example: She enjoyed a glass of wine with her dessert."
+                },
+                {
+                    "question": "The board of directors __________ the company's financial statements every quarter to ensure accuracy and compliance.",
+                    "options": [
+                        "dissolves",
+                        "audits",
+                        "diminishes",
+                        "neglects"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The word 'audits' means to conduct an official financial inspection of a company's accounts. For example: The board of directors audits the company's financial statements every quarter to ensure accuracy and compliance."
+                },
+                {
+                    "question": "A person who studies and works with plants",
+                    "options": [
+                        "Biologist",
+                        "Zoologist",
+                        "Botanist",
+                        "Ecologist"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Botanist - a scientist who studies plants. Biologist - a scientist who studies living organisms. Zoologist - a scientist who studies animals. Ecologist - a scientist who studies ecosystems and the environment."
+                },
+                {
+                    "question": "Select the synonym of the given word. BENEVOLENT",
+                    "options": [
+                        "Malicious",
+                        "Indifferent",
+                        "Charitable",
+                        "Hostile"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The word Benevolent means 'kind' or 'generous'. Someone who is benevolent shows goodwill and kindness to others. Example: The benevolent millionaire donated a large sum to the local charity."
+                },
+                {
+                    "question": "Select the antonym of the given word. BENEVOLENT",
+                    "options": [
+                        "kind",
+                        "generous",
+                        "malevolent",
+                        "charitable"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The meaning of the word 'Benevolent' is 'kind and generous'. The word 'malevolent' means 'having evil or harmful intentions', which is the opposite of 'benevolent'."
+                },
+                {
+                    "question": "The committee members were unable to arrive to a consensus on the proposed changes.",
+                    "options": [
+                        "arrive at",
+                        "arrive for",
+                        "arrive with",
+                        "No improvement"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The correct idiomatic expression is 'arrive at a consensus'. 'Arrive at' means to reach a particular point, conclusion, or decision. For example: After hours of discussion, they finally arrived at an agreement."
+                },
+                {
+                    "question": "The chef cooked a delicious meal.",
+                    "options": [
+                        "A delicious meal was cooked by the chef.",
+                        "A delicious meal is being cooked by the chef.",
+                        "The chef is cooking a delicious meal.",
+                        "A delicious meal is cooked by the chef."
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "To convert this sentence into passive voice, the object 'a delicious meal' should become the subject, the verb should be in the form of 'was/were + past participle', and the subject 'the chef' should become the agent. Thus, 'A delicious meal was cooked by the chef' is the correct passive form."
+                },
+                {
+                    "question": "She do not like to play tennis.",
+                    "options": [
+                        "She",
+                        "do not",
+                        "like to play",
+                        "tennis"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The subject 'She' is third person singular. For third person singular subjects, the verb should be 'does not' instead of 'do not'. Correct sentence: She does not like to play tennis."
+                },
+                {
+                    "question": "Fill in the blank with the most appropriate word. _______ of the slippery roads during the rainy season.",
+                    "options": [
+                        "Careful",
+                        "Cautious",
+                        "Beware",
+                        "Wary"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "'Wary' is an adjective meaning feeling or showing caution about possible dangers or problems. Example: She was wary of crossing the bridge at night."
+                },
+                {
+                    "question": "Select the correct passive form of the given sentence. The chef prepares the meal every day.",
+                    "options": [
+                        "The meal was prepared by the chef every day.",
+                        "The meal is being prepared by the chef every day.",
+                        "The meal is prepared by the chef every day.",
+                        "The meal has been prepared by the chef every day."
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The given sentence is in the simple present tense active voice form. In passive voice, the object 'the meal' becomes the subject. The structure for simple present tense in passive voice: Object + is/am/are + V3 + by + Subject."
+                },
+                {
+                    "question": "Select the correct indirect form of the given sentence. The teacher said to the students, \"Finish your homework on time.\"",
+                    "options": [
+                        "The teacher requested the students to finish their homework on time.",
+                        "The teacher told the students to finish their homework on time.",
+                        "The teacher asked the students that they should finish their homework on time.",
+                        "The teacher told to the students that they should finish their homework on time."
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "To convert direct speech to indirect speech, remove the commas and inverted commas. The verb 'said to' changes to 'told'."
+                },
+                {
+                    "question": "In the given sentence, identify the segment which contains a grammatical error. Sentence: Did he wrote the letter yesterday?",
+                    "options": [
+                        "he wrote",
+                        "the letter",
+                        "Did",
+                        "yesterday"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The given sentence is an interrogative sentence that uses the auxiliary verb 'did'. With the auxiliary verb 'did', we use the base form of the verb. Hence, 'wrote' cannot be used in the given sentence."
+                },
+                {
+                    "question": "In the given sentence, identify the segment which contains the grammatical error. Sentence: The documents was submitted to the office yesterday.",
+                    "options": [
+                        "The documents",
+                        "was submitted",
+                        "to the office",
+                        "yesterday"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "In the given sentence, 'were submitted' should be used instead of 'was submitted'. 'Documents' is a plural noun and should agree with 'were'."
+                },
+                {
+                    "question": "Select the most appropriate synonym of the given word. Abandon",
+                    "options": [
+                        "forsake",
+                        "establish",
+                        "embrace",
+                        "retain"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Abandon means to leave something or someone completely. Forsake means to leave someone forever, especially when they need you. Thus, they are synonyms of each other."
+                },
+                {
+                    "question": "Select the most appropriate meaning of the given idiom. A blessing in disguise",
+                    "options": [
+                        "A misfortune",
+                        "Something good that isn't recognized at first",
+                        "A hidden curse",
+                        "A false promise"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "A blessing in disguise means something good that initially seemed bad or difficult. Example: Losing that job was a blessing in disguise as it led me to a better opportunity."
+                },
+                {
+                    "question": "Select the misspelt word.",
+                    "options": [
+                        "commitee",
+                        "committee",
+                        "commission",
+                        "commitment"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The correct spelling is 'committee'. 'Commitee' is an incorrect spelling."
+                },
+                {
+                    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. Ramesh as well as his teammates were playing football.",
+                    "options": [
+                        "were playing",
+                        "was playing",
+                        "is playing",
+                        "No substitution"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "If two subjects are joined by expressions like 'along with, as well as, in addition to', the verb that follows agrees with the first subject. In this sentence, the verb must agree with the first subject, Ramesh. Thus, 'was playing' will be used instead of 'were playing'."
+                },
+                {
+                    "question": "Select the most appropriate option to fill in the blank. The teacher was furious because the student had _______ his assignment at home.",
+                    "options": [
+                        "forgot",
+                        "forgotten",
+                        "forget",
+                        "forgetting"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The blank should have a word in the past participle form as it follows the auxiliary verb 'had'. The best fit word for the given blank is 'forgotten' which is the past participle form of the verb 'forget'."
+                },
+                {
+                    "question": "Many people believe that exercising daily can improve (1) ______ overall health.",
+                    "options": [
+                        "their",
+                        "there",
+                        "they're",
+                        "them"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Blank 1 needs a possessive pronoun referring to the overall health of people. So, we need to use 'their', which is a possessive pronoun used to refer to something belonging to them (people)."
+                },
+                {
+                    "question": "Some experts (2) ______ that even moderate exercise can have significant benefits.",
+                    "options": [
+                        "say",
+                        "says",
+                        "saying",
+                        "said"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The subject 'Some experts' is plural, so the verb should be in the plural form. 'Say' is correct because it matches the plural subject 'Some experts'."
+                },
+                {
+                    "question": "Regular physical activity helps (3) ______ the risk of chronic diseases.",
+                    "options": [
+                        "reduces",
+                        "reduce",
+                        "reducing",
+                        "reduced"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The word 'helps' should be followed by the base form of the verb (infinitive without 'to'). 'Reduce' is the base form and is correct."
+                },
+                {
+                    "question": "Additionally, exercise (4) ______ improve mental health and mood.",
+                    "options": [
+                        "can",
+                        "will",
+                        "could",
+                        "must"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "We need a modal verb that indicates the possibility or ability of exercise to improve mental health and mood. 'Can' indicates possibility or ability and is correct in this context."
+                },
+                {
+                    "question": "Thus, it is important for individuals to find an exercise routine that (5) ______ their lifestyle.",
+                    "options": [
+                        "fit",
+                        "fits",
+                        "fitting",
+                        "fitted"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The subject 'an exercise routine' is singular, so the verb should be in the singular form. 'Fits' is the singular form and is correct."
+                }
+            ]
+        },
+        {
+            "name": "Reasoning",
+            "questions": [
+                {
+                    "question": "A series is given with one term missing. Choose the correct alternative from the given ones that will complete the series.\n\\[ 1, 4, 9, 25, 49, ? \\]",
+                    "options": [
+                        "64",
+                        "81",
+                        "121",
+                        "100"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The pattern followed is:\n\\[ 1^2 = 1 \\]\n\\[ 2^2 = 4 \\]\n\\[ 3^2 = 9 \\]\n\\[ 5^2 = 25 \\]\n\\[ 7^2 = 49 \\]\n\\[ 11^2 = 121 \\]\nThe sequence follows the squares of prime numbers."
+                },
+                {
+                    "question": "Find the odd one out from the given options.",
+                    "options": [
+                        "Sodium",
+                        "Potassium",
+                        "Magnesium",
+                        "Helium"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Sodium, Potassium, and Magnesium are alkali or alkaline earth metals, while Helium is a noble gas."
+                },
+                {
+                    "question": "In a code language, if 'you are there' is written as 'ter der jer', 'we stay here' is written as 'yer mer ner', 'We are late' is written as 'ser ner der' and 'I stay there' is written as 'yer fer jerr', then how would 'you stay late' be written in this language?",
+                    "options": [
+                        "ter yer ser",
+                        "ter yer mer",
+                        "der yer ser",
+                        "ter mer ser"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Using the given codes, we can deduce: you = ter, stay = yer, late = ser. Therefore, 'you stay late' will be written as 'ter yer ser'."
+                },
+                {
+                    "question": "Select the option that is related to the third term in the same way as the second term is related to the first term\nHKNQ : JIPO :: DGJM : ________",
+                    "options": [
+                        "FELK",
+                        "FEJK",
+                        "FENO",
+                        "FELK"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "FELK is related to DGJM. The pattern is as follows: there is a gap of one alphabet between two letters of the third and fourth term."
+                },
+                {
+                    "question": "Three of the following four number pairs are alike in a certain way and one is different. Find the odd one out.",
+                    "options": [
+                        "Scalpel : Surgeon",
+                        "Chisel : Sculptor",
+                        "Anvil : Blacksmith",
+                        "Paper : Book"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Except Paper : Book, all others are the people related to any field and their instruments."
+                },
+                {
+                    "question": "In a code language, CONCERT is written as CNEROCT. How will SMARTER be written in that language?",
+                    "options": [
+                        "RATESMR",
+                        "RATEMSR",
+                        "RATMESR",
+                        "RETRAMS"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "In the given code, CONCERT is coded as CNEROCT. The pattern is: first letter moves to the end, then the remaining letters are written in reverse order. Following the same pattern, SMARTER will be coded as RATEMSR."
+                },
+                {
+                    "question": "Which number is wrong in the given series?\n3, 7, 7, 11, 9, 13, 13, 17, 15, 23",
+                    "options": [
+                        "9",
+                        "13",
+                        "17",
+                        "23"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The logic is that the gap between the numbers after making pairs is 4, but in 15 & 23 the gap is 8. Therefore, 23 is the wrong number in the series."
+                },
+                {
+                    "question": "In a row of 40 students, if Rahul is 12th from the left, what is his position from the right end?",
+                    "options": [
+                        "28",
+                        "29",
+                        "30",
+                        "31"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Total students = Left position + Right position - 1\n40 = 12 + Right position - 1\nRight position = 40 - 12 + 1 = 29"
+                },
+                {
+                    "question": "If March 15 is a Monday, what day will be three days after the second Friday of the same month?",
+                    "options": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "If March 15 is Monday, then:\nMarch 19 is Friday (1st Friday)\nMarch 26 is Friday (2nd Friday)\nThree days after March 26 is March 29, which is a Wednesday."
+                },
+                {
+                    "question": "Complete the analogy:\nBook : Pages :: Tree : ?",
+                    "options": [
+                        "Branches",
+                        "Leaves",
+                        "Roots",
+                        "Trunk"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "A book is made up of pages, similarly, a tree is primarily recognized by its leaves."
+                },
+                {
+                    "question": "P, Q, R, S, T, and U are sitting in a circle. S is between U and P. T is to the right of P and left of Q. R is not between Q and U. Who is between Q and U?",
+                    "options": [
+                        "R",
+                        "T",
+                        "P",
+                        "S"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The arrangement is: P, S, U, R, Q, T (clockwise). Therefore, T is between Q and U."
+                },
+                {
+                    "question": "Find the wrong number in the series:\n3, 8, 15, 24, 35, 49, 63",
+                    "options": [
+                        "15",
+                        "24",
+                        "35",
+                        "49"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The pattern is:\n$3 = 1^2 + 2$\n$8 = 2^2 + 4$\n$15 = 3^2 + 6$\n$24 = 4^2 + 8$\n$35 = 5^2 + 10$\n$63 = 7^2 + 14$\n$6^2 + 12 = 48$, which fits the pattern. Therefore, 49 is the wrong number in this series."
+                },
+                {
+                    "question": "Select the letter-cluster that can replace the question mark (?) in the given letter-cluster series.\nAE, KQ, EI, LR, IO, ?, OU, NT",
+                    "options": [
+                        "MR",
+                        "NR",
+                        "MS",
+                        "NS"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "There are 2 series involved in this series at even and odd places. At odd place there is a series of consecutive vowels: AE, EI, IO, OU. At even places +1 is added to the corresponding letters, So, L+1=M and R+1=S. MS is the correct answer."
+                },
+                {
+                    "question": "Some plants are vegetable. All vegetables are vitamins. Conclusions:\nI. Some vitamins are plants.\nII. Some vitamins are vegetables.\nIII. No vitamin is plant.",
+                    "options": [
+                        "Either conclusion I or III follows.",
+                        "Only conclusions I and II follow",
+                        "Only conclusions I and III follow",
+                        "Only conclusions II and III follow."
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "There is nothing negative in the statements, so conclusion III is false. Vitamins has a relation of SOME with plants and vegetables, so the conclusions I and II are true.\n![Venn diagram](https://cdn.mathpix.com/snip/images/NbBgshUgOk07ygmnElDZdKh5V7cqoeWigQcXLvlqYPs.original.fullsize.png)"
+                },
+                {
+                    "question": "Study the given pattern carefully and select the number that can replace the question mark (?) in it.\n![Pattern image](https://cdn.mathpix.com/snip/images/9taxc4Th3VrYrLiP6Bft0xWf4OHCiaN49BZUiBVlMsY.original.fullsize.png)",
+                    "options": [
+                        "10",
+                        "14",
+                        "12",
+                        "8"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Logic is: In each column, first number × third number = (second number)^2\n8 × 18 = (12)^2\n32 × ? = 16^2\n? = 8"
+                },
+                {
+                    "question": "Rishabh is Namita's only brother. Rishabh's wife, Mridu has a brother Sonu. Illena is Namita's only niece. How is Sonu related to Illena?",
+                    "options": [
+                        "Maternal uncle",
+                        "Father",
+                        "Brother",
+                        "Paternal uncle"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "According to the following family chart, Sonu is the maternal uncle of Iliana.\n![Family chart](https://cdn.mathpix.com/snip/images/vMaOiLUBFyPmQflto4nTag1D4CKxGLc5bv1o6eLM4wg.original.fullsize.png)"
+                },
+                {
+                    "question": "In the given Venn diagram, the rectangle represents 'Women', the pentagon represents 'Entrepreneurs' and the triangle represents 'Mothers'. The number given in the diagram represents the number of persons in that particular category.\n![Venn diagram](https://cdn.mathpix.com/snip/images/u63LBue59Uhj1z4p6jQUKulz8u1OE05Smy6SoXADZ4k.original.fullsize.png)\nWhat is the total number of women represented in the diagram?",
+                    "options": [
+                        "21",
+                        "74",
+                        "50",
+                        "46"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The total number of women is the sum of all numbers within the rectangle, which is 74."
+                },
+                {
+                    "question": "Two different positions of the same dice are shown below, the six faces of which are numbered 1 to 6. Find the number on the face opposite to the one having 3.\n![Dice image](https://cdn.mathpix.com/snip/images/xOV6MpRs1vjYVIC9gkmGBtkoZqAeKOkDdRvfL5M7YGI.original.fullsize.png)",
+                    "options": [
+                        "2",
+                        "6",
+                        "4",
+                        "1"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "As 1, 4, 5 and 6 are adjacent to 3, the remaining side of 2 is opposite to 3."
+                },
+                {
+                    "question": "Five persons, F, J, N, R and V, are sitting around a circular table facing towards the centre (not necessarily in the same order). J is to the immediate left of F. N is second to the left to F, V is second to the left of J. Who is sitting second to the right of J?",
+                    "options": [
+                        "N",
+                        "F",
+                        "V",
+                        "R"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "As per given data, following circular sitting arrangement is obtained:\n![Seating arrangement](https://cdn.mathpix.com/snip/images/sOKuwZ_ZrPgePUyrRHIHh502KsuC86IUF5-pW8KaQuk.original.fullsize.png)\nHence, R is sitting second to the right of J."
+                },
+                {
+                    "question": "Swati's school bus starts from her house and takes one left turn to reach the hospital. Then, it takes a right turn and covers 5 km. On reaching the school, the bus faces south-west. In which direction was the bus facing when it left Swati's house?",
+                    "options": [
+                        "North-east",
+                        "East",
+                        "North-west",
+                        "South-west"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "![Direction diagram](https://cdn.mathpix.com/snip/images/LCXR-qvVLkaJFm-ldzCKl-EOKiVc_yR-ucFo49ozAvc.original.fullsize.png)\nIf the bus starts from the north, it will face north after reaching the school. Now, if we replace north direction with south-west then bus was facing south-west when it left the house."
+                },
+                {
+                    "question": "Rahul has Rs. 340 in the denominations of Rs. 2 notes, Rs. 5 notes and Rs. 10 notes. The number of notes of each denomination is equal. What is the total number of notes that Rahul has?",
+                    "options": [
+                        "40",
+                        "60",
+                        "20",
+                        "80"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Let each type of note = x.\nSo, 2x + 5x + 10x = 340\n17x = 340\nx = 20\nSo, total notes = 3x = 20 × 3 = 60"
+                },
+                {
+                    "question": "If '$' stands for addition, '@' stands for subtraction, '#' stands for multiplication and '&' stands for division, then what is the value of 12 # 8 $ 36 & 3 @ 6?",
+                    "options": [
+                        "98",
+                        "102",
+                        "79",
+                        "46"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "After interchanging the signs:\n12 × 8 + 36 ÷ 3 - 6\n= 96 + 12 - 6\n= 102"
+                },
+                {
+                    "question": "If '×' means 'addition', '÷' means 'multiplication', '+' means 'subtraction', and '-' means 'division', then what is the value of the following expression?\n16 - 4 × 12 ÷ 3 + 18",
+                    "options": [
+                        "22",
+                        "24",
+                        "18",
+                        "30"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "After changing the operators:\n16 ÷ 4 + 12 × 3 - 18\n= 4 + 36 - 18\n= 22"
+                },
+                {
+                    "question": "Select the correct alternative to indicate the arrangement of the following words in a logical and meaningful order.\n1. Paragraphs\n2. Letters\n3. Sentences\n4. Words\n5. Book\n6. Pages",
+                    "options": [
+                        "234165",
+                        "241365",
+                        "243156",
+                        "243165"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The correct order is:\nLetters → Words → Sentences → Paragraphs → Pages → Book\nHence, 2, 4, 3, 1, 6, 5 is the right answer."
+                },
+                {
+                    "question": "Select the option figure that will come next in the following series.\n![Figure series](https://cdn.mathpix.com/snip/images/nfXYiKH-gGUzDfLeFTkULISy1gBfRYH6M5k5XXwMArw.original.fullsize.png)",
+                    "options": [
+                        "![Option A](https://cdn.mathpix.com/snip/images/_QnkYbk9FfkYyrY6uvM8iBDUnbmKmp8nAO9jiog8MGU.original.fullsize.png)",
+                        "![Option B](https://cdn.mathpix.com/snip/images/ek2sxfu9A2wPBZ-0XUlFA4uD6kuTuIrQYoN6PGw3DrI.original.fullsize.png)",
+                        "![Option C](https://cdn.mathpix.com/snip/images/ki7XA_tD48FjvMibz6ocRgVMkIP3ndc_LuMMJKIwjrc.original.fullsize.png)",
+                        "![Option D](https://cdn.mathpix.com/snip/images/yi28sRf95lO8wVKR4r7dYnQzUCOD5xBBTHA0o46J7jY.original.fullsize.png)"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The correct next figure in the series is ![Option D](https://cdn.mathpix.com/snip/images/yi28sRf95lO8wVKR4r7dYnQzUCOD5xBBTHA0o46J7jY.original.fullsize.png)"
+                }
+            ]
+        }
+    ]
+}
