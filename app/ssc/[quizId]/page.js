@@ -1,8 +1,7 @@
-// QuizPage.js
 "use client";
 
-import { useEffect, useState } from "react";
-import { Tabs, Tab, Button, Divider } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -110,6 +109,7 @@ export default function QuizPage({ params }) {
 			setSelectedOption(tempSelectedOption);
 		}
 		submitQuiz();
+		setIsAnalysisOpen(true); // Open the analysis modal after submitting
 	};
 
 	const handleClearResponse = () => {
@@ -122,6 +122,7 @@ export default function QuizPage({ params }) {
 	const handleComplete = () => {
 		if (!isSubmitted) {
 			submitQuiz();
+			setIsAnalysisOpen(true); // Open the analysis modal after time is up
 		}
 	};
 
@@ -154,7 +155,9 @@ export default function QuizPage({ params }) {
 	const formatTime = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+			.toString()
+			.padStart(2, "0")}`;
 	};
 
 	return (
@@ -268,6 +271,8 @@ export default function QuizPage({ params }) {
 										<AnalysisModal
 											quizData={quizData}
 											score={calculateScore()}
+											isOpen={isAnalysisOpen}
+											onOpenChange={setIsAnalysisOpen}
 										/>
 									</>
 								)}

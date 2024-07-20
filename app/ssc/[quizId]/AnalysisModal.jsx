@@ -6,7 +6,6 @@ import {
 	ModalBody,
 	ModalFooter,
 	Button,
-	useDisclosure,
 	Tabs,
 	Tab,
 	Card,
@@ -31,9 +30,7 @@ const COLORS = [
 	"#FFA07A",
 ];
 
-const AnalysisModal = ({ quizData, score }) => {
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 	const calculateStatistics = () => {
 		if (!quizData || !quizData.sections) {
 			console.error("Invalid quizData structure");
@@ -307,7 +304,12 @@ const AnalysisModal = ({ quizData, score }) => {
 
 	return (
 		<>
-			<Button onPress={onOpen} color="primary" variant="shadow" size="sm">
+			<Button
+				onPress={() => onOpenChange(true)}
+				color="primary"
+				variant="shadow"
+				size="sm"
+			>
 				Show Analysis
 			</Button>
 			<Modal

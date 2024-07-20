@@ -11,9 +11,7 @@ const LanguageSelection = ({
 
 	const languages = [
 		{ value: "en", label: "English" },
-		{ value: "es", label: "Español" },
-		{ value: "fr", label: "Français" },
-		{ value: "de", label: "Deutsch" },
+
 		// Add more languages as needed
 	];
 
