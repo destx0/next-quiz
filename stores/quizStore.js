@@ -79,15 +79,6 @@ const useQuizStore = create((set, get) => ({
 			};
 		}),
 
-	setCurrentIndices: (sectionIndex, questionIndex) =>
-		set((state) => ({
-			quizData: {
-				...state.quizData,
-				currentSectionIndex: sectionIndex,
-				currentQuestionIndex: questionIndex,
-			},
-		})),
-
 	updateQuestionState: (sectionIndex, questionIndex, newState) =>
 		set((state) => ({
 			quizData: {
@@ -110,28 +101,48 @@ const useQuizStore = create((set, get) => ({
 
 	markCurrentQuestion: () =>
 		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex } =
+			const { currentSectionIndex, currentQuestionIndex, sections } =
 				state.quizData;
+			const updatedSections = sections.map((section, sIndex) =>
+				sIndex === currentSectionIndex
+					? {
+							...section,
+							questions: section.questions.map(
+								(question, qIndex) =>
+									qIndex === currentQuestionIndex
+										? {
+												...question,
+												isMarked: !question.isMarked,
+											}
+										: question
+							),
+						}
+					: section
+			);
+
+			// Determine the next question
+			let nextSectionIndex = currentSectionIndex;
+			let nextQuestionIndex = currentQuestionIndex + 1;
+
+			if (
+				nextQuestionIndex >=
+				sections[currentSectionIndex].questions.length
+			) {
+				nextSectionIndex++;
+				nextQuestionIndex = 0;
+			}
+
+			if (nextSectionIndex >= sections.length) {
+				nextSectionIndex = currentSectionIndex;
+				nextQuestionIndex = currentQuestionIndex;
+			}
+
 			return {
 				quizData: {
 					...state.quizData,
-					sections: state.quizData.sections.map((section, sIndex) =>
-						sIndex === currentSectionIndex
-							? {
-									...section,
-									questions: section.questions.map(
-										(question, qIndex) =>
-											qIndex === currentQuestionIndex
-												? {
-														...question,
-														isMarked:
-															!question.isMarked,
-													}
-												: question
-									),
-								}
-							: section
-					),
+					sections: updatedSections,
+					currentSectionIndex: nextSectionIndex,
+					currentQuestionIndex: nextQuestionIndex,
 				},
 			};
 		}),

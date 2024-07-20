@@ -10,7 +10,7 @@
             "name": "Reasoning",
             "questions": [
                 {
-                    "question": "A series is given with one term missing. Choose the correct alternative from the given ones that will complete the series.\n\\[ 1, 4, 9, 25, 49, ? \\]",
+                    "question": "A series is given with one term missing. Choose the correct alternative from the given ones that will complete the series.\n\n$1, 4, 9, 25, 49, ?$",
                     "options": [
                         "64",
                         "81",
@@ -18,7 +18,7 @@
                         "100"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "The pattern followed is:\n\\[ 1^2 = 1 \\]\n\\[ 2^2 = 4 \\]\n\\[ 3^2 = 9 \\]\n\\[ 5^2 = 25 \\]\n\\[ 7^2 = 49 \\]\n\\[ 11^2 = 121 \\]\nThe sequence follows the squares of prime numbers."
+                    "explanation": "The pattern followed is:\n\n$1^2 = 1$\n$2^2 = 4$\n$3^2 = 9$\n$5^2 = 25$\n$7^2 = 49$\n$11^2 = 121$\n\nThe sequence follows the squares of prime numbers."
                 },
                 {
                     "question": "Find the odd one out from the given options.",
@@ -40,10 +40,10 @@
                         "ter mer ser"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "Using the given codes, we can deduce: you = ter, stay = yer, late = ser. Therefore, 'you stay late' will be written as 'ter yer ser'."
+                    "explanation": "From the given codes:\n\n1. you are there ↔ 'ter der jer'\n2. we stay here ↔ yer mer ner\n3. I stay there ↔ yer fer jer\n4. We are late ↔ 'ser ner der'\n\nWe can deduce:\n- There = jer\n- are = der\n- Stay = yer\n- I = fer\n- you = ter\n- late = ser (deduced from the options)\n\nTherefore, 'you stay late' will be written as 'ter yer ser'."
                 },
                 {
-                    "question": "Select the option that is related to the third term in the same way as the second term is related to the first term\nHKNQ : JIPO :: DGJM : ________",
+                    "question": "Select the option that is related to the third term in the same way as the second term is related to the first term\n\nHKNQ : JIPO :: DGJM : ________",
                     "options": [
                         "FELK",
                         "FEJK",
@@ -62,7 +62,7 @@
                         "Paper : Book"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "Except Paper : Book, all others are the people related to any field and their instruments."
+                    "explanation": "Except for 'Paper : Book', all others are pairs of people related to a specific field and their instruments. Paper is not an instrument used by a book; rather, it's a component of a book."
                 },
                 {
                     "question": "In a code language, CONCERT is written as CNEROCT. How will SMARTER be written in that language?",
@@ -73,10 +73,10 @@
                         "RETRAMS"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "In the given code, CONCERT is coded as CNEROCT. The pattern is: first letter moves to the end, then the remaining letters are written in reverse order. Following the same pattern, SMARTER will be coded as RATEMSR."
+                    "explanation": "In the given code, CONCERT is coded as CNEROCT. Let's number the letters:\n\n$C O N C E R T$\n$1 2 3 4 5 6 7$\n\nThey are coded as:\n$4 3 5 6 2 1 7$\n\nApplying the same pattern to SMARTER:\n\n$S M A R T E R$\n$1 2 3 4 5 6 7$\n\nWill be coded as:\n$4 3 5 6 2 1 7$\n\nWhich gives us: RATEMSR"
                 },
                 {
-                    "question": "Which number is wrong in the given series?\n3, 7, 7, 11, 9, 13, 13, 17, 15, 23",
+                    "question": "Which number is wrong in the given series?\n\n3, 7, 7, 11, 9, 13, 13, 17, 15, 23",
                     "options": [
                         "9",
                         "13",
@@ -84,7 +84,7 @@
                         "23"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "The logic is that the gap between the numbers after making pairs is 4, but in 15 & 23 the gap is 8. Therefore, 23 is the wrong number in the series."
+                    "explanation": "The logic is that the gap between the numbers after making pairs is 4:\n\n(3, 7), (7, 11), (9, 13), (13, 17)\n\nHowever, in the last pair (15, 23), the gap is 8. Therefore, 23 is the wrong number in the series."
                 },
                 {
                     "question": "In a row of 40 students, if Rahul is 12th from the left, what is his position from the right end?",
@@ -95,7 +95,7 @@
                         "31"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Total students = Left position + Right position - 1\n40 = 12 + Right position - 1\nRight position = 40 - 12 + 1 = 29"
+                    "explanation": "To find Rahul's position from the right end, we use the formula:\n\nTotal students = Left position + Right position - 1\n\n$40 = 12 + Right position - 1$\n$Right position = 40 - 12 + 1 = 29$\n\nTherefore, Rahul's position from the right end is 29."
                 },
                 {
                     "question": "If March 15 is a Monday, what day will be three days after the second Friday of the same month?",
@@ -106,10 +106,10 @@
                         "Thursday"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "If March 15 is Monday, then:\nMarch 19 is Friday (1st Friday)\nMarch 26 is Friday (2nd Friday)\nThree days after March 26 is March 29, which is a Wednesday."
+                    "explanation": "If March 15 is Monday, then:\n\n- March 19 is Friday (1st Friday)\n- March 26 is Friday (2nd Friday)\n- Three days after March 26 is March 29, which is a Wednesday."
                 },
                 {
-                    "question": "Complete the analogy:\nBook : Pages :: Tree : ?",
+                    "question": "Complete the analogy:\n\nBook : Pages :: Tree : ?",
                     "options": [
                         "Branches",
                         "Leaves",
@@ -117,7 +117,7 @@
                         "Trunk"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "A book is made up of pages, similarly, a tree is primarily recognized by its leaves."
+                    "explanation": "A book is made up of pages, similarly, a tree is primarily recognized by its leaves. The leaves are to a tree what pages are to a book - they are numerous, essential components that make up a significant part of the whole."
                 },
                 {
                     "question": "P, Q, R, S, T, and U are sitting in a circle. S is between U and P. T is to the right of P and left of Q. R is not between Q and U. Who is between Q and U?",
@@ -128,10 +128,10 @@
                         "S"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "The arrangement is: P, S, U, R, Q, T (clockwise). Therefore, T is between Q and U."
+                    "explanation": "Based on the given information, we can arrange the people in the following order (clockwise):\n\nP, S, U, R, Q, T\n\nTherefore, T is between Q and U."
                 },
                 {
-                    "question": "Find the wrong number in the series:\n3, 8, 15, 24, 35, 49, 63",
+                    "question": "Find the wrong number in the series:\n\n3, 8, 15, 24, 35, 49, 63",
                     "options": [
                         "15",
                         "24",
@@ -139,10 +139,10 @@
                         "49"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "The pattern is:\n$3 = 1^2 + 2$\n$8 = 2^2 + 4$\n$15 = 3^2 + 6$\n$24 = 4^2 + 8$\n$35 = 5^2 + 10$\n$63 = 7^2 + 14$\n$6^2 + 12 = 48$, which fits the pattern. Therefore, 49 is the wrong number in this series."
+                    "explanation": "The pattern in this series is:\n\n$3 = 1^2 + 2$\n$8 = 2^2 + 4$\n$15 = 3^2 + 6$\n$24 = 4^2 + 8$\n$35 = 5^2 + 10$\n$63 = 7^2 + 14$\n\nFor the 6th term, it should be:\n$6^2 + 12 = 48$\n\nTherefore, 49 is the wrong number in this series."
                 },
                 {
-                    "question": "Select the letter-cluster that can replace the question mark (?) in the given letter-cluster series.\nAE, KQ, EI, LR, IO, ?, OU, NT",
+                    "question": "Select the letter-cluster that can replace the question mark (?) in the given letter-cluster series.\n\nAE, KQ, EI, LR, IO, ?, OU, NT",
                     "options": [
                         "MR",
                         "NR",
@@ -150,10 +150,10 @@
                         "NS"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "There are 2 series involved in this series at even and odd places. At odd place there is a series of consecutive vowels: AE, EI, IO, OU. At even places +1 is added to the corresponding letters, So, L+1=M and R+1=S. MS is the correct answer."
+                    "explanation": "There are two series involved in this sequence, alternating at even and odd places:\n\n1. At odd places, there is a series of consecutive vowels: AE, EI, IO, OU.\n2. At even places, +1 is added to the corresponding letters of the previous even-place term:\n   KQ → LR → MS (L+1=M and R+1=S)\n\nTherefore, MS is the correct answer to replace the question mark."
                 },
                 {
-                    "question": "Some plants are vegetable. All vegetables are vitamins. Conclusions:\nI. Some vitamins are plants.\nII. Some vitamins are vegetables.\nIII. No vitamin is plant.",
+                    "question": "Some plants are vegetable.\nAll vegetables are vitamins.\n\nConclusions:\nI. Some vitamins are plants.\nII. Some vitamins are vegetables.\nIII. No vitamin is plant.",
                     "options": [
                         "Either conclusion I or III follows.",
                         "Only conclusions I and II follow",
@@ -161,10 +161,10 @@
                         "Only conclusions II and III follow."
                     ],
                     "correctAnswer": 1,
-                    "explanation": "There is nothing negative in the statements, so conclusion III is false. Vitamins has a relation of SOME with plants and vegetables, so the conclusions I and II are true.\n![Venn diagram](https://cdn.mathpix.com/snip/images/NbBgshUgOk07ygmnElDZdKh5V7cqoeWigQcXLvlqYPs.original.fullsize.png)"
+                    "explanation": "Let's analyze the given statements and conclusions:\n\n1. Some plants are vegetables (Some P are V)\n2. All vegetables are vitamins (All V are Vi)\n\nFrom these, we can conclude:\n- Some plants are vitamins (because Some P are V, and All V are Vi)\n- Some vitamins are vegetables (directly from statement 2)\n\nTherefore:\n- Conclusion I (Some vitamins are plants) is true.\n- Conclusion II (Some vitamins are vegetables) is true.\n- Conclusion III (No vitamin is plant) is false, as it contradicts conclusion I.\n\nHence, only conclusions I and II follow."
                 },
                 {
-                    "question": "Study the given pattern carefully and select the number that can replace the question mark (?) in it.\n![Pattern image](https://cdn.mathpix.com/snip/images/9taxc4Th3VrYrLiP6Bft0xWf4OHCiaN49BZUiBVlMsY.original.fullsize.png)",
+                    "question": "Study the given pattern carefully and select the number that can replace the question mark (?) in it.\n\n![Pattern](https://cdn.mathpix.com/snip/images/9taxc4Th3VrYrLiP6Bft0xWf4OHCiaN49BZUiBVlMsY.original.fullsize.png)",
                     "options": [
                         "10",
                         "14",
@@ -172,7 +172,7 @@
                         "8"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "Logic is: In each column, first number × third number = (second number)^2\n8 × 18 = (12)^2\n32 × ? = 16^2\n? = 8"
+                    "explanation": "The logic in each column is:\n\nFirst number × Third number = (Second number)²\n\nFor the first column:\n$8 × 18 = (12)^2 = 144$\n\nFor the second column:\n$32 × ? = 16^2 = 256$\n\nSolving for ?:\n$32 × ? = 256$\n$? = 256 ÷ 32 = 8$\n\nTherefore, the number that replaces the question mark is 8."
                 },
                 {
                     "question": "Rishabh is Namita's only brother. Rishabh's wife, Mridu has a brother Sonu. Illena is Namita's only niece. How is Sonu related to Illena?",
@@ -183,10 +183,10 @@
                         "Paternal uncle"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "According to the following family chart, Sonu is the maternal uncle of Iliana.\n![Family chart](https://cdn.mathpix.com/snip/images/vMaOiLUBFyPmQflto4nTag1D4CKxGLc5bv1o6eLM4wg.original.fullsize.png)"
+                    "explanation": "Let's break down the relationships:\n\n1. Rishabh is Namita's brother\n2. Mridu is Rishabh's wife\n3. Sonu is Mridu's brother\n4. Illena is Namita's niece\n\nSince Illena is Namita's niece, she must be Rishabh and Mridu's daughter. \n\nTherefore, Sonu (Mridu's brother) is Illena's maternal uncle.\n\n![Family Tree](https://cdn.mathpix.com/snip/images/vMaOiLUBFyPmQflto4nTag1D4CKxGLc5bv1o6eLM4wg.original.fullsize.png)"
                 },
                 {
-                    "question": "In the given Venn diagram, the rectangle represents 'Women', the pentagon represents 'Entrepreneurs' and the triangle represents 'Mothers'. The number given in the diagram represents the number of persons in that particular category.\n![Venn diagram](https://cdn.mathpix.com/snip/images/u63LBue59Uhj1z4p6jQUKulz8u1OE05Smy6SoXADZ4k.original.fullsize.png)\nWhat is the total number of women represented in the diagram?",
+                    "question": "In the given Venn diagram, the rectangle represents 'Women', the pentagon represents 'Entrepreneurs' and the triangle represents 'Mothers'. The number given in the diagram represents the number of persons in that particular category.\n\n![Venn Diagram](https://cdn.mathpix.com/snip/images/u63LBue59Uhj1z4p6jQUKulz8u1OE05Smy6SoXADZ4k.original.fullsize.png)",
                     "options": [
                         "21",
                         "74",
@@ -194,10 +194,10 @@
                         "46"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "The total number of women is the sum of all numbers within the rectangle, which is 74."
+                    "explanation": "To find the total number of women, we need to sum up all the regions within the rectangle:\n\n$10 + 15 + 21 + 8 + 12 + 3 + 5 = 74$\n\nTherefore, the total number of women represented in the Venn diagram is 74."
                 },
                 {
-                    "question": "Two different positions of the same dice are shown below, the six faces of which are numbered 1 to 6. Find the number on the face opposite to the one having 3.\n![Dice image](https://cdn.mathpix.com/snip/images/xOV6MpRs1vjYVIC9gkmGBtkoZqAeKOkDdRvfL5M7YGI.original.fullsize.png)",
+                    "question": "Two different positions of the same dice are shown below, the six faces of which are numbered 1 to 6. Find the number on the face opposite to the one having 3.\n\n![Dice Positions](https://cdn.mathpix.com/snip/images/xOV6MpRs1vjYVIC9gkmGBtkoZqAeKOkDdRvfL5M7YGI.original.fullsize.png)",
                     "options": [
                         "2",
                         "6",
@@ -205,7 +205,7 @@
                         "1"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "As 1, 4, 5 and 6 are adjacent to 3, the remaining side of 2 is opposite to 3."
+                    "explanation": "From the given images, we can see that:\n\n1. 1, 4, 5, and 6 are adjacent to 3.\n2. The only number not visible and not adjacent to 3 is 2.\n\nOn a standard die, opposite faces always sum to 7. Since 3 is given, its opposite face should be 4. However, 4 is shown to be adjacent to 3.\n\nTherefore, by elimination, 2 must be on the face opposite to 3."
                 },
                 {
                     "question": "Five persons, F, J, N, R and V, are sitting around a circular table facing towards the centre (not necessarily in the same order). J is to the immediate left of F. N is second to the left to F, V is second to the left of J. Who is sitting second to the right of J?",
@@ -216,7 +216,7 @@
                         "R"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "As per given data, following circular sitting arrangement is obtained:\n![Seating arrangement](https://cdn.mathpix.com/snip/images/sOKuwZ_ZrPgePUyrRHIHh502KsuC86IUF5-pW8KaQuk.original.fullsize.png)\nHence, R is sitting second to the right of J."
+                    "explanation": "Based on the given information, we can arrange the persons as follows:\n\n![Circular Arrangement](https://cdn.mathpix.com/snip/images/sOKuwZ_ZrPgePUyrRHIHh502KsuC86IUF5-pW8KaQuk.original.fullsize.png)\n\nStarting from J and moving clockwise:\nJ -> F -> R -> N -> V\n\nTherefore, R is sitting second to the right of J."
                 },
                 {
                     "question": "Swati's school bus starts from her house and takes one left turn to reach the hospital. Then, it takes a right turn and covers 5 km. On reaching the school, the bus faces south-west. In which direction was the bus facing when it left Swati's house?",
@@ -227,7 +227,7 @@
                         "South-west"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "![Direction diagram](https://cdn.mathpix.com/snip/images/LCXR-qvVLkaJFm-ldzCKl-EOKiVc_yR-ucFo49ozAvc.original.fullsize.png)\nIf the bus starts from the north, it will face north after reaching the school. Now, if we replace north direction with south-west then bus was facing south-west when it left the house."
+                    "explanation": "Let's analyze the bus route:\n\n1. The bus starts from Swati's house.\n2. It takes a left turn to reach the hospital.\n3. Then it takes a right turn and travels 5 km.\n4. At the school, it faces south-west.\n\n![Bus Route](https://cdn.mathpix.com/snip/images/LCXR-qvVLkaJFm-ldzCKl-EOKiVc_yR-ucFo49ozAvc.original.fullsize.png)\n\nIf we trace the path backwards:\n- The bus is facing south-west at the school.\n- Before the right turn, it was facing west.\n- Before the left turn (at Swati's house), it was facing south-west.\n\nTherefore, the bus was facing south-west when it left Swati's house."
                 },
                 {
                     "question": "Rahul has Rs. 340 in the denominations of Rs. 2 notes, Rs. 5 notes and Rs. 10 notes. The number of notes of each denomination is equal. What is the total number of notes that Rahul has?",
@@ -238,7 +238,7 @@
                         "80"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Let each type of note = x.\nSo, 2x + 5x + 10x = 340\n17x = 340\nx = 20\nSo, total notes = 3x = 20 × 3 = 60"
+                    "explanation": "Let's solve this step by step:\n\n1. Let the number of notes of each denomination be x.\n2. Total value = (2x) + (5x) + (10x) = 340\n3. Simplifying: 17x = 340\n4. Solving for x: x = 340 ÷ 17 = 20\n\nSo, there are 20 notes of each denomination.\nTotal number of notes = 20 + 20 + 20 = 60\n\nTherefore, Rahul has a total of 60 notes."
                 },
                 {
                     "question": "If '!' stands for addition, '@' stands for subtraction, '#' stands for multiplication and '&' stands for division, then what is the value of 12 # 8 ! 36 & 3 @ 6?",
@@ -249,10 +249,10 @@
                         "46"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "After interchanging the signs:\n12 × 8 + 36 ÷ 3 - 6\n= 96 + 12 - 6\n= 102"
+                    "explanation": "Let's replace the symbols with their corresponding operations:\n\n12 # 8 ! 36 & 3 @ 6\n= 12 × 8 + 36 ÷ 3 - 6\n\nNow, following the order of operations (BODMAS):\n\n1. 12 × 8 = 96\n2. 36 ÷ 3 = 12\n3. 96 + 12 - 6 = 108 - 6 = 102\n\nTherefore, the final answer is 102."
                 },
                 {
-                    "question": "If '×' means 'addition', '÷' means 'multiplication', '+' means 'subtraction', and '-' means 'division', then what is the value of the following expression?\n16 - 4 × 12 ÷ 3 + 18",
+                    "question": "If '×' means 'addition', '÷' means 'multiplication', '+' means 'subtraction', and '-' means 'division', then what is the value of the following expression?\n\n16 - 4 × 12 ÷ 3 + 18",
                     "options": [
                         "22",
                         "24",
@@ -260,10 +260,10 @@
                         "30"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "After changing the operators:\n16 ÷ 4 + 12 × 3 - 18\n= 4 + 36 - 18\n= 22"
+                    "explanation": "Let's replace the symbols with their new meanings:\n\n16 - 4 × 12 ÷ 3 + 18\n= 16 ÷ 4 + 12 × 3 - 18\n\nNow, following the order of operations (but with the new meanings):\n\n1. 12 × 3 = 36 (multiplication)\n2. 16 ÷ 4 = 4 (division)\n3. 4 + 36 - 18 = 40 - 18 = 22 (addition and subtraction from left to right)\n\nTherefore, the final answer is 22."
                 },
                 {
-                    "question": "Select the correct alternative to indicate the arrangement of the following words in a logical and meaningful order.\n1. Paragraphs\n2. Letters\n3. Sentences\n4. Words\n5. Book\n6. Pages",
+                    "question": "Select the correct alternative to indicate the arrangement of the following words in a logical and meaningful order.\n\n1. Paragraphs\n2. Letters\n3. Sentences\n4. Words\n5. Book\n6. Pages",
                     "options": [
                         "234165",
                         "241365",
@@ -271,10 +271,10 @@
                         "243165"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "The correct order is:\nLetters → Words → Sentences → Paragraphs → Pages → Book\nHence, 2, 4, 3, 1, 6, 5 is the right answer."
+                    "explanation": "The logical order from smallest to largest unit is:\n\n2. Letters\n4. Words\n3. Sentences\n1. Paragraphs\n6. Pages\n5. Book\n\nThis corresponds to the option 243165."
                 },
                 {
-                    "question": "Select the option figure that will come next in the following series.\n![Figure series](https://cdn.mathpix.com/snip/images/nfXYiKH-gGUzDfLeFTkULISy1gBfRYH6M5k5XXwMArw.original.fullsize.png)",
+                    "question": "Select the option figure that will come next in the following series.\n\n![Figure Series](https://cdn.mathpix.com/snip/images/nfXYiKH-gGUzDfLeFTkULISy1gBfRYH6M5k5XXwMArw.original.fullsize.png)",
                     "options": [
                         "![Option A](https://cdn.mathpix.com/snip/images/_QnkYbk9FfkYyrY6uvM8iBDUnbmKmp8nAO9jiog8MGU.original.fullsize.png)",
                         "![Option B](https://cdn.mathpix.com/snip/images/ek2sxfu9A2wPBZ-0XUlFA4uD6kuTuIrQYoN6PGw3DrI.original.fullsize.png)",
@@ -282,7 +282,7 @@
                         "![Option D](https://cdn.mathpix.com/snip/images/yi28sRf95lO8wVKR4r7dYnQzUCOD5xBBTHA0o46J7jY.original.fullsize.png)"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "The correct next figure in the series is ![Option D](https://cdn.mathpix.com/snip/images/yi28sRf95lO8wVKR4r7dYnQzUCOD5xBBTHA0o46J7jY.original.fullsize.png)"
+                    "explanation": "The pattern in the series is as follows:\n\n1. The arrow rotates 90 degrees clockwise in each step.\n2. The number of black dots increases by 1 in each step, starting from 1 in the first figure.\n\nFollowing this pattern:\n- The arrow in the next figure should point downwards.\n- There should be 5 black dots in the next figure.\n\nOption D matches these criteria, with a downward-pointing arrow and 5 black dots."
                 }
             ]
         },
@@ -570,15 +570,15 @@
             "name": "Quant",
             "questions": [
                 {
-                    "question": "If the ratio of the mode and median of a certain data is 9:8, then the ratio of its mean and median is:",
+                    "question": "If the ratio of the mode and median of a certain data is $9:8$, then the ratio of its mean and median is:",
                     "options": [
-                        "15:17",
-                        "13:15",
-                        "15:16",
-                        "11:15"
+                        "$15:17$",
+                        "$13:15$",
+                        "$15:16$",
+                        "$11:15$"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "Mode = 3(Median) - 2(Mean)\n9 = 3(8) - 2(Mean) ⇒ 2(Mean) = 24 - 9\n2(Mean) = 15 ⇒ Mean = 15/2\nMean : Median = 15/2 : 8 = 15 : 16"
+                    "explanation": "Mode $= 3$ (Median) - 2 (Mean)\n\n$9 = 3(8) - 2$ (Mean) $\\Rightarrow 2$ (Mean) $= 24 - 9$\n\n2 (Mean) $= 15 \\Rightarrow$ Mean $= \\frac{15}{2}$\n\nMean : Median $= \\frac{15}{2} : 8 = 15 : 16$"
                 },
                 {
                     "question": "If the cost price of 20 articles is equal to the selling price of 16 articles, what is the profit percentage?",
@@ -589,21 +589,21 @@
                         "30%"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Let CP be the cost price of one article.\nSP of 16 articles = CP of 20 articles\n16 × SP = 20 × CP\nSP/CP = 20/16 = 5/4\nSP = 5/4 CP\nProfit = SP - CP = 5/4 CP - CP = CP/4\nProfit percentage = (Profit/CP) × 100 = (1/4) × 100 = 25%"
+                    "explanation": "Let the cost price of one article be $\\text{CP}$.\n\nSo, the cost price of 20 articles = $20 \\times \\text{CP}$.\n\nLet the selling price of one article be $\\text{SP}$.\n\nSo, the selling price of 16 articles = $16 \\times \\text{SP}$.\n\nAccording to the question,\n$20 \\times \\text{CP} = 16 \\times \\text{SP}$\n\n$\\frac{\\text{SP}}{\\text{CP}} = \\frac{20}{16}$\n\n$\\frac{\\text{SP}}{\\text{CP}} = \\frac{5}{4}$\n\n$\\text{SP} = \\frac{5}{4} \\text{CP}$\n\nProfit = $\\text{SP} - \\text{CP}$\n\nProfit = $\\frac{5}{4} \\text{CP} - \\text{CP}$\n\nProfit = $\\frac{5\\text{CP} - 4\\text{CP}}{4}$\n\nProfit = $\\frac{\\text{CP}}{4}$\n\nProfit percentage = $\\left( \\frac{\\text{Profit}}{\\text{CP}} \\times 100 \\right)$\n\n$\\text{Profit percentage} = \\left( \\frac{\\frac{\\text{CP}}{4}}{\\text{CP}} \\times 100 \\right)$\n\n$\\text{Profit percentage} = \\left( \\frac{1}{4} \\times 100 \\right)$\n\n$\\text{Profit percentage} = 25\\%$"
                 },
                 {
                     "question": "15 men and 21 women, working together, can do a job in 56 days, while 12 men and 24 women, working together, can do the same job in 64 days. In how many days can the same job be done by 18 men and 24 women, working together?",
                     "options": [
-                        "47 6/19",
-                        "47 5/19",
-                        "47 9/19",
-                        "47 3/19"
+                        "$47 \\frac{6}{19}$",
+                        "$47 \\frac{5}{19}$",
+                        "$47 \\frac{9}{19}$",
+                        "$47 \\frac{3}{19}$"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "(15 men + 21 women) × 56 = (12 men + 24 women) × 64\n105 men + 147 women = 96 men + 192 women\n9 men = 45 women\nmen/women = 5/1\nTotal work = (15 × 5 + 21 × 1) × 56 = 96 × 56\nRequired time = (96 × 56) / ((18 × 5) + (24 × 1)) = (96 × 56) / 114 = 47 3/19 days"
+                    "explanation": "According to the question,\n\n$m_1 \\times w_1 \\times h_1 = m_2 \\times w_2 \\times h_2$\n\n(15 men + 21 women) $\\times 56 = (12$ men + 24 women$) \\times 64$\n\n(15 men + 21 women) $\\times 7 = (12$ men + 24 women$) \\times 8$\n\n105 men + 147 women = 96 men + 192 women\n\n9 men = 45 women\n\n$\\frac{\\text{men}}{\\text{women}} = \\frac{5}{1}$\n\nTotal work = $(15 \\times 5 + 21 \\times 1) \\times 56 = 96 \\times 56$\n\nRequired time = $\\frac{96 \\times 56}{(18 \\times 5) + (24 \\times 1)} = \\frac{96 \\times 56}{114} = 47 \\frac{3}{19}$ days"
                 },
                 {
-                    "question": "A can do 20% of a job in 7 days and B can do 25% of the job in 7 days if they worked alone. How much of the job (in percentage) can they complete in 7 days if they worked together?",
+                    "question": "A can do $20\\%$ of a job in 7 days and $B$ can do $25\\%$ of the job in 7 days if they worked alone. How much of the job (in percentage) can they complete in 7 days if they worked together?",
                     "options": [
                         "38%",
                         "52%",
@@ -611,10 +611,10 @@
                         "45%"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "Time taken by A to do whole work = 7 × 5 = 35 days\nTime taken by B to do whole work = 7 × 4 = 28 days\nTotal efficiency of A and B = 4 + 5 = 9 units\nWork done by A and B in 7 days = 9 × 7 = 63 units\nRequired % = (63/140) × 100 = 45%"
+                    "explanation": "According to the question, Time taken by A to do the whole work = $7 \\times 5 = 35$ days\n\nTime taken by $B$ to do the whole work = $7 \\times 4 = 28$ days\n\nTotal efficiency of $A$ and $B = 4 + 5 = 9$ units\n\nWork done by $A$ and $B$ in 7 days = $9 \\times 7 = 63$ units\n\nRequired $\\% = \\frac{63}{140} \\times 100 = 45\\%$"
                 },
                 {
-                    "question": "Pipes A and B can fill a tank in 18 minutes and 30 minutes, respectively. Pipe C, attached to the tank, can drain off 125 litres of water per minute. If all the pipes are opened together, the tank is filled in 45 minutes. The capacity of the tank in litres, is:",
+                    "question": "Pipes $A$ and $B$ can fill a tank in 18 minutes and 30 minutes, respectively. Pipe C, attached to the tank, can drain off 125 litres of water per minute. If all the pipes are opened together, the tank is filled in 45 minutes. The capacity of the tank in litres, is:",
                     "options": [
                         "1500",
                         "1375",
@@ -622,10 +622,10 @@
                         "2000"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "Efficiency of C = 5 + 3 - 2 = 6 unit\nC can empty entire tank in = 90/6 = 15 minutes\nWater drained by C in 1 minute = 125 litres\nWater drained by C in 15 minutes = 125 × 15 = 1875 litres\nCapacity of tank = 1875 litres"
+                    "explanation": "Efficiency of $C = 5 + 3 - 2 = 6$ units\n\nSo, $C$ can empty entire tank in $= \\frac{90}{6} = 15$ minutes\n\nWater drained by $C$ in 1 minute = 125 litres\n\nWater drained by $C$ in 15 minutes = $125 \\times 15 = 1875$ litres\n\nCapacity of tank = 1875 litres"
                 },
                 {
-                    "question": "What is the area (in unit squares) of the triangle enclosed by the graphs of the equations 2x + 5y = 12, x + y = 3 and the x-axis?",
+                    "question": "What is the area (in unit squares) of the triangle enclosed by the graphs of the equations $2x + 5y = 12$, $x + y = 3$ and the $x$-axis?",
                     "options": [
                         "2.5",
                         "3.5",
@@ -633,21 +633,21 @@
                         "4"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "Intersection point of 2x + 5y = 12 and x + y = 3 is (1, 2)\nIntersection point of 2x + 5y = 12 and y = 0 is (6, 0)\nIntersection point of x + y = 3 and y = 0 is (3, 0)\nArea of triangle = 1/2|[1(0-0) + 6(0-2) + 3(2-0)]| = 1/2|[-12 + 6]| = 3 unit²"
+                    "explanation": "Intersection point of $2x + 5y = 12$ and $x + y = 3$ is $(1, 2)$\n\nIntersection point of $2x + 5y = 12$ and $y = 0$ is $(6, 0)$\n\nIntersection point of $x + y = 3$ and $y = 0$ is $(3, 0)$\n\nArea of triangle $= \\frac{1}{2}|[x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)]|$\n\n$= \\frac{1}{2}|[1(0 - 0) + 6(0 - 2) + 3(2 - 0)]|$\n\n$= \\frac{1}{2}|[-12 + 6]| = 3$ unit$^2$"
                 },
                 {
-                    "question": "In the given figure, if AD = 3, DE = 4, AB = 12, BF = 2, FG = 6, BC = 10, then the value of M/N is: (Assume: M is the area of the quadrilateral FGDE and N is the area of the triangle ABC.)",
+                    "question": "If the sides of three cubes are in the ratio $2 : 3 : 5$ and the total volume is $54880 \\, \\text{cm}^3$, then the length of the sides of the largest cube is",
                     "options": [
-                        "31/60",
-                        "1/2",
-                        "25/49",
-                        "1/3"
+                        "14 cm",
+                        "21 cm",
+                        "28 cm",
+                        "35 cm"
                     ],
-                    "correctAnswer": 0,
-                    "explanation": "By sin formula:\narea of triangle ABC / area of quadrilateral DEFG\n= (1/2 × (5+4+3) × (2+6+2) sin B) / (1/2 × (5+4) × (2+6) sin B - 1/2 × 5 × 2 sin B)\n= (12 × 10) / ((9 × 8) - (2 × 5)) = 120/62 = N/M\n⇒ M/N = 62/120 = 31/60"
+                    "correctAnswer": 3,
+                    "explanation": "Let the sides of the cubes be $2x$ cm, $3x$ cm, and $5x$ cm.\n\nThe volumes of the cubes are $(2x)^3$, $(3x)^3$, and $(5x)^3$ respectively.\n\nTotal volume = $54880 \\, \\text{cm}^3$\n\n$(2x)^3 + (3x)^3 + (5x)^3 = 54880$\n\n$8x^3 + 27x^3 + 125x^3 = 54880$\n\n$160x^3 = 54880$\n\n$x^3 = \\frac{54880}{160} = 343$\n\n$x = \\sqrt[3]{343} = 7$\n\nHence, the side of the largest cube is $5 \\times 7 = 35 \\, \\text{cm}$."
                 },
                 {
-                    "question": "Water is pouring into a cuboidal reservoir at the rate of 50 litres per minute. The volume of the reservoir is 120 m³. How many hours will it take to fill the reservoir?",
+                    "question": "Water is pouring into a cuboidal reservoir at the rate of 50 litres per minute. The volume of the reservoir is $120 \\, \\text{m}^3$. How many hours will it take to fill the reservoir?",
                     "options": [
                         "35",
                         "45",
@@ -655,10 +655,10 @@
                         "30"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "1 liter = 1000 cm³\n50 liter = 50,000 cm³ = 0.05 m³\nRequired time = 120 / 0.05 = 2400 min. or 40 hours"
+                    "explanation": "According to the question, 1 liter = $1000 \\, \\text{cm}^3$\n\n50 liter = $50,000 \\, \\text{cm}^3$\n\n50 liter = $50,000 \\times \\frac{1}{1000000} = 0.05 \\, \\text{m}^3$\n\nRequired time = $\\frac{120}{0.05} = 2400$ min. or 40 hours"
                 },
                 {
-                    "question": "Find the number of solid lead balls each 2 cm in diameter that can be made from solid sphere made up of lead of diameter 14 cm.",
+                    "question": "Find the number of solid lead balls each $2 \\, \\text{cm}$ in diameter that can be made from solid sphere made up of lead of diameter $14 \\, \\text{cm}$.",
                     "options": [
                         "433",
                         "343",
@@ -666,21 +666,21 @@
                         "340"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Volume of solid lead balls = Volume of solid sphere\nNumber of solid lead balls = (4/3 × π × 7 × 7 × 7) / (4/3 × π × 1 × 1 × 1) = 343"
+                    "explanation": "According to the question, Volume of solid lead balls = Volume of solid sphere\n\nNumber of solid lead balls = $\\frac{\\frac{4}{3} \\times \\pi \\times 7 \\times 7 \\times 7}{\\frac{4}{3} \\times \\pi \\times 1 \\times 1 \\times 1} = 343$"
                 },
                 {
-                    "question": "If 3 sin θ = 2 cos² θ, 0° < θ < 90°, then the value of (tan² θ + sec² θ - cosec² θ) is:",
+                    "question": "If $3 \\sin \\theta = 2 \\cos^2 \\theta, 0^{\\circ} < \\theta < 90^{\\circ}$, then the value of $(\\tan^2 \\theta + \\sec^2 \\theta - \\operatorname{cosec}^2 \\theta)$ is:",
                     "options": [
                         "-2",
-                        "-7/3",
-                        "7/3",
+                        "$-\\frac{7}{3}$",
+                        "$\\frac{7}{3}$",
                         "2"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Put θ = 30°\n3 sin θ = 2 cos² θ = 3 × 1/2 = 2 × (√3/2)² = 3/2 = 3/2 (Condition satisfied)\n(tan² θ + sec² θ - cosec² θ) = (1/√3)² + (2/√3)² - (2)² = 1/3 + 4/3 - 4 = -7/3"
+                    "explanation": "Put $\\theta = 30^{\\circ}$\n\n$3 \\sin \\theta = 2 \\cos^2 \\theta = 3 \\times \\frac{1}{2} = 2 \\times (\\frac{\\sqrt{3}}{2})^2 = \\frac{3}{2} = \\frac{3}{2}$ (Condition satisfied)\n\n$(\\tan^2 \\theta + \\sec^2 \\theta - \\operatorname{cosec}^2 \\theta)$\n\n$= (\\frac{1}{\\sqrt{3}})^2 + (\\frac{2}{\\sqrt{3}})^2 - (2)^2$\n\n$= \\frac{1}{3} + \\frac{4}{3} - 4 = -\\frac{7}{3}$"
                 },
                 {
-                    "question": "A retailer buys 50 pens at the marked price of 44 pens. If he sells these pens at a discount of 1% on the marked price, what is the profit per cent?",
+                    "question": "A retailer buys 50 pens at the marked price of 44 pens. If he sells these pens at a discount of $1\\%$ on the marked price, what is the profit per cent?",
                     "options": [
                         "10%",
                         "12.5%",
@@ -688,10 +688,10 @@
                         "15%"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Let the marked price of one pen = 1 Rs\nC.P. of 50 pens = 1 × 44 = 44 Rs.\nS.P. of 50 pens = 1 × 50 × 99% = 49.5 Rs.\nRequired profit = (49.5 - 44) / 44 × 100 = 550/44 = 12.5%"
+                    "explanation": "Let the marked price of one pen = 1 Rs\n\nC.P. of 50 pens = $1 \\times 44 = 44$ Rs.\n\nS.P. of 50 pens = $1 \\times 50 \\times 99\\% = 49.5$ Rs.\n\nRequired profit = $\\frac{49.5 - 44}{44} \\times 100 = \\frac{550}{44} = 12.5\\%$"
                 },
                 {
-                    "question": "If the cost price of a book is 92% of its selling price, then what is the percentage profit on the sale of the book (correct up to two decimal places)?",
+                    "question": "If the cost price of a book is $92\\%$ of its selling price, then what is the percentage profit on the sale of the book (correct up to two decimal places)?",
                     "options": [
                         "8.25%",
                         "8.69%",
@@ -699,10 +699,10 @@
                         "8.53%"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Required profit % = ((100 - 92) / 92) × 100 = 8.69%"
+                    "explanation": "Required profit % = $\\frac{100 - 92}{92} \\times 100 = 8.69\\%$"
                 },
                 {
-                    "question": "Rajesh marks his goods 30% above the cost price but allows a 12% discount for cash payment. If he sells the goods for ₹3,500, find his cost price (up to one place of decimal).",
+                    "question": "Rajesh marks his goods $30\\%$ above the cost price but allows a $12\\%$ discount for cash payment. If he sells the goods for ₹3,500, find his cost price (up to one place of decimal).",
                     "options": [
                         "₹3,090.5",
                         "₹3,095.9",
@@ -710,21 +710,21 @@
                         "₹3,059.4"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "Profit % = 30 - 12 - (30 × 12 / 100) = 18 - 3.6 = 14.4%\nCost price = 3500 × (100 / 114.4) ≈ 3059.4 Rs."
+                    "explanation": "Profit % = $30 - 12 - \\frac{30 \\times 12}{100} = 18 - 3.6$\n\nProfit % = $14.4\\%$\n\nCost price = $3500 \\times \\frac{100}{114.4} \\approx 3059.4$ Rs."
                 },
                 {
-                    "question": "The value of 5 - (8 + 2√15) / 4 - 1 / (8 + 2√15) is equal to:",
+                    "question": "The value of $5 - \\frac{8 + 2\\sqrt{15}}{4} - \\frac{1}{8 + 2\\sqrt{15}}$ is equal to:",
                     "options": [
-                        "2/3",
+                        "$\\frac{2}{3}$",
                         "1",
-                        "1/2",
-                        "1/4"
+                        "$\\frac{1}{2}$",
+                        "$\\frac{1}{4}$"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "5 - (8 + 2√15) / 4 - 1 / (8 + 2√15)\nOn rationalization,\n= 5 - (8 + 2√15) / 4 - (1 / (8 + 2√15)) × ((8 - 2√15) / (8 - 2√15))\n= 5 - (8 + 2√15) / 4 - (8 - 2√15) / 4\n= (20 - 16) ÷ 4 = 1"
+                    "explanation": "$5 - \\frac{8 + 2\\sqrt{15}}{4} - \\frac{1}{8 + 2\\sqrt{15}}$\n\non rationalization,\n\n$= 5 - \\frac{8 + 2\\sqrt{15}}{4} - \\frac{1}{8 + 2\\sqrt{15}} \\times \\frac{8 - 2\\sqrt{15}}{8 - 2\\sqrt{15}}$\n\n$= 5 - \\frac{8 + 2\\sqrt{15}}{4} - \\frac{8 - 2\\sqrt{15}}{4}$\n\n$= (20 - 16) \\div 4 = 1$"
                 },
                 {
-                    "question": "If a + b + c = 2, 1/a + 1/b + 1/c = 0, ac = 4/b and a³ + b³ + c³ = 28, find the value of a² + b² + c².",
+                    "question": "If $a + b + c = 2, \\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} = 0$, $ac = \\frac{4}{b}$ and $a^3 + b^3 + c^3 = 28$, find the value of $a^2 + b^2 + c^2$.",
                     "options": [
                         "12",
                         "8",
@@ -732,7 +732,7 @@
                         "10"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "1/a + 1/b + 1/c = 0 ⇒ (ab + bc + ca) = 0\nac = 4/b ⇒ abc = 4\na³ + b³ + c³ = 28\na³ + b³ + c³ - 3abc = (a + b + c)(a² + b² + c² - ab - bc - ca)\n⇒ 28 - 12 = 2(a² + b² + c²)\n⇒ 16 = 2(a² + b² + c²)\n⇒ (a² + b² + c²) = 8"
+                    "explanation": "$\\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} = 0 \\Rightarrow (ab + bc + ca) = 0$\n\n$ac = \\frac{4}{b} \\Rightarrow abc = 4$\n\n$a^3 + b^3 + c^3 = 28$\n\n$a^3 + b^3 + c^3 - 3abc = (a + b + c)(a^2 + b^2 + c^2 - ab - bc - ca)$\n\n$\\Rightarrow 28 - 12 = 2(a^2 + b^2 + c^2)$\n\n$\\Rightarrow 16 = 2(a^2 + b^2 + c^2)$\n\n$\\Rightarrow (a^2 + b^2 + c^2) = 8$"
                 },
                 {
                     "question": "The mean proportion of number 0.049 and 0.9 is:",
@@ -743,18 +743,18 @@
                         "21"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Mean proportional = √(0.049 × 0.9) = 0.21"
+                    "explanation": "Mean proportional = $\\sqrt{0.049 \\times 0.9} = 0.21$"
                 },
                 {
-                    "question": "The ratio of the father's age to his son's age is 5:3. The product of the numbers representing their ages is 960. The ratio of their ages after 6 years will be:",
+                    "question": "The ratio of the father's age to his son's age is $5:3$. The product of the numbers representing their ages is 960. The ratio of their ages after 6 years will be:",
                     "options": [
-                        "23:15",
-                        "23:17",
-                        "21:15",
-                        "21:17"
+                        "$23:15$",
+                        "$23:17$",
+                        "$21:15$",
+                        "$21:17$"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "Let their ages be 5x and 3x, then\n5x × 3x = 960 ⇒ x = 8\nTheir present ages = 40 years and 24 years\nRequired ratio = (40 + 6) : (24 + 6) = 23 : 15"
+                    "explanation": "Let their age be $5x$ and $3x$, then\n\n$5x \\times 3x = 960 \\Rightarrow x = 8$\n\nTheir present age = 40 years and 24 years\n\nRequired ratio = $40 + 6 : 24 + 6 = 23 : 15$"
                 },
                 {
                     "question": "Mohan divides 18935 by a certain number. If the quotient and the remainder he gets are 102 and 65, respectively, then the divisor is:",
@@ -765,7 +765,7 @@
                         "185"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "Dividend = Divisor × Quotient + Remainder\nAccording to the question,\nDivisor = (18935 - 65) / 102 = 185"
+                    "explanation": "Dividend = Divisor $\\times$ Quotient + Remainder\nAccording to question,\nDivisor = $\\frac{18935 - 65}{102} = 185$"
                 },
                 {
                     "question": "Find the least value of '@' to make the number 7@5471 perfectly divisible by 9.",
@@ -776,10 +776,10 @@
                         "4"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "Sum of digits of the given number must be divisible by 9.\n7 + @ + 5 + 4 + 7 + 1 = 24 + @\nPossible least value of @ = 3"
+                    "explanation": "Sum of digits of the given number must be divisible by 9.\n\n$7 + @ + 5 + 4 + 7 + 1 = 24 + @$\n\nPossible least value of $@ = 3$"
                 },
                 {
-                    "question": "What is the least value of * so that the number 457643*4 is divisible by 18?",
+                    "question": "What is the least value of * so that the number $457643*4$ is divisible by 18?",
                     "options": [
                         "9",
                         "3",
@@ -787,7 +787,7 @@
                         "5"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Co-prime factors of 18 = 9 and 2\nGiven number must be divisible by both 9 and 2\n4 + 5 + 7 + 6 + 4 + 3 + * + 4 = 33 + *\nPossible least value of * = 3"
+                    "explanation": "Co-prime factors of $18 = 9$ and 2\n\nGiven number must be divisible by both 9 and 2\n\n$4 + 5 + 7 + 6 + 4 + 3 + * + 4 = 33 + *$\n\nPossible value of $* = 3$"
                 },
                 {
                     "question": "A train 150 meters long is running at a speed of 60 km/h. In what time will it pass a man standing on the platform?",
@@ -798,7 +798,7 @@
                         "18 Sec"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "Speed of the train = 60 km/h = 60 × (1000/3600) = 16.67 m/s\nTime taken = Length of train / Speed = 150 / 16.67 = 9 seconds"
+                    "explanation": "Speed of the train = 60 km/h\n\nConvert speed into meters per second:\n$\\text{Speed} = 60 \\times \\frac{1000}{3600}$\n$\\text{Speed} = 16.67 \\text{ m/s}$\n\nLength of the train = 150 meters\n\nTime taken to pass the man = $\\frac{\\text{Length of the train}}{\\text{Speed}}$\n$\\text{Time} = \\frac{150}{16.67}$\n$\\text{Time} = 9 \\text{ seconds}$"
                 },
                 {
                     "question": "If 15 workers can complete a piece of work in 20 days, how many days will 30 workers take to complete the same work?",
@@ -809,10 +809,10 @@
                         "30"
                     ],
                     "correctAnswer": 0,
-                    "explanation": "Total work = Number of workers × Number of days = 15 × 20 = 300 worker-days\nIf 30 workers are working, then the number of days required = 300 / 30 = 10 days"
+                    "explanation": "Let the total work be $W$.\n\nTotal work = Number of workers × Number of days\n$W = 15 \\times 20 = 300 \\text{ worker-days}$\n\nIf 30 workers are working, then the number of days required $= \\frac{W}{\\text{Number of workers}}$\n$\\text{Number of days} = \\frac{300}{30}$\n$\\text{Number of days} = 10$"
                 },
                 {
-                    "question": "What is the total surface area (in cm²) of a cone with a base radius of 28 cm and height of 45 cm? (use π = 22/7)",
+                    "question": "What is the total surface area (in $\\text{cm}^2$) of a cone with a base radius of 28 $\\text{cm}$ and height of $45 \\text{cm}$? (use $\\pi = \\frac{22}{7}$)",
                     "options": [
                         "8168",
                         "6288",
@@ -820,29 +820,29 @@
                         "9216"
                     ],
                     "correctAnswer": 2,
-                    "explanation": "Total surface area of cone = πr(l+r)\nPythagorean triplets 28, 45, 53\nr = 28 cm, l = 53 cm\nTotal surface area of cone = (22/7) × 28 × (53+28) = 88 × 81 = 7128 cm²"
+                    "explanation": "Total surface area of cone $= \\pi r(l + r)$\n\nPythagorean triplets $28, 45, 53$\n\n$r = 28 \\text{ cm}, l = 53 \\text{ cm}$\n\nTotal surface area of cone\n$= \\frac{22}{7} \\times 28 \\times (53 + 28)$\n$= 88 \\times 81 = 7128 \\text{ cm}^2$"
                 },
                 {
-                    "question": "Solve the equation for x: (x+2)/(x-1) + (x-1)/(x+2) = 2",
+                    "question": "Solve the equation for $x$:\n$\\frac{x + 2}{x - 1} + \\frac{x - 1}{x + 2} = 2$",
                     "options": [
-                        "x = -1",
-                        "x = 1",
-                        "x = 2",
+                        "$x = -1$",
+                        "$x = 1$",
+                        "$x = 2$",
                         "No real solution"
                     ],
                     "correctAnswer": 3,
-                    "explanation": "After simplifying and cross-multiplying, we get:\n2x² + 2x + 5 = 2x² + 2x - 4\n5 = -4\nThis is a contradiction, so there are no real solutions to the equation."
+                    "explanation": "Given the equation:\n$\\frac{x + 2}{x - 1} + \\frac{x - 1}{x + 2} = 2$\n\nFirst, find a common denominator:\n$\\frac{(x + 2)^2 + (x - 1)^2}{(x - 1)(x + 2)} = 2$\n\nExpand the numerator:\n$(x + 2)^2 = x^2 + 4x + 4$\n$(x - 1)^2 = x^2 - 2x + 1$\n\nCombine the terms in the numerator:\n$(x^2 + 4x + 4) + (x^2 - 2x + 1) = x^2 + 4x + 4 + x^2 - 2x + 1$\n$= 2x^2 + 2x + 5$\n\nThe equation becomes:\n$\\frac{2x^2 + 2x + 5}{(x - 1)(x + 2)} = 2$\n\nCross-multiply to clear the fraction:\n$2x^2 + 2x + 5 = 2(x - 1)(x + 2)$\n\nExpand the right-hand side:\n$2(x - 1)(x + 2) = 2(x^2 + x - 2)$\n$= 2x^2 + 2x - 4$\n\nSet the equations equal to each other:\n$2x^2 + 2x + 5 = 2x^2 + 2x - 4$\n\nSubtract $2x^2 + 2x$ from both sides:\n$5 = -4$\n\nSince this is a contradiction, there are no real solutions to the equation.\n\nThus, the equation $\\frac{x + 2}{x - 1} + \\frac{x - 1}{x + 2} = 2$ has no solution."
                 },
                 {
-                    "question": "If 1/(cosec θ - 1) + 1/(cosec θ + 1) = 2 sec θ, 0° < θ < 90°, then the value of (cot θ + cos θ) is:",
+                    "question": "If $\\frac{1}{\\operatorname{cosec} \\theta - 1} + \\frac{1}{\\operatorname{cosec} \\theta + 1} = 2 \\sec \\theta, 0^{\\circ} < \\theta < 90^{\\circ}$, then the value of $(\\cot \\theta + \\cos \\theta)$ is:",
                     "options": [
-                        "(1+√2)/2",
-                        "(2+√2)/2",
-                        "(2+√3)/√2",
-                        "1+√2"
+                        "$\\frac{1 + \\sqrt{2}}{2}$",
+                        "$\\frac{2 + \\sqrt{2}}{2}$",
+                        "$\\frac{2 + \\sqrt{3}}{\\sqrt{2}}$",
+                        "$1 + \\sqrt{2}$"
                     ],
                     "correctAnswer": 1,
-                    "explanation": "Simplifying the equation leads to tan θ = 1, which means θ = 45°\n(cot θ + cos θ) = 1 + 1/√2 = (√2+1)/√2 = (2+√2)/2"
+                    "explanation": "$\\frac{1}{\\operatorname{cosec} \\theta - 1} + \\frac{1}{\\operatorname{cosec} \\theta + 1} = 2 \\sec \\theta$\n\n$= \\frac{(\\operatorname{cosec} \\theta + 1) + (\\operatorname{cosec} \\theta - 1)}{(\\operatorname{cosec} \\theta + 1)(\\operatorname{cosec} \\theta - 1)} = 2 \\sec \\theta$\n\n$= \\frac{2 \\operatorname{cosec} \\theta}{(\\operatorname{cosec}^2 \\theta - 1)} = 2 \\sec \\theta$\n\n$= \\frac{2 \\operatorname{cosec} \\theta}{\\cot^2 \\theta} = 2 \\sec \\theta$\n\n$= \\frac{2 \\sin^2 \\theta}{\\sin \\theta \\cdot \\cos^2 \\theta} = 2 \\times \\frac{1}{\\cos \\theta}$\n\n$= \\tan \\theta = 1 \\Rightarrow \\theta = 45^{\\circ}$\n\n$(\\cot \\theta + \\cos \\theta) \\Rightarrow 1 + \\frac{1}{\\sqrt{2}} = \\frac{\\sqrt{2} + 1}{\\sqrt{2}} = \\frac{2 + \\sqrt{2}}{2}$\n\nShort trick: Put $\\theta = 45^{\\circ}$\n\nLHS $\\Rightarrow \\frac{1}{\\operatorname{cosec} \\theta - 1} + \\frac{1}{\\operatorname{cosec} \\theta + 1}$\n\n$= \\frac{1}{\\sqrt{2} - 1} + \\frac{1}{\\sqrt{2} + 1} = \\sqrt{2} + 1 + \\sqrt{2} - 1 = 2\\sqrt{2}$\n\nRHS $= 2 \\sec \\theta = 2\\sqrt{2}$\n\n$\\cot \\theta + \\cos \\theta \\Rightarrow 1 + \\frac{1}{\\sqrt{2}} = \\frac{\\sqrt{2} + 1}{\\sqrt{2}} = \\frac{2 + \\sqrt{2}}{2}$"
                 }
             ]
         },
