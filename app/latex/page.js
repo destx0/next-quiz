@@ -2,7 +2,7 @@ import React from "react";
 import LatexRenderer from "@/components/LatexRenderer";
 
 const LatexPage = () => {
-	  const content = `
+	const content = `The logic followed here is:\n\nAddition of the square of the odd number to previous number to get next number in the series.\n\n$$\\text{13} + 1^2 = \\text{13} + 1 = \\textbf{14}$$\n\n$$\\text{14} + 3^2 = \\text{14} + 9 = \\textbf{23}$$\n\n$$\\text{23} + 5^2 = \\text{23} + 25 = \\textbf{48}$$\n\n$$\\text{48} + 7^2 = \\text{48} + 49 = \\textbf{97}$$\n\n$$\\text{97} + 9^2 = \\text{97} + 81 = \\textbf{178}$$\n\n$$\\text{178} + 11^2 = \\text{178} + 121 = \\textbf{299}$$\n\nHence, the correct option is \\textbf{299}.
 # Introduction to Quantum Mechanics
 
 Quantum mechanics is a fundamental theory in physics that provides a description of the physical properties of nature at the scale of atoms and subatomic particles. One of the core principles is the famous Schrödinger equation:
@@ -39,7 +39,6 @@ $$
 
 Where $\\alpha$ and $\\beta$ are complex numbers satisfying $|\\alpha|^2 + |\\beta|^2 = 1$.
 `;
-
 
 	return (
 		<div>
