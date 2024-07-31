@@ -6,6 +6,14 @@ import remarkGfm from "remark-gfm";
 import "katex/dist/katex.min.css";
 
 const LatexRenderer = ({ children }) => {
+	const unescapeContent = (escapedContent) => {
+		return escapedContent
+			.replace(/\\n/g, "\n") // Replace escaped newlines
+			.replace(/\\\\/g, "\\") // Replace double backslashes with single
+			.replace(/\\"/g, '"'); // Replace escaped quotes
+		// Add more replacements if needed
+	};
+
 	return (
 		<ReactMarkdown
 			remarkPlugins={[remarkMath, remarkGfm]}
@@ -21,11 +29,14 @@ const LatexRenderer = ({ children }) => {
 					<td className="border border-gray-300 p-2" {...props} />
 				),
 				th: ({ node, ...props }) => (
-					<td className="border border-gray-300 p-2" {...props} />
+					<th
+						className="border border-gray-300 p-2 font-bold"
+						{...props}
+					/>
 				),
 			}}
 		>
-			{children}
+			{unescapeContent(children)}
 		</ReactMarkdown>
 	);
 };

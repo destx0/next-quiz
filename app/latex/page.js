@@ -1,63 +1,34 @@
 "use client";
+
 import React, { useState } from "react";
-import { Input } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
 import LatexRenderer from "@/components/LatexRenderer";
 
 const LatexPage = () => {
 	const [userInput, setUserInput] = useState("");
 
-	const existingContent = `
-**Given:**
+	const existingContent =
+		"The logic followed here is :\n\n$$\\text{(First number } \\times 2) - 4$$\n\n- $$19 : 34 \\to (19 \\times 2) - 4 = 38 - 4 = 34$$\n\nand\n\n- $$5 : 6 \\to (5 \\times 2) - 4 = 10 - 4 = 6$$\n\nSimilarly,\n\n- **$$27 : ? \\to (27 \\times 2) - 4 = 54 - 4 = 50$$**\n\nHence, the correct answer is **50**.";
 
-The area enclosed between the circumferences of two concentric circles = $16\\pi \\text{ cm}^2$.
-
-The ratio of their radii = $5 : 3$.
-
-**Formula used:**
-
-Area of circle = $\\pi r^2$.
-
-**Calculation:**
-
-![Image](https://storage.googleapis.com/tb-img/production/22/12/F1_Madhuri_Defence_02.12.2022_D8.png)
-
-Let the radius be $R = 5x$ and $r = 3x$.
-
-According to the question:
-
-$$\\pi R^2 - \\pi r^2 = 16\\pi$$
-
-$$\\pi (R^2 - r^2) = 16\\pi$$
-
-$$R^2 - r^2 = 16$$
-
-$$(5x)^2 - (3x)^2 = 16$$
-
-$$25x^2 - 9x^2 = 16$$
-
-$$16x^2 = 16$$
-
-$$x = 1$$
-
-Now, outer circle $R = 5x = (5 \\times 1) = 5 \\text{ cm}$.
-
-The area of the outer circle = $\\pi (5)^2 = 25\\pi \\text{ cm}^2$.
-
-**∴ The required area is $25\\pi \\text{ cm}^2$.**
-`;
+	const handleInputChange = (e) => {
+		const inputValue = e.target.value;
+		const processedInput = inputValue.replace(/\/\//g, "/");
+		setUserInput(processedInput);
+	};
 
 	return (
 		<div className="p-4">
-			<Input
+			<Textarea
 				label="Enter LaTeX content"
 				placeholder="Type your LaTeX here..."
 				value={userInput}
-				onChange={(e) => setUserInput(e.target.value)}
+				onChange={handleInputChange}
 				className="mb-4"
+				minRows={3}
 			/>
 
 			<h2 className="text-xl font-bold mb-2">User Input:</h2>
-			<LatexRenderer>{userInput}</LatexRenderer>
+			<LatexRenderer>{`Your input: ${userInput}`}</LatexRenderer>
 
 			<h2 className="text-xl font-bold mt-6 mb-2">Existing Content:</h2>
 			<LatexRenderer>{existingContent}</LatexRenderer>
