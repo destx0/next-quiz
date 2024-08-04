@@ -7,27 +7,44 @@ import {
 	Card,
 	CardBody,
 } from "@nextui-org/react";
-import { addQuestion, addQuiz } from "@/lib/firestore";
+import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
 	const [uploadType, setUploadType] = useState("questions");
 
+	const addQuizToTestBatch = async (quizId) => {
+		const testBatchId = "PxOtC4EjRhk1DH1B6j62"; // Hardcoded test batch ID
+		try {
+			await updateTestBatch(testBatchId, quizId);
+			console.log(`Quiz ${quizId} added to test batch ${testBatchId}`);
+		} catch (error) {
+			console.error("Error adding quiz to test batch:", error);
+			throw error;
+		}
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			const data = JSON.parse(jsonData);
-
 			if (uploadType === "questions") {
 				const questions = Array.isArray(data) ? data : [data];
 				const ids = await Promise.all(questions.map(addQuestion));
 				alert(`Questions added successfully. IDs: ${ids.join(", ")}`);
 			} else if (uploadType === "quizzes") {
 				const quizzes = Array.isArray(data) ? data : [data];
-				const quizIds = await Promise.all(quizzes.map(addQuiz));
-				alert(`Quizzes added successfully. IDs: ${quizIds.join(", ")}`);
+				const quizIds = await Promise.all(
+					quizzes.map(async (quiz) => {
+						const id = await addQuiz(quiz);
+						await addQuizToTestBatch(id);
+						return id;
+					})
+				);
+				alert(
+					`Quizzes added successfully and added to test batch. IDs: ${quizIds.join(", ")}`
+				);
 			}
-
 			setJsonData("");
 		} catch (error) {
 			alert("Error adding data: " + error.message);
