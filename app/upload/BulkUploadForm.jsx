@@ -11,7 +11,7 @@ import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
-	const [uploadType, setUploadType] = useState("questions");
+	const [uploadType, setUploadType] = useState("quizzes");
 
 	const addQuizToTestBatch = async (quizId) => {
 		const testBatchId = "PxOtC4EjRhk1DH1B6j62"; // Hardcoded test batch ID
@@ -102,17 +102,9 @@ export default function BulkUploadForm() {
 				onValueChange={handleUploadTypeChange}
 				orientation="horizontal"
 			>
-				<Radio value="questions">Questions</Radio>
 				<Radio value="quizzes">Quizzes</Radio>
+				<Radio value="questions">Questions</Radio>
 			</RadioGroup>
-
-			<Card>
-				<CardBody>
-					<pre className="text-sm overflow-auto">
-						{helperText[uploadType]}
-					</pre>
-				</CardBody>
-			</Card>
 
 			<Textarea
 				label={`JSON Data for ${uploadType}`}
@@ -126,6 +118,13 @@ export default function BulkUploadForm() {
 			<Button type="submit" color="primary">
 				Upload {uploadType}
 			</Button>
+			<Card>
+				<CardBody>
+					<pre className="text-sm overflow-auto">
+						{helperText[uploadType]}
+					</pre>
+				</CardBody>
+			</Card>
 		</form>
 	);
 }

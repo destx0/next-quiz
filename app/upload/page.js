@@ -7,7 +7,7 @@ import QuizForm from "./QuizForm";
 import TestBatchForm from "./TestBatchForm";
 
 export default function UploadPage() {
-	const [activeTab, setActiveTab] = useState("manual");
+	const [activeTab, setActiveTab] = useState("bulk");
 
 	return (
 		<div className="container mx-auto p-4">
@@ -15,17 +15,6 @@ export default function UploadPage() {
 				Upload Questions, Quizzes, and Test Batches
 			</h1>
 			<Tabs activeKey={activeTab} onSelectionChange={setActiveTab}>
-				<Tab key="manual" title="Manual Upload">
-					<Card>
-						<CardBody>
-							{ManualQuestionForm ? (
-								<ManualQuestionForm />
-							) : (
-								<p>ManualQuestionForm is undefined</p>
-							)}
-						</CardBody>
-					</Card>
-				</Tab>
 				<Tab key="bulk" title="Bulk Upload">
 					<Card>
 						<CardBody>
@@ -33,6 +22,17 @@ export default function UploadPage() {
 								<BulkUploadForm />
 							) : (
 								<p>BulkUploadForm is undefined</p>
+							)}
+						</CardBody>
+					</Card>
+				</Tab>
+				<Tab key="manual" title="Manual Upload">
+					<Card>
+						<CardBody>
+							{ManualQuestionForm ? (
+								<ManualQuestionForm />
+							) : (
+								<p>ManualQuestionForm is undefined</p>
 							)}
 						</CardBody>
 					</Card>
