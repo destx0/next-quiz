@@ -8,11 +8,20 @@ import "katex/dist/katex.min.css";
 const LatexRenderer = ({ children }) => {
 	const unescapeContent = (escapedContent) => {
 		return escapedContent
-			.replace(/\\n/g, "\n") // Replace escaped newlines
-			.replace(/\\\\/g, "\\") // Replace double backslashes with single
-			.replace(/\\"/g, '"'); // Replace escaped quotes
-		// Add more replacements if needed
+			.replace(/\\n/g, "\n")
+			.replace(/\\\\/g, "\\")
+			.replace(/\\"/g, '"');
 	};
+
+	const isHTML = (str) => {
+		return /<[a-z][\s\S]*>/i.test(str);
+	};
+
+	const content = unescapeContent(children);
+
+	if (isHTML(content)) {
+		return <div dangerouslySetInnerHTML={{ __html: content }} />;
+	}
 
 	return (
 		<ReactMarkdown
@@ -36,7 +45,7 @@ const LatexRenderer = ({ children }) => {
 				),
 			}}
 		>
-			{unescapeContent(children)}
+			{content}
 		</ReactMarkdown>
 	);
 };
