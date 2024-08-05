@@ -305,10 +305,8 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 	return (
 		<>
 			<Button
+				className={`px-4 py-2 rounded bg-[#92c4f2] text-black`}
 				onPress={() => onOpenChange(true)}
-				color="primary"
-				variant="shadow"
-				size="sm"
 			>
 				Show Analysis
 			</Button>
@@ -327,9 +325,8 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 							<ModalBody>{renderAnalysis()}</ModalBody>
 							<ModalFooter>
 								<Button
-									color="danger"
-									variant="light"
-									onPress={onClose}
+									className={`px-4 py-2 rounded bg-[#92c4f2] text-black`}
+									onClick={onClose}
 								>
 									Close
 								</Button>
