@@ -276,14 +276,14 @@ export default function QuizPage({ params }) {
 										/>
 									</>
 								)}
-								{!isSubmitted && (
+								{
 									<button
 										className="px-4 py-2 bg-[#1ca7c0] text-white rounded"
 										onClick={handleNextQuestion}
 									>
 										Next
 									</button>
-								)}
+								}
 							</div>
 						</div>
 					</div>
