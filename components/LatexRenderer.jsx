@@ -43,6 +43,8 @@ const LatexRenderer = ({ children }) => {
 						{...props}
 					/>
 				),
+				sup: ({ node, ...props }) => <sup {...props} />,
+				b: ({ node, ...props }) => <strong {...props} />,
 			}}
 		>
 			{content}
