@@ -4,6 +4,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import "katex/dist/katex.min.css";
+import katex from "katex";
 
 const LatexRenderer = ({ children }) => {
 	const unescapeContent = (escapedContent) => {
@@ -13,14 +14,27 @@ const LatexRenderer = ({ children }) => {
 			.replace(/\\"/g, '"');
 	};
 
-	const isHTML = (str) => {
-		return /<[a-z][\s\S]*>/i.test(str);
+	const renderLatexInHTML = (htmlContent) => {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(htmlContent, "text/html");
+
+		const latexSpans = doc.querySelectorAll("span.math-tex");
+		latexSpans.forEach((span) => {
+			const latex = span.textContent.replace(/^\\\((.*)\\\)$/, "$1");
+			const renderedLatex = katex.renderToString(latex, {
+				throwOnError: false,
+			});
+			span.innerHTML = renderedLatex;
+		});
+
+		return doc.body.innerHTML;
 	};
 
 	const content = unescapeContent(children);
 
-	if (isHTML(content)) {
-		return <div dangerouslySetInnerHTML={{ __html: content }} />;
+	if (/<[a-z][\s\S]*>/i.test(content)) {
+		const renderedContent = renderLatexInHTML(content);
+		return <div dangerouslySetInnerHTML={{ __html: renderedContent }} />;
 	}
 
 	return (
