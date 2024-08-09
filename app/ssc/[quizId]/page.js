@@ -109,7 +109,7 @@ export default function QuizPage({ params }) {
 			setSelectedOption(tempSelectedOption);
 		}
 		submitQuiz();
-		setIsAnalysisOpen(true); // Open the analysis modal after submitting
+		setIsAnalysisOpen(true);
 	};
 
 	const handleClearResponse = () => {
@@ -122,8 +122,16 @@ export default function QuizPage({ params }) {
 	const handleComplete = () => {
 		if (!isSubmitted) {
 			submitQuiz();
-			setIsAnalysisOpen(true); // Open the analysis modal after time is up
+			setIsAnalysisOpen(true);
 		}
+	};
+
+	const formatTime = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+			.toString()
+			.padStart(2, "0")}`;
 	};
 
 	if (!quizData) return <div>Loading...</div>;
@@ -152,18 +160,10 @@ export default function QuizPage({ params }) {
 	const currentSection = sections[currentSectionIndex];
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
-	const formatTime = (seconds) => {
-		const minutes = Math.floor(seconds / 60);
-		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
-			.toString()
-			.padStart(2, "0")}`;
-	};
-
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="flex flex-col h-screen" style={{ fontSize: "125%" }}>
 			{/* Top Bar */}
-			<div className="bg-white border-b p-4 flex justify-between items-center sticky top-0 z-10">
+			<div className="bg-white border-b p-5 flex justify-between items-center sticky top-0 z-10">
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					{!isSubmitted && (
@@ -176,12 +176,12 @@ export default function QuizPage({ params }) {
 								color: "#4B5563",
 							}}
 							digitBlockStyle={{
-								width: 18,
-								height: 26,
-								fontSize: 20,
+								width: 22,
+								height: 32,
+								fontSize: 25,
 								backgroundColor: "#27272a",
 							}}
-							separatorStyle={{ color: "#4B5563", size: "3px" }}
+							separatorStyle={{ color: "#4B5563", size: "4px" }}
 							duration={0.5}
 							onComplete={handleComplete}
 							className="flex-shrink-0"
@@ -204,7 +204,7 @@ export default function QuizPage({ params }) {
 									onClick={() =>
 										handleJumpToSection(sectionIndex)
 									}
-									className={`px-4 py-2 ${
+									className={`px-5 py-2.5 ${
 										currentSectionIndex === sectionIndex
 											? "border-b-2 border-blue-500"
 											: ""
@@ -214,14 +214,14 @@ export default function QuizPage({ params }) {
 								</button>
 							))}
 						</div>
-						<div className="flex justify-between items-center p-4 border-b">
+						<div className="flex justify-between items-center p-5 border-b">
 							<div className="flex items-center">
-								<p className="text-sm text-gray-600 mr-4">
+								<p className="text-sm text-gray-600 mr-5">
 									Question {currentQuestionIndex + 1} of{" "}
 									{currentSection.questions.length}
 								</p>
 								<div className="flex items-center text-sm text-gray-600">
-									<span className="mr-1">⏱</span>
+									<span className="mr-1.5">⏱</span>
 									{formatTime(currentQuestion.timeSpent)}
 								</div>
 							</div>
@@ -241,11 +241,11 @@ export default function QuizPage({ params }) {
 					/>
 
 					{/* Bottom Bar */}
-					<div className="bg-white border-t p-4 sticky bottom-0 mt-auto">
+					<div className="bg-white border-t p-5 sticky bottom-0 mt-auto">
 						<div className="flex justify-between items-center">
-							<div className="flex gap-2">
+							<div className="flex gap-2.5">
 								<button
-									className={`px-4 py-2 rounded bg-[#92c4f2] text-black`}
+									className={`px-5 py-2.5 rounded bg-[#92c4f2] text-black`}
 									onClick={markCurrentQuestion}
 								>
 									{currentQuestion.isMarked
@@ -254,7 +254,7 @@ export default function QuizPage({ params }) {
 								</button>
 								{!isSubmitted && (
 									<button
-										className="px-4 py-2 bg-[#92c4f2] text-black rounded"
+										className="px-5 py-2.5 bg-[#92c4f2] text-black rounded"
 										onClick={handleClearResponse}
 									>
 										Clear Response
@@ -262,7 +262,7 @@ export default function QuizPage({ params }) {
 								)}
 							</div>
 
-							<div className="flex items-center gap-4">
+							<div className="flex items-center gap-5">
 								{isSubmitted && (
 									<>
 										<p className="text-lg font-semibold">
@@ -278,7 +278,7 @@ export default function QuizPage({ params }) {
 								)}
 								{
 									<button
-										className="px-4 py-2 bg-[#1ca7c0] text-white rounded"
+										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
 										onClick={handleNextQuestion}
 									>
 										Next
@@ -290,7 +290,7 @@ export default function QuizPage({ params }) {
 				</div>
 
 				{/* Toggleable Sidebar - Fixed width, full height */}
-				<div className="relative">
+				<div className="relative" style={{ fontSize: "80%" }}>
 					<button
 						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-gray-200 text-gray-600 p-1 rounded-l"
 						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
