@@ -6,8 +6,6 @@ import {
 	ModalBody,
 	ModalFooter,
 	Button,
-	Tabs,
-	Tab,
 	Card,
 	CardBody,
 	Table,
@@ -93,31 +91,6 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 		return `${minutes}m ${remainingSeconds}s`;
 	};
 
-	const renderTable = (data, columns) => {
-		return (
-			<Table aria-label="Analysis table">
-				<TableHeader>
-					{columns.map((column) => (
-						<TableColumn key={column.key}>
-							{column.label}
-						</TableColumn>
-					))}
-				</TableHeader>
-				<TableBody>
-					{data.map((item, index) => (
-						<TableRow key={index}>
-							{columns.map((column) => (
-								<TableCell key={column.key}>
-									{item[column.key]}
-								</TableCell>
-							))}
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-		);
-	};
-
 	const renderAnalysis = () => {
 		if (!stats) {
 			return (
@@ -128,26 +101,8 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 			);
 		}
 
-		const overallData = [
-			{ name: "Total Questions", value: stats.totalQuestions },
-			{ name: "Attempted", value: stats.totalAttempted },
-			{ name: "Correct", value: stats.totalCorrect },
-			{ name: "Wrong", value: stats.totalWrong },
-			{ name: "Unattempted", value: stats.totalUnattempted },
-			{
-				name: "Total Time Taken",
-				value: formatTime(stats.totalTimeSpent),
-			},
-			{ name: "Score", value: score },
-		];
-
-		const overallColumns = [
-			{ key: "name", label: "Metric" },
-			{ key: "value", label: "Value" },
-		];
-
-		const sectionColumns = [
-			{ key: "name", label: "Section Name" },
+		const columns = [
+			{ key: "name", label: "Section" },
 			{ key: "score", label: "Score" },
 			{ key: "attempted", label: "Attempted" },
 			{ key: "accuracy", label: "Accuracy" },
@@ -158,31 +113,63 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 			name: section.name,
 			score: `${section.correct} / ${section.totalQuestions}`,
 			attempted: `${section.attempted} / ${section.totalQuestions}`,
-			accuracy: `${((section.correct / section.attempted) * 100).toFixed(2)}%`,
+			accuracy:
+				section.attempted > 0
+					? `${((section.correct / section.attempted) * 100).toFixed(2)}%`
+					: "0%",
 			time: formatTime(section.timeSpent),
 		}));
 
+		const overallData = {
+			name: "Overall",
+			score: `${stats.totalCorrect} / ${stats.totalQuestions}`,
+			attempted: `${stats.totalAttempted} / ${stats.totalQuestions}`,
+			accuracy:
+				stats.totalAttempted > 0
+					? `${((stats.totalCorrect / stats.totalAttempted) * 100).toFixed(2)}%`
+					: "0%",
+			time: formatTime(stats.totalTimeSpent),
+		};
+
+		const tableData = [...sectionData, overallData];
+
 		return (
-			<Tabs>
-				<Tab key="overall" title="Overall Analysis">
-					<div className="mt-4 space-y-6">
-						<Card className="w-full max-w-2xl mx-auto">
-							<CardBody className="p-4">
-								{renderTable(overallData, overallColumns)}
-							</CardBody>
-						</Card>
+			<Card className="w-full mx-auto">
+				<CardBody className="p-4">
+					<Table aria-label="Analysis table">
+						<TableHeader>
+							{columns.map((column) => (
+								<TableColumn key={column.key}>
+									{column.label}
+								</TableColumn>
+							))}
+						</TableHeader>
+						<TableBody>
+							{tableData.map((item, index) => (
+								<TableRow
+									key={index}
+									className={
+										index === tableData.length - 1
+											? "font-bold"
+											: ""
+									}
+								>
+									{columns.map((column) => (
+										<TableCell key={column.key}>
+											{item[column.key]}
+										</TableCell>
+									))}
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+					<div className="mt-4">
+						<p>
+							<strong>Total Score:</strong> {score}
+						</p>
 					</div>
-				</Tab>
-				<Tab key="sectional" title="Sectional Summary">
-					<div className="mt-4 space-y-6">
-						<Card className="w-full max-w-4xl mx-auto">
-							<CardBody className="p-4">
-								{renderTable(sectionData, sectionColumns)}
-							</CardBody>
-						</Card>
-					</div>
-				</Tab>
-			</Tabs>
+				</CardBody>
+			</Card>
 		);
 	};
 

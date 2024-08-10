@@ -1,6 +1,6 @@
 import React from "react";
-import { Radio, RadioGroup, Divider } from "@nextui-org/react";
-import { Clock } from "lucide-react";
+import { Radio, RadioGroup } from "@nextui-org/react";
+import { Check, X } from "lucide-react";
 import LatexRenderer from "@/components/LatexRenderer";
 
 export default function QuestionCard({
@@ -10,60 +10,57 @@ export default function QuestionCard({
 	tempSelectedOption,
 	setTempSelectedOption,
 }) {
-	const formatTime = (seconds) => {
-		const minutes = Math.floor(seconds / 60);
-		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
-			.toString()
-			.padStart(2, "0")}`;
+	const handleValueChange = (value) => {
+		if (!isSubmitted) {
+			setTempSelectedOption(value);
+		}
 	};
 
 	return (
-		<div className="w-full h-full flex flex-col ">
-			<div className="flex-grow overflow-y-auto p-4">
-				<h2 className="text-xl font-semibold mb-4">
-					<LatexRenderer>{question.question}</LatexRenderer>
-				</h2>
+		<div className="w-full h-full flex flex-col p-4 overflow-y-auto">
+			<h2 className="text-xl font-semibold mb-4">
+				<LatexRenderer>{question.question}</LatexRenderer>
+			</h2>
 
-				<RadioGroup
-					value={tempSelectedOption}
-					onValueChange={setTempSelectedOption}
-					isDisabled={isSubmitted}
-				>
-					{question.options.map((option, index) => (
-						<Radio
-							key={index}
-							value={index.toString()}
-							className={`py-2 ${
-								isSubmitted
-									? index === question.correctAnswer
-										? "text-success"
-										: index === question.selectedOption
-											? "text-danger"
-											: ""
-									: ""
-							}`}
-						>
+			<RadioGroup
+				value={tempSelectedOption}
+				onValueChange={handleValueChange}
+			>
+				{question.options.map((option, index) => (
+					<Radio
+						key={index}
+						value={index.toString()}
+						className={`py-2 ${
+							isSubmitted
+								? index === question.correctAnswer
+									? "text-green-500"
+									: index === parseInt(tempSelectedOption)
+										? "text-red-500"
+										: ""
+								: ""
+						}`}
+					>
+						<div className="flex items-center">
 							<LatexRenderer>{option}</LatexRenderer>
 							{isSubmitted &&
 								index === question.correctAnswer && (
-									<span className="ml-2 text-success">✓</span>
+									<Check className="ml-2 text-green-500 w-5 h-5" />
 								)}
 							{isSubmitted &&
-								index === question.selectedOption &&
+								index === parseInt(tempSelectedOption) &&
 								index !== question.correctAnswer && (
-									<span className="ml-2 text-danger">✗</span>
+									<X className="ml-2 text-red-500 w-5 h-5" />
 								)}
-						</Radio>
-					))}
-				</RadioGroup>
-				{isSubmitted && (
-					<div className="mt-4 p-4 bg-default-100 rounded-lg">
-						<h3 className="font-semibold">Explanation:</h3>
-						<LatexRenderer>{question.explanation}</LatexRenderer>
-					</div>
-				)}
-			</div>
+						</div>
+					</Radio>
+				))}
+			</RadioGroup>
+			{isSubmitted && (
+				<div className="mt-4 p-4 bg-gray-100 rounded-lg">
+					<h3 className="font-semibold">Explanation:</h3>
+					<LatexRenderer>{question.explanation}</LatexRenderer>
+				</div>
+			)}
 		</div>
 	);
 }
