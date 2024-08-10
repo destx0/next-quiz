@@ -71,7 +71,7 @@ const QuizBatches = () => {
 						};
 					})
 				);
-				setTestBatches(batchesData);
+				setTestBatches(batchesData.reverse()); // Reverse the order here
 				setLoading(false);
 			} catch (error) {
 				console.error("Error fetching test batches:", error);
