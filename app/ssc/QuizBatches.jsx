@@ -4,7 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
-import QuizCard from "./QuizCard"; // Import the separate QuizCard component
+import QuizCard from "./QuizCard"; 
 
 const BatchContainer = ({ batch }) => (
 	<Card className="mb-8 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl">

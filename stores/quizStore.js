@@ -110,11 +110,33 @@ const useQuizStore = create((set, get) => ({
 
 	markCurrentQuestion: () =>
 		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex } =
+			const { currentSectionIndex, currentQuestionIndex, sections } =
 				state.quizData;
+			const currentSection = sections[currentSectionIndex];
+			const isLastQuestionInSection =
+				currentQuestionIndex === currentSection.questions.length - 1;
+			const isLastSection = currentSectionIndex === sections.length - 1;
+
+			let newSectionIndex = currentSectionIndex;
+			let newQuestionIndex = currentQuestionIndex;
+
+			// Move to the next question or section
+			if (isLastQuestionInSection) {
+				if (isLastSection) {
+					// If it's the last question of the last section, don't change indices
+				} else {
+					newSectionIndex++;
+					newQuestionIndex = 0;
+				}
+			} else {
+				newQuestionIndex++;
+			}
+
 			return {
 				quizData: {
 					...state.quizData,
+					currentSectionIndex: newSectionIndex,
+					currentQuestionIndex: newQuestionIndex,
 					sections: state.quizData.sections.map((section, sIndex) =>
 						sIndex === currentSectionIndex
 							? {

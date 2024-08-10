@@ -250,7 +250,7 @@ export default function QuizPage({ params }) {
 								>
 									{currentQuestion.isMarked
 										? "Unmark"
-										: "Mark for review"}
+										: "Mark for review & next"}
 								</button>
 								{!isSubmitted && (
 									<button
