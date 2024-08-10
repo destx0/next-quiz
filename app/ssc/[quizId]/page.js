@@ -161,9 +161,12 @@ export default function QuizPage({ params }) {
 	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
 	return (
-		<div className="flex flex-col h-screen" style={{ fontSize: "125%" }}>
+		<div className="flex flex-col h-screen">
 			{/* Top Bar */}
-			<div className="bg-white border-b p-5 flex justify-between items-center sticky top-0 z-10">
+			<div
+				className="bg-white border-b p-5 flex justify-between items-center sticky top-0 z-10"
+				style={{ fontSize: "125%" }}
+			>
 				<h1 className="text-2xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					{!isSubmitted && (
@@ -192,7 +195,10 @@ export default function QuizPage({ params }) {
 			</div>
 
 			{/* Body Section - Full width and height */}
-			<div className="flex flex-grow overflow-hidden">
+			<div
+				className="flex flex-grow overflow-hidden"
+				style={{ fontSize: "125%" }}
+			>
 				{/* Main Content - Takes up all available space */}
 				<div className="flex-grow overflow-auto flex flex-col">
 					{/* Sticky section tabs and question header */}
@@ -241,11 +247,14 @@ export default function QuizPage({ params }) {
 					/>
 
 					{/* Bottom Bar */}
-					<div className="bg-white border-t p-5 sticky bottom-0 mt-auto">
+					<div
+						className="bg-white border-t p-5 sticky bottom-0 mt-auto"
+						style={{ fontSize: "75%" }}
+					>
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2.5">
 								<button
-									className={`px-5 py-2.5 rounded bg-[#92c4f2] text-black`}
+									className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
 									onClick={markCurrentQuestion}
 								>
 									{currentQuestion.isMarked
@@ -281,7 +290,7 @@ export default function QuizPage({ params }) {
 										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
 										onClick={handleNextQuestion}
 									>
-										Next
+										Save & Next
 									</button>
 								}
 							</div>
