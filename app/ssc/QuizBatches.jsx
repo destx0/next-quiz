@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Tabs, Tab } from "@nextui-org/react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
-import QuizCard from "./QuizCard"; 
+import QuizCard from "./QuizCard";
 
 const BatchContainer = ({ batch }) => (
 	<Card className="mb-8 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl">
 		<CardBody className="p-6">
-			<h2 className="text-2xl font-bold mb-4 transition-all duration-300 ease-in-out hover:text-primary">
-				{batch.title}
-			</h2>
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 				{batch.quizzes.map((quiz, index) => (
 					<QuizCard key={quiz.id} quiz={quiz} index={index} />
@@ -107,15 +104,33 @@ const QuizBatches = () => {
 
 	return (
 		<div className="space-y-8 -mt-6 min-h-screen">
-			<h2 className="text-3xl font-bold"></h2>
 			{testBatches.length === 0 ? (
 				<p className="text-center text-xl">
 					No quiz batches available at the moment.
 				</p>
 			) : (
-				testBatches.map((batch) => (
-					<BatchContainer key={batch.id} batch={batch} />
-				))
+				<Tabs
+					color="primary"
+					variant="underlined"
+					classNames={{
+						tab: "data-[selected=true]:font-bold",
+						tabList:
+							"gap-6 w-full relative rounded-none p-0 border-b border-divider",
+						cursor: "w-full bg-primary",
+						panel: "pt-6",
+					}}
+				>
+					{testBatches.map((batch) => (
+						<Tab
+							key={batch.id}
+							title={
+								<span className="text-lg">{batch.title}</span>
+							}
+						>
+							<BatchContainer batch={batch} />
+						</Tab>
+					))}
+				</Tabs>
 			)}
 		</div>
 	);
