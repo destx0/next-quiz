@@ -1,0 +1,35 @@
+{
+  "submissions": {
+    "submissionId1": {
+      "testId": "test123",
+      "userId": "user456",
+      "startTime": "2024-08-12T10:30:00Z",
+      "sections": [
+        {
+          "problems": [
+            {
+              "attemptedOptionIndex": 2,
+              "marked": true
+            },
+            {
+              "attemptedOptionIndex": 0,
+              "marked": false
+            }
+          ]
+        },
+        {
+          "problems": [
+            {
+              "attemptedOptionIndex": 1,
+              "marked": true
+            },
+            {
+              "attemptedOptionIndex": 3,
+              "marked": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
