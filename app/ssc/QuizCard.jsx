@@ -62,17 +62,31 @@ const QuizCard = ({ quiz, index }) => {
 					</p>
 					<div className="text-xs text-gray-700 group-hover:text-gray-800">
 						<p>Duration: {quiz.duration} min</p>
+						{quiz.isCompleted && (
+							<div className="mt-2 bg-white bg-opacity-50 p-2 rounded-md shadow-inner">
+								<p className="font-semibold text-sm">
+									Your Score:{" "}
+									<span className="text-green-600 text-base">
+										{quiz.score}
+									</span>
+								</p>
+							</div>
+						)}
 					</div>
 				</div>
-				<div className="flex justify-end">
+				<div className="flex justify-end mt-4">
 					<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
 						<Button
 							size="sm"
 							variant="shadow"
-							color="primary"
-							className="transition-all duration-300 ease-in-out transform group-hover:scale-110 bg-gradient-to-br from-blue-600 to-blue-900 text-white font-semibold px-4 py-2 rounded-full hover:from-blue-700 hover:to-purple-600"
+							color={quiz.isCompleted ? "secondary" : "primary"}
+							className={`transition-all duration-300 ease-in-out transform group-hover:scale-110 text-white font-semibold px-4 py-2 rounded-full ${
+								quiz.isCompleted
+									? "bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600"
+									: "bg-gradient-to-br from-blue-600 to-blue-900 hover:from-blue-700 hover:to-purple-600"
+							}`}
 						>
-							Start Test
+							{quiz.isCompleted ? "Retake Test" : "Start Test"}
 						</Button>
 					</Link>
 				</div>

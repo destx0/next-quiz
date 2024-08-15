@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Tabs, Tab } from "@nextui-org/react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
@@ -23,6 +23,24 @@ const QuizBatches = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const { user } = useAuthStore();
+	const [userQuizData, setUserQuizData] = useState(null);
+
+	useEffect(() => {
+		const fetchUserQuizData = async () => {
+			if (!user) return;
+			try {
+				const userDocRef = doc(db, "users", user.uid);
+				const userDocSnap = await getDoc(userDocRef);
+				if (userDocSnap.exists()) {
+					setUserQuizData(userDocSnap.data());
+				}
+			} catch (error) {
+				console.error("Error fetching user quiz data:", error);
+			}
+		};
+
+		fetchUserQuizData();
+	}, [user]);
 
 	useEffect(() => {
 		const fetchTestBatches = async () => {
@@ -71,7 +89,7 @@ const QuizBatches = () => {
 						};
 					})
 				);
-				setTestBatches(batchesData.reverse()); // Reverse the order here
+				setTestBatches(batchesData.reverse());
 				setLoading(false);
 			} catch (error) {
 				console.error("Error fetching test batches:", error);
@@ -127,7 +145,19 @@ const QuizBatches = () => {
 								<span className="text-lg">{batch.title}</span>
 							}
 						>
-							<BatchContainer batch={batch} />
+							<BatchContainer
+								batch={{
+									...batch,
+									quizzes: batch.quizzes.map((quiz) => ({
+										...quiz,
+										isCompleted:
+											userQuizData?.completedTests?.includes(
+												quiz.id
+											),
+										score: userQuizData?.scores?.[quiz.id],
+									})),
+								}}
+							/>
 						</Tab>
 					))}
 				</Tabs>

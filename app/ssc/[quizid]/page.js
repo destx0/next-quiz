@@ -11,6 +11,7 @@ import AnalysisModal from "./AnalysisModal";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 import LanguageSelection from "./LanguageSelection";
+import { updateUserQuizData } from "@/lib/userData";
 
 export default function QuizPage({ params }) {
 	const {
@@ -103,12 +104,21 @@ export default function QuizPage({ params }) {
 		setTempSelectedOption(question.selectedOption);
 	};
 
-	const handleSubmitQuiz = () => {
+	const handleSubmitQuiz = async () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(tempSelectedOption);
 		}
 		submitQuiz();
+		const score = calculateScore();
 		setIsAnalysisOpen(true);
+
+		try {
+			await updateUserQuizData(params.quizId, score);
+			console.log("User quiz data updated successfully");
+		} catch (error) {
+			console.error("Error updating user quiz data:", error);
+			// Handle the error appropriately (e.g., show an error message to the user)
+		}
 	};
 
 	const handleClearResponse = () => {
