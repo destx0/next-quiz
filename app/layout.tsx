@@ -8,8 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 import "katex/dist/katex.min.css";
 
 export const metadata = {
-	title: "NextUI App",
-	description: "Authenticated App with NextUI",
+	title: "Infinity Mock",
+	description: "Infinity Mock",
 };
 
 export default function RootLayout({
