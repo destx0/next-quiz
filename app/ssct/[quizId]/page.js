@@ -74,6 +74,20 @@ export default function QuizPage({ params }) {
 		setCurrentStep("quiz");
 	};
 
+	const handleMarkCurrentQuestion = () => {
+		if (tempSelectedOption !== null && !isSubmitted) {
+			setSelectedOption(tempSelectedOption);
+		}
+		markCurrentQuestion();
+		nextQuestion();
+		visitCurrentQuestion();
+		const { currentSectionIndex, currentQuestionIndex, sections } =
+			quizData;
+		const nextQuestionObj =
+			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
+			sections[currentSectionIndex + 1]?.questions[0];
+		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
+	};
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(tempSelectedOption);
@@ -264,7 +278,7 @@ export default function QuizPage({ params }) {
 							<div className="flex gap-2.5">
 								<button
 									className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
-									onClick={markCurrentQuestion}
+									onClick={handleMarkCurrentQuestion}
 								>
 									{currentQuestion.isMarked
 										? "Unmark"
