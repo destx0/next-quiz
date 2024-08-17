@@ -83,7 +83,7 @@ export default function Hero() {
 				<p className={subtitle({ class: "mb-8" })}>
 					Ace your SSC exams with our comprehensive Mock platform!
 				</p>
-				<Link href={user ? "/ssct" : "/login"}>
+				<Link href={user ? "/ssc" : "/login"}>
 					<Button
 						color="primary"
 						size="lg"

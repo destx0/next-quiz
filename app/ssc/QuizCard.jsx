@@ -75,7 +75,7 @@ const QuizCard = ({ quiz, index }) => {
 					</div>
 				</div>
 				<div className="flex justify-end mt-4">
-					<Link href={`/ssct/${quiz.id}?quiz=true`} passHref>
+					<Link href={`/ssc/${quiz.id}?quiz=true`} passHref>
 						<Button
 							size="sm"
 							variant="shadow"
