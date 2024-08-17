@@ -12,7 +12,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 import LanguageSelection from "./LanguageSelection";
 import { updateUserQuizData } from "@/lib/userData";
-import { Modal, Button } from "@nextui-org/react";
 
 export default function QuizPage({ params }) {
 	const {
@@ -36,7 +35,6 @@ export default function QuizPage({ params }) {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [currentStep, setCurrentStep] = useState("terms");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
-	const [showLastQuestionPopup, setShowLastQuestionPopup] = useState(false);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
@@ -90,30 +88,18 @@ export default function QuizPage({ params }) {
 			sections[currentSectionIndex + 1]?.questions[0];
 		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
 	};
-
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(tempSelectedOption);
 		}
-
+		nextQuestion();
+		visitCurrentQuestion();
 		const { currentSectionIndex, currentQuestionIndex, sections } =
 			quizData;
-		const isLastQuestion =
-			currentSectionIndex === sections.length - 1 &&
-			currentQuestionIndex ===
-				sections[currentSectionIndex].questions.length - 1;
-
-		if (isLastQuestion) {
-			setShowLastQuestionPopup(true);
-		} else {
-			nextQuestion();
-			visitCurrentQuestion();
-			const nextQuestionObj =
-				sections[currentSectionIndex].questions[
-					currentQuestionIndex + 1
-				] || sections[currentSectionIndex + 1]?.questions[0];
-			setTempSelectedOption(nextQuestionObj?.selectedOption || null);
-		}
+		const nextQuestionObj =
+			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
+			sections[currentSectionIndex + 1]?.questions[0];
+		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
 	};
 
 	const handleJumpToSection = (sectionIndex) => {
@@ -145,6 +131,7 @@ export default function QuizPage({ params }) {
 			console.log("User quiz data updated successfully");
 		} catch (error) {
 			console.error("Error updating user quiz data:", error);
+			// Handle the error appropriately (e.g., show an error message to the user)
 		}
 	};
 
@@ -160,10 +147,6 @@ export default function QuizPage({ params }) {
 			submitQuiz();
 			setIsAnalysisOpen(true);
 		}
-	};
-
-	const closeLastQuestionPopup = () => {
-		setShowLastQuestionPopup(false);
 	};
 
 	const formatTime = (seconds) => {
@@ -361,42 +344,6 @@ export default function QuizPage({ params }) {
 					)}
 				</div>
 			</div>
-
-			{/* Last Question Popup */}
-			<Modal
-				closeButton
-				aria-labelledby="last-question-modal"
-				open={showLastQuestionPopup}
-				onClose={closeLastQuestionPopup}
-			>
-				<Modal.Header>
-					<h3
-						id="last-question-modal"
-						className="text-lg font-semibold"
-					>
-						Last Question Reached
-					</h3>
-				</Modal.Header>
-				<Modal.Body>
-					<p>
-						You've reached the last question of the quiz. Would you
-						like to review your answers or submit the quiz?
-					</p>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button
-						auto
-						flat
-						color="gray"
-						onClick={closeLastQuestionPopup}
-					>
-						Review Answers
-					</Button>
-					<Button auto onClick={handleSubmitQuiz}>
-						Submit Quiz
-					</Button>
-				</Modal.Footer>
-			</Modal>
 		</div>
 	);
 }
