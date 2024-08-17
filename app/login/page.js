@@ -27,7 +27,7 @@ export default function Login() {
 	const handleLogin = async (user) => {
 		const token = await user.getIdToken();
 		setCookie("authToken", token, { maxAge: 30 * 24 * 60 * 60 }); // 30 days
-		router.push("/ssc");
+		router.push("/ssct");
 	};
 
 	const handleEmailLogin = async (e) => {
