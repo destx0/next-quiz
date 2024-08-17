@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 import LanguageSelection from "./LanguageSelection";
 import { updateUserQuizData } from "@/lib/userData";
-import { Modal, Button, Text } from "@nextui-org/react";
+import { Modal, Button } from "@nextui-org/react";
 
 export default function QuizPage({ params }) {
 	const {
