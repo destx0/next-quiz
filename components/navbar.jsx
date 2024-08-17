@@ -29,7 +29,7 @@ import useAuthStore from "@/lib/zustand";
 
 const navItems = [
 	{ href: "/", label: "Home" },
-	{ href: "/ssc", label: "All mocks" },
+	{ href: "/ssc-mock", label: "All mocks" },
 ];
 
 export const Navbar = () => {

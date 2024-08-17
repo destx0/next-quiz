@@ -56,7 +56,10 @@ export default function SSCTestsPage() {
 							className="mb-2 flex items-center justify-between"
 						>
 							<span>Quiz ID: {quizId}</span>
-							<Link href={`/ssc/${quizId}?quiz=true`} passHref>
+							<Link
+								href={`/ssc-mock/${quizId}?quiz=true`}
+								passHref
+							>
 								<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
 									Start Test
 								</button>
