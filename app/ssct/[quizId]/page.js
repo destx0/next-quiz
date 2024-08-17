@@ -370,15 +370,18 @@ export default function QuizPage({ params }) {
 				onClose={closeLastQuestionPopup}
 			>
 				<Modal.Header>
-					<Text id="last-question-modal" size={18}>
+					<h3
+						id="last-question-modal"
+						className="text-lg font-semibold"
+					>
 						Last Question Reached
-					</Text>
+					</h3>
 				</Modal.Header>
 				<Modal.Body>
-					<Text>
+					<p>
 						You've reached the last question of the quiz. Would you
 						like to review your answers or submit the quiz?
-					</Text>
+					</p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button
