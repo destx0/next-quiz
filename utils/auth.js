@@ -1,4 +1,4 @@
-// auth.js
+// @/utils/auth.js
 
 import { auth } from "@/lib/firebase";
 import {
