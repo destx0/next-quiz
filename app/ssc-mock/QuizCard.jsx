@@ -77,7 +77,7 @@ const QuizCard = ({ quiz, index }) => {
 				<div className="flex justify-end mt-4 space-x-2">
 					{quiz.isCompleted && (
 						<Link
-							href={`/ssc-mock/${quiz.id}?quiz=true&showResults=true`}
+							href={`/ssc-mock/${quiz.id}?quiz=true&showPreviousSubmission=true`}
 							passHref
 						>
 							<Button
@@ -86,7 +86,7 @@ const QuizCard = ({ quiz, index }) => {
 								color="secondary"
 								className="transition-all duration-300 ease-in-out transform group-hover:scale-110 text-white font-semibold px-4 py-2 rounded-full bg-gradient-to-br from-green-500 to-teal-400 hover:from-green-600 hover:to-teal-500"
 							>
-								Show Results
+								Show Previous Submission
 							</Button>
 						</Link>
 					)}
