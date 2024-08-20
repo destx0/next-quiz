@@ -8,7 +8,6 @@ import useQuizStore from "@/stores/quizStore";
 import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 import LanguageSelection from "./LanguageSelection";
 import { updateUserQuizData } from "@/lib/userData";
@@ -32,7 +31,6 @@ export default function QuizPage({ params }) {
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
-	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [currentStep, setCurrentStep] = useState("terms");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 
@@ -127,7 +125,6 @@ export default function QuizPage({ params }) {
 		const score = calculateScore();
 		setIsAnalysisOpen(true);
 
-		// Prepare the user's submission data
 		const userSubmission = quizData.sections.map((section) => ({
 			sectionName: section.name,
 			questions: section.questions.map((question) => ({
@@ -152,7 +149,6 @@ export default function QuizPage({ params }) {
 				"Error updating user quiz data and submission:",
 				error
 			);
-			// Handle the error appropriately (e.g., show an error message to the user)
 		}
 	};
 
@@ -329,41 +325,28 @@ export default function QuizPage({ params }) {
 										/>
 									</>
 								)}
-								{
-									<button
-										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
-										onClick={handleNextQuestion}
-									>
-										Save & Next
-									</button>
-								}
+								<button
+									className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
+									onClick={handleNextQuestion}
+								>
+									Save & Next
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				{/* Toggleable Sidebar - Fixed width, full height */}
-				<div className="relative" style={{ fontSize: "80%" }}>
-					<button
-						className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-gray-200 text-gray-600 p-1 rounded-l"
-						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-					>
-						{isSidebarOpen ? <ChevronRight /> : <ChevronLeft />}
-					</button>
-					{isSidebarOpen && (
-						<div className="w-64 bg-gray-100 overflow-auto border-l h-full">
-							<SideNav
-								questions={currentSection.questions}
-								currentQuestionIndex={currentQuestionIndex}
-								currentSectionIndex={currentSectionIndex}
-								handleJumpToQuestion={handleJumpToQuestion}
-								handleSubmitQuiz={handleSubmitQuiz}
-								isSubmitted={isSubmitted}
-								sections={sections}
-							/>
-						</div>
-					)}
-				</div>
+				{/* SideNav */}
+				<SideNav
+					questions={currentSection.questions}
+					currentQuestionIndex={currentQuestionIndex}
+					currentSectionIndex={currentSectionIndex}
+					handleJumpToQuestion={handleJumpToQuestion}
+					handleSubmitQuiz={handleSubmitQuiz}
+					isSubmitted={isSubmitted}
+					sections={sections}
+					handleJumpToSection={handleJumpToSection}
+				/>
 			</div>
 		</div>
 	);
