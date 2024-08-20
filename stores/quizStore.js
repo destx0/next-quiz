@@ -5,8 +5,10 @@ const useQuizStore = create((set, get) => ({
 	isSubmitted: false,
 	showAnswers: false,
 	remainingTime: null,
+	previousSubmission: null,
 
-	setQuizData: (data) =>
+	setQuizData: (data) => {
+		console.log("Setting quiz data:", data);
 		set((state) => ({
 			quizData: {
 				...data,
@@ -26,69 +28,79 @@ const useQuizStore = create((set, get) => ({
 			},
 			isSubmitted: false,
 			showAnswers: false,
-			remainingTime: data.duration * 60, // Convert duration to seconds
-		})),
+			remainingTime: data.duration * 60,
+		}));
+		console.log("Quiz data set:", get().quizData);
+	},
 
-	setCurrentIndices: (sectionIndex, questionIndex) =>
+	setSubmitted: (value) => {
+		console.log("Setting isSubmitted:", value);
+		set({ isSubmitted: value });
+		console.log("isSubmitted set to:", get().isSubmitted);
+	},
+
+	setPreviousSubmission: (submission) => {
+		console.log("Setting previous submission:", submission);
 		set((state) => {
-			const { sections } = state.quizData;
-			const updatedSections = sections.map((section, sIndex) => ({
-				...section,
-				questions: section.questions.map((question, qIndex) => ({
-					...question,
-					isActive:
-						sIndex === sectionIndex && qIndex === questionIndex,
+			const updatedQuizData = {
+				...state.quizData,
+				sections: state.quizData.sections.map((section) => ({
+					...section,
+					questions: section.questions.map(
+						(question, questionIndex) => {
+							const submissionSection =
+								submission.submission.find(
+									(s) => s.sectionName === section.name
+								);
+							const submissionQuestion = submissionSection
+								? submissionSection.questions[questionIndex]
+								: null;
+							return {
+								...question,
+								selectedOption: submissionQuestion
+									? submissionQuestion.selectedOption
+									: null,
+								isVisited: true,
+								isCorrect: submissionQuestion
+									? submissionQuestion.isCorrect
+									: false,
+							};
+						}
+					),
 				})),
-			}));
-
-			return {
-				quizData: {
-					...state.quizData,
-					currentSectionIndex: sectionIndex,
-					currentQuestionIndex: questionIndex,
-					sections: updatedSections,
-				},
 			};
-		}),
-
-	incrementActiveQuestionTime: () =>
-		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex, sections } =
-				state.quizData;
-			const updatedSections = sections.map((section, sIndex) => ({
-				...section,
-				questions: section.questions.map((question, qIndex) => {
-					if (
-						sIndex === currentSectionIndex &&
-						qIndex === currentQuestionIndex
-					) {
-						return {
-							...question,
-							timeSpent: question.timeSpent + 1,
-						};
-					}
-					return question;
-				}),
-			}));
-
+			console.log(
+				"Updated quiz data with previous submission:",
+				updatedQuizData
+			);
 			return {
-				quizData: {
-					...state.quizData,
-					sections: updatedSections,
-				},
+				quizData: updatedQuizData,
+				previousSubmission: submission,
+				isSubmitted: true,
+				showAnswers: true,
 			};
-		}),
+		});
+		console.log("Previous submission set, new state:", get());
+	},
 
-	setCurrentIndices: (sectionIndex, questionIndex) =>
+	setCurrentIndices: (sectionIndex, questionIndex) => {
+		console.log(
+			`Setting current indices: section ${sectionIndex}, question ${questionIndex}`
+		);
 		set((state) => ({
 			quizData: {
 				...state.quizData,
 				currentSectionIndex: sectionIndex,
 				currentQuestionIndex: questionIndex,
 			},
-		})),
+		}));
+	},
 
-	updateQuestionState: (sectionIndex, questionIndex, newState) =>
+	updateQuestionState: (sectionIndex, questionIndex, newState) => {
+		console.log(
+			`Updating question state: section ${sectionIndex}, question ${questionIndex}`,
+			newState
+		);
 		set((state) => ({
 			quizData: {
 				...state.quizData,
@@ -106,147 +118,131 @@ const useQuizStore = create((set, get) => ({
 						: section
 				),
 			},
-		})),
+		}));
+	},
 
-	markCurrentQuestion: () =>
-		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex, sections } =
-				state.quizData;
-			const currentSection = sections[currentSectionIndex];
-			const isLastQuestionInSection =
-				currentQuestionIndex === currentSection.questions.length - 1;
-			const isLastSection = currentSectionIndex === sections.length - 1;
+	markCurrentQuestion: () => {
+		const { currentSectionIndex, currentQuestionIndex, sections } =
+			get().quizData;
+		console.log(
+			`Marking current question: section ${currentSectionIndex}, question ${currentQuestionIndex}`
+		);
+		set((state) => ({
+			quizData: {
+				...state.quizData,
+				sections: state.quizData.sections.map((section, sIndex) =>
+					sIndex === currentSectionIndex
+						? {
+								...section,
+								questions: section.questions.map(
+									(question, qIndex) =>
+										qIndex === currentQuestionIndex
+											? {
+													...question,
+													isMarked:
+														!question.isMarked,
+												}
+											: question
+								),
+							}
+						: section
+				),
+			},
+		}));
+	},
 
-			let newSectionIndex = currentSectionIndex;
-			let newQuestionIndex = currentQuestionIndex;
+	setSelectedOption: (optionIndex) => {
+		const { currentSectionIndex, currentQuestionIndex } = get().quizData;
+		console.log(
+			`Setting selected option: section ${currentSectionIndex}, question ${currentQuestionIndex}, option ${optionIndex}`
+		);
+		set((state) => ({
+			quizData: {
+				...state.quizData,
+				sections: state.quizData.sections.map((section, sIndex) =>
+					sIndex === currentSectionIndex
+						? {
+								...section,
+								questions: section.questions.map(
+									(question, qIndex) =>
+										qIndex === currentQuestionIndex
+											? {
+													...question,
+													selectedOption: optionIndex,
+												}
+											: question
+								),
+							}
+						: section
+				),
+			},
+		}));
+	},
 
-			// Move to the next question or section
-			if (isLastQuestionInSection) {
-				if (isLastSection) {
-					// If it's the last question of the last section, don't change indices
-				} else {
-					newSectionIndex++;
-					newQuestionIndex = 0;
-				}
-			} else {
-				newQuestionIndex++;
-			}
+	visitCurrentQuestion: () => {
+		const { currentSectionIndex, currentQuestionIndex } = get().quizData;
+		console.log(
+			`Visiting current question: section ${currentSectionIndex}, question ${currentQuestionIndex}`
+		);
+		set((state) => ({
+			quizData: {
+				...state.quizData,
+				sections: state.quizData.sections.map((section, sIndex) =>
+					sIndex === currentSectionIndex
+						? {
+								...section,
+								questions: section.questions.map(
+									(question, qIndex) =>
+										qIndex === currentQuestionIndex
+											? { ...question, isVisited: true }
+											: question
+								),
+							}
+						: section
+				),
+			},
+		}));
+	},
 
-			return {
+	nextQuestion: () => {
+		const { currentSectionIndex, currentQuestionIndex, sections } =
+			get().quizData;
+		console.log(
+			`Moving to next question from: section ${currentSectionIndex}, question ${currentQuestionIndex}`
+		);
+		const currentSection = sections[currentSectionIndex];
+		if (currentQuestionIndex < currentSection.questions.length - 1) {
+			set((state) => ({
 				quizData: {
 					...state.quizData,
-					currentSectionIndex: newSectionIndex,
-					currentQuestionIndex: newQuestionIndex,
-					sections: state.quizData.sections.map((section, sIndex) =>
-						sIndex === currentSectionIndex
-							? {
-									...section,
-									questions: section.questions.map(
-										(question, qIndex) =>
-											qIndex === currentQuestionIndex
-												? {
-														...question,
-														isMarked:
-															!question.isMarked,
-													}
-												: question
-									),
-								}
-							: section
-					),
+					currentQuestionIndex: currentQuestionIndex + 1,
 				},
-			};
-		}),
-
-	setSelectedOption: (optionIndex) =>
-		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex } =
-				state.quizData;
-			return {
+			}));
+		} else if (currentSectionIndex < sections.length - 1) {
+			set((state) => ({
 				quizData: {
 					...state.quizData,
-					sections: state.quizData.sections.map((section, sIndex) =>
-						sIndex === currentSectionIndex
-							? {
-									...section,
-									questions: section.questions.map(
-										(question, qIndex) =>
-											qIndex === currentQuestionIndex
-												? {
-														...question,
-														selectedOption:
-															optionIndex,
-													}
-												: question
-									),
-								}
-							: section
-					),
+					currentSectionIndex: currentSectionIndex + 1,
+					currentQuestionIndex: 0,
 				},
-			};
-		}),
+			}));
+		}
+	},
 
-	visitCurrentQuestion: () =>
-		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex } =
-				state.quizData;
-			return {
-				quizData: {
-					...state.quizData,
-					sections: state.quizData.sections.map((section, sIndex) =>
-						sIndex === currentSectionIndex
-							? {
-									...section,
-									questions: section.questions.map(
-										(question, qIndex) =>
-											qIndex === currentQuestionIndex
-												? {
-														...question,
-														isVisited: true,
-													}
-												: question
-									),
-								}
-							: section
-					),
-				},
-			};
-		}),
-
-	nextQuestion: () =>
-		set((state) => {
-			const { currentSectionIndex, currentQuestionIndex, sections } =
-				state.quizData;
-			const currentSection = sections[currentSectionIndex];
-			if (currentQuestionIndex < currentSection.questions.length - 1) {
-				return {
-					quizData: {
-						...state.quizData,
-						currentQuestionIndex: currentQuestionIndex + 1,
-					},
-				};
-			} else if (currentSectionIndex < sections.length - 1) {
-				return {
-					quizData: {
-						...state.quizData,
-						currentSectionIndex: currentSectionIndex + 1,
-						currentQuestionIndex: 0,
-					},
-				};
-			}
-			return state; // No change if we're at the last question
-		}),
-
-	submitQuiz: () =>
+	submitQuiz: () => {
+		console.log("Submitting quiz");
 		set((state) => ({
 			isSubmitted: true,
 			remainingTime: 0,
-		})),
+		}));
+	},
 
-	toggleShowAnswers: () =>
+	toggleShowAnswers: () => {
+		console.log("Toggling show answers");
 		set((state) => ({
 			showAnswers: !state.showAnswers,
-		})),
+		}));
+	},
 
 	calculateScore: () => {
 		const state = get();
@@ -260,13 +256,41 @@ const useQuizStore = create((set, get) => ({
 				}
 			});
 		});
+		console.log("Calculated score:", totalScore);
 		return totalScore;
 	},
 
-	decrementRemainingTime: () =>
+	incrementActiveQuestionTime: () => {
+		const { currentSectionIndex, currentQuestionIndex } = get().quizData;
+		set((state) => ({
+			quizData: {
+				...state.quizData,
+				sections: state.quizData.sections.map((section, sIndex) =>
+					sIndex === currentSectionIndex
+						? {
+								...section,
+								questions: section.questions.map(
+									(question, qIndex) =>
+										qIndex === currentQuestionIndex
+											? {
+													...question,
+													timeSpent:
+														question.timeSpent + 1,
+												}
+											: question
+								),
+							}
+						: section
+				),
+			},
+		}));
+	},
+
+	decrementRemainingTime: () => {
 		set((state) => ({
 			remainingTime: Math.max(0, state.remainingTime - 1),
-		})),
+		}));
+	},
 }));
 
 export default useQuizStore;

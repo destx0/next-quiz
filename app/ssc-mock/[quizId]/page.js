@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import QuestionCard from "./QuestionCard";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
@@ -9,9 +10,14 @@ import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
 import TermsAndConditions from "./TermsAndConditions";
-import { updateUserQuizData } from "@/lib/userData";
+import { updateUserQuizData, getUserSubmission } from "@/lib/userData";
+import { auth } from "@/lib/firebase";
 
 export default function QuizPage({ params }) {
+	const searchParams = useSearchParams();
+	const showPreviousSubmission =
+		searchParams.get("showPreviousSubmission") === "true";
+
 	const {
 		quizData,
 		setQuizData,
@@ -25,28 +31,77 @@ export default function QuizPage({ params }) {
 		calculateScore,
 		isSubmitted,
 		incrementActiveQuestionTime,
+		setSubmitted,
+		setPreviousSubmission,
 	} = useQuizStore();
 
 	const [tempSelectedOption, setTempSelectedOption] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 	const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
-	const [currentStep, setCurrentStep] = useState("terms");
+	const [currentStep, setCurrentStep] = useState(
+		showPreviousSubmission ? "quiz" : "terms"
+	);
 	const [selectedLanguage, setSelectedLanguage] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
 			try {
+				console.log("Fetching quiz data for quizId:", params.quizId);
 				const data = await getQuizWithQuestions(params.quizId);
+				console.log("Quiz data fetched:", data);
 				setQuizData(data);
-				visitCurrentQuestion();
-				setEndTime(new Date().getTime() + data.duration * 60 * 1000);
+
+				if (showPreviousSubmission) {
+					console.log("Attempting to load previous submission");
+					const user = auth.currentUser;
+					if (user) {
+						console.log(
+							"User authenticated, fetching previous submission"
+						);
+						try {
+							const previousSubmission = await getUserSubmission(
+								user.uid,
+								params.quizId
+							);
+							console.log(
+								"Previous submission fetched:",
+								previousSubmission
+							);
+							setPreviousSubmission(previousSubmission);
+							setSubmitted(true);
+							setCurrentStep("quiz");
+						} catch (error) {
+							console.error(
+								"Error fetching previous submission:",
+								error
+							);
+						}
+					} else {
+						console.log("User not authenticated");
+					}
+				} else {
+					visitCurrentQuestion();
+					setEndTime(
+						new Date().getTime() + data.duration * 60 * 1000
+					);
+				}
+				setIsLoading(false);
 			} catch (error) {
 				console.error("Error fetching quiz:", error);
+				setIsLoading(false);
 			}
 		};
 
 		fetchQuizData();
-	}, [params.quizId, setQuizData, visitCurrentQuestion]);
+	}, [
+		params.quizId,
+		setQuizData,
+		visitCurrentQuestion,
+		showPreviousSubmission,
+		setPreviousSubmission,
+		setSubmitted,
+	]);
 
 	useEffect(() => {
 		if (quizData && !isSubmitted && currentStep === "quiz") {
@@ -63,6 +118,30 @@ export default function QuizPage({ params }) {
 		setCurrentStep("quiz");
 	};
 
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!quizData) {
+		console.log("Quiz data not loaded");
+		return <div>Error loading quiz data</div>;
+	}
+
+	if (currentStep === "terms" && !showPreviousSubmission) {
+		return (
+			<TermsAndConditions
+				onStartQuiz={handleStartQuiz}
+				testName={quizData.title}
+				duration={quizData.duration}
+			/>
+		);
+	}
+
+	console.log("Rendering quiz page");
+	const { currentSectionIndex, currentQuestionIndex, sections } = quizData;
+	const currentSection = sections[currentSectionIndex];
+	const currentQuestion = currentSection.questions[currentQuestionIndex];
+
 	const handleMarkCurrentQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(tempSelectedOption);
@@ -70,8 +149,6 @@ export default function QuizPage({ params }) {
 		markCurrentQuestion();
 		nextQuestion();
 		visitCurrentQuestion();
-		const { currentSectionIndex, currentQuestionIndex, sections } =
-			quizData;
 		const nextQuestionObj =
 			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
 			sections[currentSectionIndex + 1]?.questions[0];
@@ -84,8 +161,6 @@ export default function QuizPage({ params }) {
 		}
 		nextQuestion();
 		visitCurrentQuestion();
-		const { currentSectionIndex, currentQuestionIndex, sections } =
-			quizData;
 		const nextQuestionObj =
 			sections[currentSectionIndex].questions[currentQuestionIndex + 1] ||
 			sections[currentSectionIndex + 1]?.questions[0];
@@ -95,7 +170,6 @@ export default function QuizPage({ params }) {
 	const handleJumpToSection = (sectionIndex) => {
 		setCurrentIndices(Number(sectionIndex), 0);
 		visitCurrentQuestion();
-		const { sections } = quizData;
 		const firstQuestionInSection = sections[sectionIndex].questions[0];
 		setTempSelectedOption(firstQuestionInSection.selectedOption);
 	};
@@ -103,8 +177,8 @@ export default function QuizPage({ params }) {
 	const handleJumpToQuestion = (questionIndex) => {
 		setCurrentIndices(quizData.currentSectionIndex, questionIndex);
 		visitCurrentQuestion();
-		const { currentSectionIndex, sections } = quizData;
-		const question = sections[currentSectionIndex].questions[questionIndex];
+		const question =
+			sections[quizData.currentSectionIndex].questions[questionIndex];
 		setTempSelectedOption(question.selectedOption);
 	};
 
@@ -164,22 +238,6 @@ export default function QuizPage({ params }) {
 			.toString()
 			.padStart(2, "0")}`;
 	};
-
-	if (!quizData) return <div>Loading...</div>;
-
-	if (currentStep === "terms") {
-		return (
-			<TermsAndConditions
-				onStartQuiz={handleStartQuiz}
-				testName={quizData.title}
-				duration={quizData.duration}
-			/>
-		);
-	}
-
-	const { currentSectionIndex, currentQuestionIndex, sections } = quizData;
-	const currentSection = sections[currentSectionIndex];
-	const currentQuestion = currentSection.questions[currentQuestionIndex];
 
 	return (
 		<div className="flex flex-col h-screen">
