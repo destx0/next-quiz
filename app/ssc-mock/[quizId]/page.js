@@ -9,7 +9,6 @@ import { getQuizWithQuestions } from "@/lib/firestore";
 import SideNav from "./SideNav";
 import AnalysisModal from "./AnalysisModal";
 import TermsAndConditions from "./TermsAndConditions";
-import LanguageSelection from "./LanguageSelection";
 import { updateUserQuizData } from "@/lib/userData";
 
 export default function QuizPage({ params }) {
@@ -58,14 +57,6 @@ export default function QuizPage({ params }) {
 			return () => clearInterval(timer);
 		}
 	}, [quizData, isSubmitted, incrementActiveQuestionTime, currentStep]);
-
-	const handleAcceptTerms = () => {
-		setCurrentStep("language");
-	};
-
-	const handlePreviousToTerms = () => {
-		setCurrentStep("terms");
-	};
 
 	const handleStartQuiz = (language) => {
 		setSelectedLanguage(language);
@@ -179,17 +170,7 @@ export default function QuizPage({ params }) {
 	if (currentStep === "terms") {
 		return (
 			<TermsAndConditions
-				onAccept={handleAcceptTerms}
-				onNext={handleAcceptTerms}
-			/>
-		);
-	}
-
-	if (currentStep === "language") {
-		return (
-			<LanguageSelection
-				onPrevious={handlePreviousToTerms}
-				onStart={handleStartQuiz}
+				onStartQuiz={handleStartQuiz}
 				testName={quizData.title}
 				duration={quizData.duration}
 			/>

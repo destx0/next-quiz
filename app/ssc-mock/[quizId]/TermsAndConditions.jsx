@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import LanguageSelection from "./LanguageSelection";
 
 const QuestionStatusIcon = ({
 	isActive,
@@ -130,7 +132,32 @@ const StatusItem = ({ icon, description }) => (
 	</div>
 );
 
-const TermsAndConditions = ({ onAccept, onNext }) => {
+const TermsAndConditions = ({ onStartQuiz, testName, duration }) => {
+	const [currentStep, setCurrentStep] = useState("terms");
+
+	const handleAcceptTerms = () => {
+		setCurrentStep("language");
+	};
+
+	const handlePreviousToTerms = () => {
+		setCurrentStep("terms");
+	};
+
+	const handleStartQuiz = (language) => {
+		onStartQuiz(language);
+	};
+
+	if (currentStep === "language") {
+		return (
+			<LanguageSelection
+				onPrevious={handlePreviousToTerms}
+				onStart={handleStartQuiz}
+				testName={testName}
+				duration={duration}
+			/>
+		);
+	}
+
 	return (
 		<div className="flex flex-col h-screen bg-white">
 			<div className="flex-grow overflow-auto p-8">
@@ -349,13 +376,13 @@ const TermsAndConditions = ({ onAccept, onNext }) => {
 
 			<div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex justify-between items-center">
 				<button
-					onClick={onNext}
+					onClick={handlePreviousToTerms}
 					className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
 				>
 					Go Back
 				</button>
 				<button
-					onClick={onAccept}
+					onClick={handleAcceptTerms}
 					className="px-4 py-2 bg-[#92c4f2] text-black rounded hover:bg-blue-600"
 				>
 					Next
