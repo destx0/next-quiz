@@ -231,6 +231,14 @@ export default function QuizPage({ params }) {
 							renderMap={[false, true, true, true]}
 						/>
 					)}
+					{isSubmitted && (
+						<button
+							className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded ml-4"
+							onClick={() => setIsAnalysisOpen(true)}
+						>
+							Show Analysis
+						</button>
+					)}
 				</div>
 			</div>
 
@@ -293,14 +301,16 @@ export default function QuizPage({ params }) {
 					>
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2.5">
-								<button
-									className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
-									onClick={handleMarkCurrentQuestion}
-								>
-									{currentQuestion.isMarked
-										? "Unmark"
-										: "Mark for review & next"}
-								</button>
+								{!isSubmitted && (
+									<button
+										className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
+										onClick={handleMarkCurrentQuestion}
+									>
+										{currentQuestion.isMarked
+											? "Unmark"
+											: "Mark for review & next"}
+									</button>
+								)}
 								{!isSubmitted && (
 									<button
 										className="px-5 py-2.5 bg-[#92c4f2] text-black rounded"
@@ -329,7 +339,7 @@ export default function QuizPage({ params }) {
 									className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
 									onClick={handleNextQuestion}
 								>
-									Save & Next
+									{isSubmitted ? "Next" : "Save & Next"}
 								</button>
 							</div>
 						</div>
