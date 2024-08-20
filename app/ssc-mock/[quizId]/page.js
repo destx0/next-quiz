@@ -271,12 +271,12 @@ export default function QuizPage({ params }) {
 						/>
 					)}
 					{isSubmitted && (
-						<button
-							className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded ml-4"
-							onClick={() => setIsAnalysisOpen(true)}
-						>
-							Show Analysis
-						</button>
+						<AnalysisModal
+							quizData={quizData}
+							score={calculateScore()}
+							isOpen={isAnalysisOpen}
+							onOpenChange={setIsAnalysisOpen}
+						/>
 					)}
 				</div>
 			</div>
@@ -366,12 +366,6 @@ export default function QuizPage({ params }) {
 										<p className="text-lg font-semibold">
 											Your Score: {calculateScore()}
 										</p>
-										<AnalysisModal
-											quizData={quizData}
-											score={calculateScore()}
-											isOpen={isAnalysisOpen}
-											onOpenChange={setIsAnalysisOpen}
-										/>
 									</>
 								)}
 								<button
