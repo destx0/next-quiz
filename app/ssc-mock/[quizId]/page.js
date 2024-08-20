@@ -88,6 +88,7 @@ export default function QuizPage({ params }) {
 			sections[currentSectionIndex + 1]?.questions[0];
 		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
 	};
+
 	const handleNextQuestion = () => {
 		if (tempSelectedOption !== null && !isSubmitted) {
 			setSelectedOption(tempSelectedOption);
@@ -126,11 +127,31 @@ export default function QuizPage({ params }) {
 		const score = calculateScore();
 		setIsAnalysisOpen(true);
 
+		// Prepare the user's submission data
+		const userSubmission = quizData.sections.map((section) => ({
+			sectionName: section.name,
+			questions: section.questions.map((question) => ({
+				questionId: question.id,
+				selectedOption: question.selectedOption,
+				isCorrect: question.selectedOption === question.correctAnswer,
+			})),
+		}));
+
 		try {
-			await updateUserQuizData(params.quizId, score);
-			console.log("User quiz data updated successfully");
+			const submissionId = await updateUserQuizData(
+				params.quizId,
+				score,
+				userSubmission
+			);
+			console.log(
+				"User quiz data and submission updated successfully. Submission ID:",
+				submissionId
+			);
 		} catch (error) {
-			console.error("Error updating user quiz data:", error);
+			console.error(
+				"Error updating user quiz data and submission:",
+				error
+			);
 			// Handle the error appropriately (e.g., show an error message to the user)
 		}
 	};
