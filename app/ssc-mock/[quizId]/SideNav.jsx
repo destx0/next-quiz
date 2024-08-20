@@ -23,10 +23,12 @@ const SideNav = ({
 				{isSidebarOpen ? <ChevronRight /> : <ChevronLeft />}
 			</button>
 			<div
-				className={`h-full transition-all duration-300 ${isSidebarOpen ? "w-64" : "w-0"} overflow-hidden`}
+				className={`h-full transition-all duration-300 ${
+					isSidebarOpen ? "w-64" : "w-0"
+				} overflow-hidden`}
 			>
 				<div className="w-64 h-full bg-[#d9edf7] flex flex-col">
-					<Legend />
+					<Legend isSubmitted={isSubmitted} />
 					<hr className="border-t border-gray-300 my-2" />
 					<div className="bg-[#b4dbed] p-2">
 						Section: {sections[currentSectionIndex].name}
@@ -39,6 +41,10 @@ const SideNav = ({
 									question.selectedOption !== null;
 								const isMarked = question.isMarked;
 								const isVisited = question.isVisited;
+								const isCorrect =
+									isSubmitted &&
+									question.selectedOption ===
+										question.correctAnswer;
 
 								return (
 									<button
@@ -55,6 +61,8 @@ const SideNav = ({
 											isAnswered={isAnswered}
 											isVisited={isVisited}
 											isMarked={isMarked}
+											isSubmitted={isSubmitted}
+											isCorrect={isCorrect}
 											number={index + 1}
 										/>
 									</button>

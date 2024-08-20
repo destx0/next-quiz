@@ -78,7 +78,7 @@ export default function Hero() {
 		<section className="flex flex-col md:flex-row items-center justify-between mb-16">
 			<div className="md:w-1/2 mb-8 md:mb-0">
 				<h1 className={title({ class: "mb-4" })}>
-					Free SSC Mock Tests by anish
+					Free SSC Mock Tests
 				</h1>
 				<p className={subtitle({ class: "mb-8" })}>
 					Ace your SSC exams with our comprehensive Mock platform!
@@ -94,9 +94,7 @@ export default function Hero() {
 					</Button>
 				</Link>
 			</div>
-			<div className="md:w-1/2">
-				<InfinityAnimation />
-			</div>
+			<div className="md:w-1/2">{/* <InfinityAnimation /> */}</div>
 		</section>
 	);
 }
