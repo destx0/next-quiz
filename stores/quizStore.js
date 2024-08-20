@@ -60,7 +60,6 @@ const useQuizStore = create((set, get) => ({
 								selectedOption: submissionQuestion
 									? submissionQuestion.selectedOption
 									: null,
-								isVisited: true,
 								isCorrect: submissionQuestion
 									? submissionQuestion.isCorrect
 									: false,
