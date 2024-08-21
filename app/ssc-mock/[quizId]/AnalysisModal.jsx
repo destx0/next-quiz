@@ -16,12 +16,14 @@ import {
 	TableCell,
 } from "@nextui-org/react";
 
-const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
+const AnalysisModal = ({ quizData, isOpen, onOpenChange }) => {
 	const calculateStatistics = () => {
 		if (!quizData || !quizData.sections) {
 			console.error("Invalid quizData structure");
 			return null;
 		}
+
+		let totalScore = 0;
 
 		const sectionStats = quizData.sections.map((section) => {
 			const totalQuestions = section.questions.length;
@@ -31,19 +33,33 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 			const correct = section.questions.filter(
 				(q) => q.selectedOption === q.correctAnswer
 			).length;
+			const wrong = attempted - correct;
 			const timeSpent = section.questions.reduce(
-				(total, q) => total + q.timeSpent,
+				(total, q) => total + (q.timeSpent || 0),
 				0
 			);
+
+			// Calculate score for this section
+			let sectionScore = 0;
+			section.questions.forEach((question) => {
+				if (question.selectedOption === question.correctAnswer) {
+					sectionScore += quizData.positiveScore;
+				} else if (question.selectedOption !== null) {
+					sectionScore -= quizData.negativeScore;
+				}
+			});
+
+			totalScore += sectionScore;
 
 			return {
 				name: section.name,
 				totalQuestions,
 				attempted,
 				correct,
-				wrong: attempted - correct,
+				wrong,
 				unattempted: totalQuestions - attempted,
 				timeSpent,
+				score: sectionScore,
 			};
 		});
 
@@ -79,6 +95,7 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 			totalWrong,
 			totalUnattempted,
 			totalTimeSpent,
+			totalScore,
 			sectionStats,
 		};
 	};
@@ -105,14 +122,18 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 			{ key: "name", label: "Section" },
 			{ key: "score", label: "Score" },
 			{ key: "attempted", label: "Attempted" },
+			{ key: "correct", label: "Correct" },
+			{ key: "wrong", label: "Wrong" },
 			{ key: "accuracy", label: "Accuracy" },
 			{ key: "time", label: "Time" },
 		];
 
 		const sectionData = stats.sectionStats.map((section) => ({
 			name: section.name,
-			score: `${section.correct} / ${section.totalQuestions}`,
+			score: `${section.score}`,
 			attempted: `${section.attempted} / ${section.totalQuestions}`,
+			correct: `${section.correct}`,
+			wrong: `${section.wrong}`,
 			accuracy:
 				section.attempted > 0
 					? `${((section.correct / section.attempted) * 100).toFixed(2)}%`
@@ -122,8 +143,10 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 
 		const overallData = {
 			name: "Overall",
-			score: `${stats.totalCorrect} / ${stats.totalQuestions}`,
+			score: `${stats.totalScore}`,
 			attempted: `${stats.totalAttempted} / ${stats.totalQuestions}`,
+			correct: `${stats.totalCorrect}`,
+			wrong: `${stats.totalWrong}`,
 			accuracy:
 				stats.totalAttempted > 0
 					? `${((stats.totalCorrect / stats.totalAttempted) * 100).toFixed(2)}%`
@@ -165,7 +188,7 @@ const AnalysisModal = ({ quizData, score, isOpen, onOpenChange }) => {
 					</Table>
 					<div className="mt-4">
 						<p>
-							<strong>Total Score:</strong> {score}
+							<strong>Total Score:</strong> {stats.totalScore}
 						</p>
 					</div>
 				</CardBody>
