@@ -4,6 +4,7 @@ import { title, subtitle } from "@/components/primitives";
 import useAuthStore from "@/lib/zustand";
 import Link from "next/link";
 import * as THREE from "three";
+import Image from "next/image";
 
 const InfinityAnimation = () => {
 	const mountRef = useRef(null);
@@ -94,7 +95,15 @@ export default function Hero() {
 					</Button>
 				</Link>
 			</div>
-			<div className="md:w-1/2">{/* <InfinityAnimation /> */}</div>
+			<div className="md:w-1/2">
+				<Image
+					src="/humaaans.png"
+					alt="SSC Exam Preparation"
+					width={500}
+					height={300}
+					className="rounded-lg shadow-lg"
+				/>
+			</div>
 		</section>
 	);
 }
