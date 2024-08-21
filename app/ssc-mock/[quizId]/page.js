@@ -167,6 +167,19 @@ export default function QuizPage({ params }) {
 		setTempSelectedOption(nextQuestionObj?.selectedOption || null);
 	};
 
+	const handlePreviousQuestion = () => {
+		if (currentQuestionIndex > 0) {
+			setCurrentIndices(currentSectionIndex, currentQuestionIndex - 1);
+		} else if (currentSectionIndex > 0) {
+			const previousSection = sections[currentSectionIndex - 1];
+			setCurrentIndices(
+				currentSectionIndex - 1,
+				previousSection.questions.length - 1
+			);
+		}
+		visitCurrentQuestion();
+	};
+
 	const handleJumpToSection = (sectionIndex) => {
 		setCurrentIndices(Number(sectionIndex), 0);
 		visitCurrentQuestion();
@@ -234,9 +247,7 @@ export default function QuizPage({ params }) {
 	const formatTime = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
-		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
-			.toString()
-			.padStart(2, "0")}`;
+		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 	};
 
 	return (
@@ -340,6 +351,14 @@ export default function QuizPage({ params }) {
 					>
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2.5">
+								{isSubmitted && (
+									<button
+										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
+										onClick={handlePreviousQuestion}
+									>
+										Previous
+									</button>
+								)}
 								{!isSubmitted && (
 									<button
 										className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
@@ -360,14 +379,7 @@ export default function QuizPage({ params }) {
 								)}
 							</div>
 
-							<div className="flex items-center gap-5">
-								{isSubmitted && (
-									<>
-										<p className="text-lg font-semibold">
-											Your Score: {calculateScore()}
-										</p>
-									</>
-								)}
+							<div className="flex items-center">
 								<button
 									className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
 									onClick={handleNextQuestion}
