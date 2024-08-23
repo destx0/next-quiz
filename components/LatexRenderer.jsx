@@ -27,6 +27,25 @@ const LatexRenderer = ({ children }) => {
 			span.innerHTML = renderedLatex;
 		});
 
+		// Add CSS styles for table borders
+		const style = doc.createElement("style");
+		style.textContent = `
+            table { border-collapse: collapse; border: 1px solid #ccc; }
+            th, td { border: 1px solid #ccc; padding: 8px; }
+        `;
+		doc.head.appendChild(style);
+
+		// Apply classes to tables, th, and td elements
+		doc.querySelectorAll("table").forEach((table) => {
+			table.className = "border-collapse border border-gray-300";
+		});
+		doc.querySelectorAll("th").forEach((th) => {
+			th.className = "border border-gray-300 p-2 font-bold";
+		});
+		doc.querySelectorAll("td").forEach((td) => {
+			td.className = "border border-gray-300 p-2";
+		});
+
 		return doc.body.innerHTML;
 	};
 

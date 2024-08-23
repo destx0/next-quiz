@@ -4,7 +4,7 @@ const LanguageSelection = ({
 	onPrevious,
 	onStart,
 	testName = "Sample Test",
-	durationMinutes = 6,
+	durationMinutes = 60,
 }) => {
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [isConfirmed, setIsConfirmed] = useState(false);
