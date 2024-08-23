@@ -351,14 +351,6 @@ export default function QuizPage({ params }) {
 					>
 						<div className="flex justify-between items-center">
 							<div className="flex gap-2.5">
-								{isSubmitted && (
-									<button
-										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
-										onClick={handlePreviousQuestion}
-									>
-										Previous
-									</button>
-								)}
 								{!isSubmitted && (
 									<button
 										className="px-5 py-2.5 rounded bg-[#92c4f2] text-black"
@@ -379,7 +371,15 @@ export default function QuizPage({ params }) {
 								)}
 							</div>
 
-							<div className="flex items-center">
+							<div className="flex items-center gap-2.5">
+								{isSubmitted && (
+									<button
+										className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
+										onClick={handlePreviousQuestion}
+									>
+										Previous
+									</button>
+								)}
 								<button
 									className="px-5 py-2.5 bg-[#1ca7c0] text-white rounded"
 									onClick={handleNextQuestion}
@@ -390,7 +390,6 @@ export default function QuizPage({ params }) {
 						</div>
 					</div>
 				</div>
-
 				{/* SideNav */}
 				<SideNav
 					questions={currentSection.questions}
