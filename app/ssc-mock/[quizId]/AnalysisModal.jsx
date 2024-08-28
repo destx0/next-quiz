@@ -30,9 +30,7 @@ const AnalysisModal = ({ quizData, isOpen, onOpenChange }) => {
 			const attempted = section.questions.filter(
 				(q) => q.selectedOption !== null
 			).length;
-			const correct = section.questions.filter(
-				(q) => q.selectedOption === q.correctAnswer
-			).length;
+			const correct = section.questions.filter((q) => q.isCorrect).length;
 			const wrong = attempted - correct;
 			const timeSpent = section.questions.reduce(
 				(total, q) => total + (q.timeSpent || 0),
@@ -42,7 +40,7 @@ const AnalysisModal = ({ quizData, isOpen, onOpenChange }) => {
 			// Calculate score for this section
 			let sectionScore = 0;
 			section.questions.forEach((question) => {
-				if (question.selectedOption === question.correctAnswer) {
+				if (question.isCorrect) {
 					sectionScore += quizData.positiveScore;
 				} else if (question.selectedOption !== null) {
 					sectionScore -= quizData.negativeScore;

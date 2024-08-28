@@ -61,7 +61,9 @@ const useQuizStore = create((set, get) => ({
 									? submissionQuestion.selectedOption
 									: null,
 								isCorrect: submissionQuestion
-									? submissionQuestion.isCorrect
+									? String(
+											submissionQuestion.selectedOption
+										) === String(question.correctAnswer)
 									: false,
 							};
 						}
@@ -168,6 +170,11 @@ const useQuizStore = create((set, get) => ({
 											? {
 													...question,
 													selectedOption: optionIndex,
+													isCorrect:
+														String(optionIndex) ===
+														String(
+															question.correctAnswer
+														),
 												}
 											: question
 								),
@@ -248,7 +255,10 @@ const useQuizStore = create((set, get) => ({
 		let totalScore = 0;
 		state.quizData.sections.forEach((section) => {
 			section.questions.forEach((question) => {
-				if (question.selectedOption === question.correctAnswer) {
+				if (
+					String(question.selectedOption) ===
+					String(question.correctAnswer)
+				) {
 					totalScore += state.quizData.positiveScore;
 				} else if (question.selectedOption !== null) {
 					totalScore -= state.quizData.negativeScore;

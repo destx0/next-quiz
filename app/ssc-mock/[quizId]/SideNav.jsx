@@ -43,8 +43,8 @@ const SideNav = ({
 								const isVisited = question.isVisited;
 								const isCorrect =
 									isSubmitted &&
-									question.selectedOption ===
-										question.correctAnswer;
+									String(question.selectedOption) ===
+										String(question.correctAnswer);
 
 								return (
 									<button

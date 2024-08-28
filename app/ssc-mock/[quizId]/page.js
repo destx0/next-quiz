@@ -202,13 +202,15 @@ export default function QuizPage({ params }) {
 		submitQuiz();
 		const score = calculateScore();
 		setIsAnalysisOpen(true);
-
+		console.log("questions", quizData);
 		const userSubmission = quizData.sections.map((section) => ({
 			sectionName: section.name,
 			questions: section.questions.map((question) => ({
 				questionId: question.id,
 				selectedOption: question.selectedOption,
-				isCorrect: question.selectedOption === question.correctAnswer,
+				isCorrect:
+					String(question.selectedOption) ===
+					String(question.correctAnswer),
 			})),
 		}));
 
