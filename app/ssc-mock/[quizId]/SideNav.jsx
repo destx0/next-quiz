@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QuestionStatusIcon, Legend } from "./QuestionStatusComponents";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -12,7 +12,26 @@ const SideNav = ({
 	sections,
 	handleJumpToSection,
 }) => {
-	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth >= 768) {
+				setIsSidebarOpen(true);
+			} else {
+				setIsSidebarOpen(false);
+			}
+		};
+
+		// Set initial state
+		handleResize();
+
+		// Add event listener
+		window.addEventListener('resize', handleResize);
+
+		// Cleanup
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	return (
 		<div className="relative h-full flex">
