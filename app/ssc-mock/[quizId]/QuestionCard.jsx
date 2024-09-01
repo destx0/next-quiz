@@ -18,7 +18,8 @@ export default function QuestionCard({
 
 	const getQuestionStatus = () => {
 		if (!isSubmitted) return null;
-		if (parseInt(tempSelectedOption) === question.correctAnswer) return "Correct";
+		if (parseInt(tempSelectedOption) === question.correctAnswer)
+			return "Correct";
 		if (tempSelectedOption !== null) return "Wrong";
 		return "Not Attempted";
 	};
@@ -58,7 +59,9 @@ export default function QuestionCard({
 			</h2>
 
 			{isSubmitted && (
-				<div className={`mb-4 p-2 rounded-md border ${getStatusStyle(questionStatus)} flex items-center -mx-2`}>
+				<div
+					className={`mb-4 p-2 rounded-md border ${getStatusStyle(questionStatus)} flex items-center -mx-2`}
+				>
 					{getStatusIcon(questionStatus)}
 					<span className="ml-2 font-semibold">{questionStatus}</span>
 				</div>
@@ -84,9 +87,10 @@ export default function QuestionCard({
 					>
 						<div className="flex items-center p-2">
 							<LatexRenderer>{option}</LatexRenderer>
-							{isSubmitted && index === question.correctAnswer && (
-								<Check className="ml-2 text-green-500 w-5 h-5 flex-shrink-0" />
-							)}
+							{isSubmitted &&
+								index === question.correctAnswer && (
+									<Check className="ml-2 text-green-500 w-5 h-5 flex-shrink-0" />
+								)}
 							{isSubmitted &&
 								index === parseInt(tempSelectedOption) &&
 								index !== question.correctAnswer && (
