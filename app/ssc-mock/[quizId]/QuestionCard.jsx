@@ -58,7 +58,7 @@ export default function QuestionCard({
 			</h2>
 
 			{isSubmitted && (
-				<div className={`mb-4 p-2 rounded-md border ${getStatusStyle(questionStatus)} flex items-center`}>
+				<div className={`mb-4 p-2 rounded-md border ${getStatusStyle(questionStatus)} flex items-center -mx-2`}>
 					{getStatusIcon(questionStatus)}
 					<span className="ml-2 font-semibold">{questionStatus}</span>
 				</div>
