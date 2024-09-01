@@ -252,6 +252,11 @@ export default function QuizPage({ params }) {
 		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 	};
 
+	const truncateText = (text, limit) => {
+		if (text.length <= limit) return text;
+		return text.slice(0, limit) + '...';
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			{/* Top Bar */}
@@ -259,7 +264,7 @@ export default function QuizPage({ params }) {
 				className="bg-white border-b p-5 flex justify-between items-center sticky top-0 z-10"
 				style={{ fontSize: "125%" }}
 			>
-				<h1 className="text-2xl font-bold">{quizData.title}</h1>
+				<h1 className="text-xl font-bold">{quizData.title}</h1>
 				<div className="flex items-center">
 					{!isSubmitted && (
 						<FlipClockCountdown
@@ -303,20 +308,21 @@ export default function QuizPage({ params }) {
 				<div className="flex-grow overflow-auto flex flex-col">
 					{/* Sticky section tabs and question header */}
 					<div className="sticky top-0 bg-white z-10">
-						<div className="flex border-b">
+						<div className="flex border-b text-sm">
 							{sections.map((section, sectionIndex) => (
 								<button
 									key={sectionIndex}
 									onClick={() =>
 										handleJumpToSection(sectionIndex)
 									}
-									className={`px-5 py-2.5 ${
+									className={`px-4 py-2 ${
 										currentSectionIndex === sectionIndex
 											? "border-b-2 border-blue-500"
 											: ""
 									}`}
+									title={section.name}
 								>
-									{section.name}
+									{truncateText(section.name, 15)}
 								</button>
 							))}
 						</div>
