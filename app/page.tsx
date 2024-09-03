@@ -27,7 +27,7 @@ export default function Home() {
 				<Hero />
 				<Features />
 				<ExamList />
-				<Testimonials />
+				{/* <Testimonials /> */}
 			</motion.main>
 			<Footer />
 		</div>

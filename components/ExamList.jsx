@@ -3,6 +3,7 @@ import { Card, Chip } from "@nextui-org/react";
 import { title } from "@/components/primitives";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link"; // Add this import
 
 const exams = [
 	{ name: "CGL", upcoming: false },
@@ -30,26 +31,51 @@ export default function ExamList() {
 						transition={{ duration: 0.3, delay: index * 0.05 }}
 						className="w-full max-w-[250px]"
 					>
-						<Card className="overflow-hidden relative group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
-							<Card className="relative z-10 p-4 bg-transparent">
-								<div className="flex items-center justify-between">
-									<div className="flex items-center space-x-2">
-										<Image
-											src="/ssc.png"
-											alt={`${exam.name} logo`}
-											width={40}
-											height={40}
-										/>
-										<p className="font-semibold text-gray-800 dark:text-white">
-											{exam.name}
-										</p>
+						{exam.name === "CGL" ? (
+							<Link href="/ssc-mock">
+								<Card className="overflow-hidden relative group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm cursor-pointer">
+									<Card className="relative z-10 p-4 bg-transparent">
+										<div className="flex items-center justify-between">
+											<div className="flex items-center space-x-2">
+												<Image
+													src="/ssc.png"
+													alt={`${exam.name} logo`}
+													width={40}
+													height={40}
+												/>
+												<p className="font-semibold text-gray-800 dark:text-white">
+													{exam.name}
+												</p>
+											</div>
+											{exam.upcoming && (
+												<Chip size="sm">Upcoming</Chip>
+											)}
+										</div>
+									</Card>
+								</Card>
+							</Link>
+						) : (
+							<Card className="overflow-hidden relative group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
+								<Card className="relative z-10 p-4 bg-transparent">
+									<div className="flex items-center justify-between">
+										<div className="flex items-center space-x-2">
+											<Image
+												src="/ssc.png"
+												alt={`${exam.name} logo`}
+												width={40}
+												height={40}
+											/>
+											<p className="font-semibold text-gray-800 dark:text-white">
+												{exam.name}
+											</p>
+										</div>
+										{exam.upcoming && (
+											<Chip size="sm">Upcoming</Chip>
+										)}
 									</div>
-									{exam.upcoming && (
-										<Chip size="sm">Upcoming</Chip>
-									)}
-								</div>
+								</Card>
 							</Card>
-						</Card>
+						)}
 					</motion.div>
 				))}
 			</div>
