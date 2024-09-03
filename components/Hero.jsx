@@ -97,7 +97,7 @@ export default function Hero() {
 			</div>
 			<div className="md:w-1/2">
 				<Image
-					src="/humaaans.png"
+					src="/hhh.png"
 					alt="SSC Exam Preparation"
 					width={500}
 					height={300}
