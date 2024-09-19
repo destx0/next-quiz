@@ -9,7 +9,7 @@ import katex from "katex";
 const LatexRenderer = ({ children }) => {
 	const unescapeContent = (escapedContent) => {
 		return escapedContent
-			.replace(/\\n/g, "\n")
+			.replace(/(?<!\\)\\n/g, "\n")
 			.replace(/\\\\/g, "\\")
 			.replace(/\\"/g, '"');
 	};
