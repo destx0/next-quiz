@@ -15,7 +15,7 @@ export default function EditQuizPage() {
 
 	useEffect(() => {
 		const fetchQuizData = async () => {
-			const quizId = params.quizid;
+			const quizId = params.quizId;
 			if (!quizId) {
 				setError("Quiz ID is missing");
 				return;
@@ -29,7 +29,7 @@ export default function EditQuizPage() {
 		};
 
 		fetchQuizData();
-	}, [params.quizid]);
+	}, [params.quizId]);
 
 	const handleSaveQuestion = async (updatedQuestion) => {
 		if (!quizData || !params.quizId) return;
