@@ -121,6 +121,13 @@ export default function QuizPage({ params }) {
 	return (
 		<div className="p-4">
 			<h1 className="text-2xl font-bold mb-4">{quizData.title}</h1>
+
+			<QuestionCard
+				question={currentQuestionData}
+				selectedOption={selectedOption}
+				onSelectOption={handleSelectOption}
+				isSubmitted={isSubmitted}
+			/>
 			<div className="mb-4">
 				{quizData.sections.map((section, sectionIndex) => (
 					<div key={sectionIndex}>
@@ -147,24 +154,6 @@ export default function QuizPage({ params }) {
 					</div>
 				))}
 			</div>
-			<QuestionCard
-				question={currentQuestionData}
-				selectedOption={selectedOption}
-				onSelectOption={handleSelectOption}
-				isSubmitted={isSubmitted}
-			/>
-			<button
-				onClick={handleSaveAnswer}
-				className="bg-green-500 text-white px-4 py-2 rounded mt-4 mr-4"
-			>
-				Save Answer
-			</button>
-			<button
-				onClick={handleFinishQuiz}
-				className="bg-red-500 text-white px-4 py-2 rounded mt-4 mr-4"
-			>
-				Finish Quiz
-			</button>
 		</div>
 	);
 }

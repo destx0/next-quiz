@@ -22,9 +22,10 @@ export default function QuestionCard({
 
 	return (
 		<div className="w-full h-full flex flex-col p-4 overflow-y-auto">
-			<h2 className="text-xl font-semibold mb-4">
-				{question.text ? (
-					<LatexRenderer>{question.text}</LatexRenderer>
+			<span className="text-sm text-gray-500">ID: {question.id}</span>
+			<h2 className="text-xl font-semibold">
+				{question.question ? (
+					<LatexRenderer>{question.question}</LatexRenderer>
 				) : (
 					"Question text is missing"
 				)}
