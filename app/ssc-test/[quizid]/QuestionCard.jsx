@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { Radio, RadioGroup, Input, Textarea, Button } from "@nextui-org/react";
+import { Radio, RadioGroup, Textarea, Button } from "@nextui-org/react";
 import LatexRenderer from "@/components/LatexRenderer";
+import { updateQuestion } from "@/lib/firestore";
 
 export default function QuestionCard({ question, onSave }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedQuestion, setEditedQuestion] = useState(question);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const handleEdit = () => {
 		setIsEditing(true);
 	};
 
-	const handleSave = () => {
-		onSave(editedQuestion);
-		setIsEditing(false);
+	const handleSave = async () => {
+		setIsSaving(true);
+		try {
+			await updateQuestion(question.id, editedQuestion);
+			onSave(editedQuestion);
+			setIsEditing(false);
+		} catch (error) {
+			console.error("Error saving question:", error);
+			// You might want to show an error message to the user here
+		} finally {
+			setIsSaving(false);
+		}
 	};
 
 	const handleChange = (field, value, optionIndex = null) => {
@@ -33,8 +44,12 @@ export default function QuestionCard({ question, onSave }) {
 		<div className="w-full h-full flex flex-col p-4 overflow-y-auto">
 			<div className="flex justify-between items-center mb-4">
 				<span className="text-sm text-gray-500">ID: {question.id}</span>
-				<Button color="primary" onClick={isEditing ? handleSave : handleEdit}>
-					{isEditing ? "Save" : "Edit"}
+				<Button 
+					color="primary" 
+					onClick={isEditing ? handleSave : handleEdit}
+					disabled={isSaving}
+				>
+					{isEditing ? (isSaving ? "Saving..." : "Save") : "Edit"}
 				</Button>
 			</div>
 
@@ -48,7 +63,7 @@ export default function QuestionCard({ question, onSave }) {
 							className="mb-4"
 						/>
 						{editedQuestion.options.map((option, index) => (
-							<Input
+							<Textarea
 								key={index}
 								label={`Option ${index + 1}`}
 								value={option}
@@ -56,10 +71,9 @@ export default function QuestionCard({ question, onSave }) {
 								className="mb-2"
 							/>
 						))}
-						<Input
+						<Textarea
 							label="Correct Option Index"
-							type="number"
-							value={editedQuestion.correctAnswer}
+							value={editedQuestion.correctAnswer.toString()}
 							onChange={(e) => handleChange("correctAnswer", parseInt(e.target.value))}
 							className="mb-4"
 						/>

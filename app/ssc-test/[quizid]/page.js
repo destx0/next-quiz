@@ -10,7 +10,7 @@ import { db } from "@/lib/firebase";
 export default function EditQuizPage() {
 	const params = useParams();
 	const [quizData, setQuizData] = useState(null);
-	const [currentQuestion, setCurrentQuestion] = useState(0);
+	const [currentQuestionId, setCurrentQuestionId] = useState(null);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
@@ -23,6 +23,10 @@ export default function EditQuizPage() {
 			try {
 				const data = await getQuizWithQuestions(quizId);
 				setQuizData(data);
+				// Set the initial question ID to the first question of the first section
+				if (data.sections.length > 0 && data.sections[0].questions.length > 0) {
+					setCurrentQuestionId(data.sections[0].questions[0].id);
+				}
 			} catch (error) {
 				setError("Failed to fetch quiz data: " + error.message);
 			}
@@ -62,7 +66,12 @@ export default function EditQuizPage() {
 	if (error) return <div>Error: {error}</div>;
 	if (!quizData) return <div>Loading...</div>;
 
-	const currentQuestionData = quizData.sections[0].questions[currentQuestion];
+	const currentSection = quizData.sections.find(section => 
+		section.questions.some(q => q.id === currentQuestionId)
+	);
+	const currentQuestionData = currentSection?.questions.find(q => q.id === currentQuestionId);
+
+	if (!currentQuestionData) return <div>No question selected</div>;
 
 	return (
 		<div className="p-4">
@@ -74,18 +83,25 @@ export default function EditQuizPage() {
 				onSave={handleSaveQuestion}
 			/>
 			<div className="mt-4">
-				{quizData.sections[0].questions.map((_, index) => (
-					<button
-						key={index}
-						onClick={() => setCurrentQuestion(index)}
-						className={`mr-2 px-3 py-1 ${
-							currentQuestion === index
-								? "bg-blue-500 text-white"
-								: "bg-gray-200"
-						}`}
-					>
-						{index + 1}
-					</button>
+				{quizData.sections.map((section, sectionIndex) => (
+					<div key={sectionIndex} className="mb-2">
+						<h3 className="font-semibold">Section {sectionIndex + 1}</h3>
+						<div>
+							{section.questions.map((question, questionIndex) => (
+								<button
+									key={question.id}
+									onClick={() => setCurrentQuestionId(question.id)}
+									className={`mr-2 px-3 py-1 ${
+										currentQuestionId === question.id
+											? "bg-blue-500 text-white"
+											: "bg-gray-200"
+									}`}
+								>
+									{questionIndex + 1}
+								</button>
+							))}
+						</div>
+					</div>
 				))}
 			</div>
 		</div>
