@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import {
+	collection,
+	getDocs,
+	doc,
+	deleteDoc,
+	getDoc,
+	updateDoc,
+	arrayRemove,
+} from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import Link from "next/link";
 
@@ -44,7 +52,11 @@ export default function SSCTestsPage() {
 								return { id: quizId, ...quizDocSnap.data() };
 							} else {
 								console.log("Quiz not found:", quizId);
-								return { id: quizId, title: `Quiz ${quizId} (Not Found)`, error: "Quiz not found" };
+								return {
+									id: quizId,
+									title: `Quiz ${quizId} (Not Found)`,
+									error: "Quiz not found",
+								};
 							}
 						})
 					);
@@ -75,10 +87,12 @@ export default function SSCTestsPage() {
 				// Remove the quiz from the batch
 				const batchRef = doc(db, "testBatches", batchId);
 				await updateDoc(batchRef, {
-					quizzes: arrayRemove(quizId)
+					quizzes: arrayRemove(quizId),
 				});
 
-				console.log(`Quiz ${quizId} deleted from Firestore and removed from batch ${batchId}`);
+				console.log(
+					`Quiz ${quizId} deleted from Firestore and removed from batch ${batchId}`
+				);
 
 				// Update the local state
 				setTestBatches((prevBatches) =>
@@ -110,7 +124,9 @@ export default function SSCTestsPage() {
 					<h2 className="text-xl font-semibold mb-2">
 						{batch.title}
 					</h2>
-					<p className="text-sm text-gray-600 mb-2">{batch.description}</p>
+					<p className="text-sm text-gray-600 mb-2">
+						{batch.description}
+					</p>
 					{batch.quizzes.map((quiz) => (
 						<div
 							key={quiz.id}
@@ -118,18 +134,7 @@ export default function SSCTestsPage() {
 						>
 							<span>{quiz.title || `Quiz ID: ${quiz.id}`}</span>
 							<div>
-								<Link
-									href={`/ssc-test/${quiz.id}?quiz=true`}
-									passHref
-								>
-									<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-										Start Test
-									</button>
-								</Link>
-								<Link
-									href={`/ssc-test/${quiz.id}`}
-									passHref
-								>
+								<Link href={`/ssc-test/${quiz.id}`} passHref>
 									<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
 										Edit
 									</button>
