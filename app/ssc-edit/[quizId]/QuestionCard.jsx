@@ -26,6 +26,11 @@ export default function QuestionCard({ question, onSave }) {
 		}
 	};
 
+	const handleCancel = () => {
+		setEditedQuestion(question);
+		setIsEditing(false);
+	};
+
 	const handleChange = (field, value, optionIndex = null) => {
 		if (optionIndex !== null) {
 			const newOptions = [...editedQuestion.options];
@@ -44,13 +49,28 @@ export default function QuestionCard({ question, onSave }) {
 		<div className="w-full h-full flex flex-col p-4">
 			<div className="flex justify-between items-center mb-4">
 				<span className="text-sm text-gray-500">ID: {question.id}</span>
-				<Button 
-					color="primary" 
-					onClick={isEditing ? handleSave : handleEdit}
-					disabled={isSaving}
-				>
-					{isEditing ? (isSaving ? "Saving..." : "Save") : "Edit"}
-				</Button>
+				{isEditing ? (
+					<div className="space-x-2">
+						<Button 
+							color="primary" 
+							onClick={handleSave}
+							disabled={isSaving}
+						>
+							{isSaving ? "Saving..." : "Save"}
+						</Button>
+						<Button 
+							color="secondary" 
+							onClick={handleCancel}
+							disabled={isSaving}
+						>
+							Cancel
+						</Button>
+					</div>
+				) : (
+					<Button color="primary" onClick={handleEdit}>
+						Edit
+					</Button>
+				)}
 			</div>
 
 			<div className="flex-grow overflow-y-auto">
