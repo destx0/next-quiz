@@ -43,7 +43,7 @@ export default function SSCTestsPage() {
 				batchIds.map(async (batchId) => {
 					const batchDocRef = doc(db, "testBatches", batchId);
 					const batchDocSnap = await getDoc(batchDocRef);
-					
+
 					if (batchDocSnap.exists()) {
 						const batchData = batchDocSnap.data();
 						console.log("Batch data:", batchData);
@@ -55,7 +55,10 @@ export default function SSCTestsPage() {
 								const quizDocSnap = await getDoc(quizDocRef);
 								if (quizDocSnap.exists()) {
 									console.log("Quiz data fetched:", quizId);
-									return { id: quizId, ...quizDocSnap.data() };
+									return {
+										id: quizId,
+										...quizDocSnap.data(),
+									};
 								} else {
 									console.log("Quiz not found:", quizId);
 									return {
@@ -94,9 +97,9 @@ export default function SSCTestsPage() {
 			const querySnapshot = await getDocs(collection(db, "quizzes"));
 			console.log("All quizzes fetched:", querySnapshot.size);
 
-			const quizzesData = querySnapshot.docs.map(doc => ({
+			const quizzesData = querySnapshot.docs.map((doc) => ({
 				id: doc.id,
-				...doc.data()
+				...doc.data(),
 			}));
 
 			console.log("Processed quizzes data:", quizzesData);
@@ -116,17 +119,26 @@ export default function SSCTestsPage() {
 						quizzes: arrayRemove(quizId),
 					});
 				}
-				console.log(`Quiz ${quizId} deleted from Firestore${batchId ? ` and removed from batch ${batchId}` : ''}`);
-				
+				console.log(
+					`Quiz ${quizId} deleted from Firestore${batchId ? ` and removed from batch ${batchId}` : ""}`
+				);
+
 				// Update local state
-				setTestBatches(prevBatches =>
-					prevBatches.map(batch =>
+				setTestBatches((prevBatches) =>
+					prevBatches.map((batch) =>
 						batch.id === batchId
-							? { ...batch, quizzes: batch.quizzes.filter(quiz => quiz.id !== quizId) }
+							? {
+									...batch,
+									quizzes: batch.quizzes.filter(
+										(quiz) => quiz.id !== quizId
+									),
+								}
 							: batch
 					)
 				);
-				setAllQuizzes(prevQuizzes => prevQuizzes.filter(quiz => quiz.id !== quizId));
+				setAllQuizzes((prevQuizzes) =>
+					prevQuizzes.filter((quiz) => quiz.id !== quizId)
+				);
 			} catch (error) {
 				console.error("Error deleting quiz:", error);
 			}
@@ -140,12 +152,18 @@ export default function SSCTestsPage() {
 				quizzes: arrayUnion(quizId),
 			});
 			console.log(`Quiz ${quizId} added to batch ${batchId}`);
-			
+
 			// Update local state
-			setTestBatches(prevBatches =>
-				prevBatches.map(batch =>
+			setTestBatches((prevBatches) =>
+				prevBatches.map((batch) =>
 					batch.id === batchId
-						? { ...batch, quizzes: [...batch.quizzes, allQuizzes.find(q => q.id === quizId)] }
+						? {
+								...batch,
+								quizzes: [
+									...batch.quizzes,
+									allQuizzes.find((q) => q.id === quizId),
+								],
+							}
 						: batch
 				)
 			);
@@ -161,12 +179,17 @@ export default function SSCTestsPage() {
 				quizzes: arrayRemove(quizId),
 			});
 			console.log(`Quiz ${quizId} removed from batch ${batchId}`);
-			
+
 			// Update local state
-			setTestBatches(prevBatches =>
-				prevBatches.map(batch =>
+			setTestBatches((prevBatches) =>
+				prevBatches.map((batch) =>
 					batch.id === batchId
-						? { ...batch, quizzes: batch.quizzes.filter(quiz => quiz.id !== quizId) }
+						? {
+								...batch,
+								quizzes: batch.quizzes.filter(
+									(quiz) => quiz.id !== quizId
+								),
+							}
 						: batch
 				)
 			);
@@ -175,31 +198,37 @@ export default function SSCTestsPage() {
 		}
 	};
 
-	const renderQuizzes = (quizzes, batchId = null) => (
+	const renderQuizzes = (quizzes, batchId) => (
 		<ul className="space-y-4">
 			{quizzes.map((quiz) => (
 				<li key={quiz.id} className="border p-4 rounded-lg">
-					<h3 className="font-semibold mb-2">{quiz.title || `Quiz ID: ${quiz.id}`}</h3>
-					<div className="flex flex-wrap gap-2">
-						<Link href={`/ssc-edit/${quiz.id}`} passHref>
-							<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-								Edit
-							</button>
-						</Link>
-						<button
-							onClick={() => handleDeleteQuiz(batchId, quiz.id)}
-							className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-						>
-							Delete
-						</button>
-						{batchId && (
+					<div className="flex items-center justify-between flex-wrap gap-4">
+						<h3 className="font-semibold">
+							{quiz.title || `Quiz ID: ${quiz.id}`}
+						</h3>
+						<div className="flex flex-wrap gap-2">
+							<Link href={`/ssc-edit/${quiz.id}`} passHref>
+								<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+									Edit
+								</button>
+							</Link>
 							<button
-								onClick={() => handleRemoveFromBatch(quiz.id, batchId)}
+								onClick={() =>
+									handleDeleteQuiz(batchId, quiz.id)
+								}
+								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							>
+								Delete
+							</button>
+							<button
+								onClick={() =>
+									handleRemoveFromBatch(quiz.id, batchId)
+								}
 								className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
 							>
-								Hide
+								Remove
 							</button>
-						)}
+						</div>
 					</div>
 				</li>
 			))}
@@ -209,44 +238,66 @@ export default function SSCTestsPage() {
 	const renderAllQuizzes = () => (
 		<ul className="space-y-4">
 			{allQuizzes.map((quiz) => {
-				const inTier1 = tier1Batch?.quizzes.some(q => q.id === quiz.id);
-				const inPYQ = pyqBatch?.quizzes.some(q => q.id === quiz.id);
-				
+				const inTier1 = tier1Batch?.quizzes.some(
+					(q) => q.id === quiz.id
+				);
+				const inPYQ = pyqBatch?.quizzes.some((q) => q.id === quiz.id);
+
 				return (
 					<li key={quiz.id} className="border p-4 rounded-lg">
-						<h3 className="font-semibold mb-2">{quiz.title || `Quiz ID: ${quiz.id}`}</h3>
-						<div className="flex flex-wrap gap-2 mb-2">
-							{inTier1 && <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Tier 1</span>}
-							{inPYQ && <span className="bg-green-100 text-green-800 px-2 py-1 rounded">PYQ</span>}
-						</div>
-						<div className="flex flex-wrap gap-2">
-							<Link href={`/ssc-edit/${quiz.id}`} passHref>
-								<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-									Edit
-								</button>
-							</Link>
-							<button
-								onClick={() => handleDeleteQuiz(null, quiz.id)}
-								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-							>
-								Delete
-							</button>
-							{!inTier1 && (
+						<div className="flex items-center justify-between flex-wrap gap-4">
+							<h3 className="font-semibold">
+								{quiz.title || `Quiz ID: ${quiz.id}`}
+							</h3>
+							<div className="flex flex-wrap gap-2">
+								<Link href={`/ssc-edit/${quiz.id}`} passHref>
+									<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+										Edit
+									</button>
+								</Link>
 								<button
-									onClick={() => handleAddToBatch(quiz.id, tier1Batch.id)}
-									className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+									onClick={() =>
+										handleDeleteQuiz(null, quiz.id)
+									}
+									className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 								>
-									Add to Tier 1
+									Delete
 								</button>
-							)}
-							{!inPYQ && (
 								<button
-									onClick={() => handleAddToBatch(quiz.id, pyqBatch.id)}
-									className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+									onClick={() =>
+										inTier1
+											? handleRemoveFromBatch(
+													quiz.id,
+													tier1Batch.id
+												)
+											: handleAddToBatch(
+													quiz.id,
+													tier1Batch.id
+												)
+									}
+									className={`${inTier1 ? "bg-blue-300" : "bg-blue-500"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
 								>
-									Add to PYQ
+									{inTier1
+										? "Remove from Tier 1"
+										: "Add to Tier 1"}
 								</button>
-							)}
+								<button
+									onClick={() =>
+										inPYQ
+											? handleRemoveFromBatch(
+													quiz.id,
+													pyqBatch.id
+												)
+											: handleAddToBatch(
+													quiz.id,
+													pyqBatch.id
+												)
+									}
+									className={`${inPYQ ? "bg-green-300" : "bg-green-500"} hover:bg-green-700 text-white font-bold py-2 px-4 rounded`}
+								>
+									{inPYQ ? "Remove from PYQ" : "Add to PYQ"}
+								</button>
+							</div>
 						</div>
 					</li>
 				);
@@ -257,19 +308,28 @@ export default function SSCTestsPage() {
 	if (loading) return <div>Loading...</div>;
 	if (!user) return <div>Please sign in to view tests.</div>;
 
-	const tier1Batch = testBatches.find(batch => batch.id === "PxOtC4EjRhk1DH1B6j62");
-	const pyqBatch = testBatches.find(batch => batch.id === "NHI6vv2PzgQ899Sz4Rll");
+	const tier1Batch = testBatches.find(
+		(batch) => batch.id === "PxOtC4EjRhk1DH1B6j62"
+	);
+	const pyqBatch = testBatches.find(
+		(batch) => batch.id === "NHI6vv2PzgQ899Sz4Rll"
+	);
 
 	return (
 		<div className="p-4">
 			<h1 className="text-2xl font-bold mb-4">SSC Tests</h1>
 			<Tabs>
 				<Tab key="tier1" title="Tier 1">
-					<h2 className="text-xl font-semibold my-4">{tier1Batch?.title || "Tier 1"}</h2>
-					{tier1Batch && renderQuizzes(tier1Batch.quizzes, tier1Batch.id)}
+					<h2 className="text-xl font-semibold my-4">
+						{tier1Batch?.title || "Tier 1"}
+					</h2>
+					{tier1Batch &&
+						renderQuizzes(tier1Batch.quizzes, tier1Batch.id)}
 				</Tab>
 				<Tab key="pyq" title="Previous Year Questions">
-					<h2 className="text-xl font-semibold my-4">{pyqBatch?.title || "Previous Year Questions"}</h2>
+					<h2 className="text-xl font-semibold my-4">
+						{pyqBatch?.title || "Previous Year Questions"}
+					</h2>
 					{pyqBatch && renderQuizzes(pyqBatch.quizzes, pyqBatch.id)}
 				</Tab>
 				<Tab key="all" title="All Quizzes">
