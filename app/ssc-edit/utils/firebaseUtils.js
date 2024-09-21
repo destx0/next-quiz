@@ -3,6 +3,7 @@ import {
 	getDocs,
 	doc,
 	getDoc,
+	updateDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -77,5 +78,15 @@ export const fetchAllQuizzes = async (setAllQuizzes) => {
 		setAllQuizzes(quizzesData);
 	} catch (error) {
 		console.error("Error fetching all quizzes:", error);
+	}
+};
+
+export const updateBatchOrder = async (batchId, newOrder) => {
+	try {
+		const batchRef = doc(db, "testBatches", batchId);
+		await updateDoc(batchRef, { quizzes: newOrder });
+		console.log(`Batch ${batchId} order updated in Firebase`);
+	} catch (error) {
+		console.error("Error updating batch order:", error);
 	}
 };
