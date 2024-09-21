@@ -8,6 +8,7 @@ import {
 	deleteDoc,
 	getDoc,
 	updateDoc,
+	arrayUnion,
 	arrayRemove,
 } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
@@ -108,61 +109,149 @@ export default function SSCTestsPage() {
 	const handleDeleteQuiz = async (batchId, quizId) => {
 		if (window.confirm("Are you sure you want to delete this quiz?")) {
 			try {
-				// Delete the quiz document
 				await deleteDoc(doc(db, "quizzes", quizId));
-
-				// Remove the quiz from the batch
-				const batchRef = doc(db, "testBatches", batchId);
-				await updateDoc(batchRef, {
-					quizzes: arrayRemove(quizId),
-				});
-
-				console.log(
-					`Quiz ${quizId} deleted from Firestore and removed from batch ${batchId}`
-				);
-
-				// Update the local state
-				setTestBatches((prevBatches) =>
-					prevBatches.map((batch) =>
+				if (batchId) {
+					const batchRef = doc(db, "testBatches", batchId);
+					await updateDoc(batchRef, {
+						quizzes: arrayRemove(quizId),
+					});
+				}
+				console.log(`Quiz ${quizId} deleted from Firestore${batchId ? ` and removed from batch ${batchId}` : ''}`);
+				
+				// Update local state
+				setTestBatches(prevBatches =>
+					prevBatches.map(batch =>
 						batch.id === batchId
-							? {
-									...batch,
-									quizzes: batch.quizzes.filter(
-										(quiz) => quiz.id !== quizId
-									),
-								}
+							? { ...batch, quizzes: batch.quizzes.filter(quiz => quiz.id !== quizId) }
 							: batch
 					)
 				);
+				setAllQuizzes(prevQuizzes => prevQuizzes.filter(quiz => quiz.id !== quizId));
 			} catch (error) {
 				console.error("Error deleting quiz:", error);
 			}
 		}
 	};
 
-	const renderBatchQuizzes = (batch) => (
-		<div key={batch.id} className="mb-6">
-			<h2 className="text-xl font-semibold mb-2">{batch.title}</h2>
-			<p className="text-sm text-gray-600 mb-2">{batch.description}</p>
-			{batch.quizzes.map((quiz) => (
-				<div key={quiz.id} className="mb-2 flex items-center justify-between">
-					<span>{quiz.title || `Quiz ID: ${quiz.id}`}</span>
-					<div>
+	const handleAddToBatch = async (quizId, batchId) => {
+		try {
+			const batchRef = doc(db, "testBatches", batchId);
+			await updateDoc(batchRef, {
+				quizzes: arrayUnion(quizId),
+			});
+			console.log(`Quiz ${quizId} added to batch ${batchId}`);
+			
+			// Update local state
+			setTestBatches(prevBatches =>
+				prevBatches.map(batch =>
+					batch.id === batchId
+						? { ...batch, quizzes: [...batch.quizzes, allQuizzes.find(q => q.id === quizId)] }
+						: batch
+				)
+			);
+		} catch (error) {
+			console.error("Error adding quiz to batch:", error);
+		}
+	};
+
+	const handleRemoveFromBatch = async (quizId, batchId) => {
+		try {
+			const batchRef = doc(db, "testBatches", batchId);
+			await updateDoc(batchRef, {
+				quizzes: arrayRemove(quizId),
+			});
+			console.log(`Quiz ${quizId} removed from batch ${batchId}`);
+			
+			// Update local state
+			setTestBatches(prevBatches =>
+				prevBatches.map(batch =>
+					batch.id === batchId
+						? { ...batch, quizzes: batch.quizzes.filter(quiz => quiz.id !== quizId) }
+						: batch
+				)
+			);
+		} catch (error) {
+			console.error("Error removing quiz from batch:", error);
+		}
+	};
+
+	const renderQuizzes = (quizzes, batchId = null) => (
+		<ul className="space-y-4">
+			{quizzes.map((quiz) => (
+				<li key={quiz.id} className="border p-4 rounded-lg">
+					<h3 className="font-semibold mb-2">{quiz.title || `Quiz ID: ${quiz.id}`}</h3>
+					<div className="flex flex-wrap gap-2">
 						<Link href={`/ssc-edit/${quiz.id}`} passHref>
-							<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+							<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
 								Edit
 							</button>
 						</Link>
 						<button
-							onClick={() => handleDeleteQuiz(batch.id, quiz.id)}
+							onClick={() => handleDeleteQuiz(batchId, quiz.id)}
 							className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 						>
 							Delete
 						</button>
+						{batchId && (
+							<button
+								onClick={() => handleRemoveFromBatch(quiz.id, batchId)}
+								className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
+							>
+								Hide
+							</button>
+						)}
 					</div>
-				</div>
+				</li>
 			))}
-		</div>
+		</ul>
+	);
+
+	const renderAllQuizzes = () => (
+		<ul className="space-y-4">
+			{allQuizzes.map((quiz) => {
+				const inTier1 = tier1Batch?.quizzes.some(q => q.id === quiz.id);
+				const inPYQ = pyqBatch?.quizzes.some(q => q.id === quiz.id);
+				
+				return (
+					<li key={quiz.id} className="border p-4 rounded-lg">
+						<h3 className="font-semibold mb-2">{quiz.title || `Quiz ID: ${quiz.id}`}</h3>
+						<div className="flex flex-wrap gap-2 mb-2">
+							{inTier1 && <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Tier 1</span>}
+							{inPYQ && <span className="bg-green-100 text-green-800 px-2 py-1 rounded">PYQ</span>}
+						</div>
+						<div className="flex flex-wrap gap-2">
+							<Link href={`/ssc-edit/${quiz.id}`} passHref>
+								<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+									Edit
+								</button>
+							</Link>
+							<button
+								onClick={() => handleDeleteQuiz(null, quiz.id)}
+								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							>
+								Delete
+							</button>
+							{!inTier1 && (
+								<button
+									onClick={() => handleAddToBatch(quiz.id, tier1Batch.id)}
+									className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+								>
+									Add to Tier 1
+								</button>
+							)}
+							{!inPYQ && (
+								<button
+									onClick={() => handleAddToBatch(quiz.id, pyqBatch.id)}
+									className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+								>
+									Add to PYQ
+								</button>
+							)}
+						</div>
+					</li>
+				);
+			})}
+		</ul>
 	);
 
 	if (loading) return <div>Loading...</div>;
@@ -176,32 +265,16 @@ export default function SSCTestsPage() {
 			<h1 className="text-2xl font-bold mb-4">SSC Tests</h1>
 			<Tabs>
 				<Tab key="tier1" title="Tier 1">
-					{tier1Batch && renderBatchQuizzes(tier1Batch)}
+					<h2 className="text-xl font-semibold my-4">{tier1Batch?.title || "Tier 1"}</h2>
+					{tier1Batch && renderQuizzes(tier1Batch.quizzes, tier1Batch.id)}
 				</Tab>
 				<Tab key="pyq" title="Previous Year Questions">
-					{pyqBatch && renderBatchQuizzes(pyqBatch)}
+					<h2 className="text-xl font-semibold my-4">{pyqBatch?.title || "Previous Year Questions"}</h2>
+					{pyqBatch && renderQuizzes(pyqBatch.quizzes, pyqBatch.id)}
 				</Tab>
 				<Tab key="all" title="All Quizzes">
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						{allQuizzes.map((quiz) => (
-							<div key={quiz.id} className="border p-4 rounded-lg">
-								<h3 className="font-semibold mb-2">{quiz.title || `Quiz ID: ${quiz.id}`}</h3>
-								<div className="flex justify-between items-center">
-									<Link href={`/ssc-edit/${quiz.id}`} passHref>
-										<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-											Edit
-										</button>
-									</Link>
-									<button
-										onClick={() => handleDeleteQuiz(null, quiz.id)}
-										className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-									>
-										Delete
-									</button>
-								</div>
-							</div>
-						))}
-					</div>
+					<h2 className="text-xl font-semibold my-4">All Quizzes</h2>
+					{renderAllQuizzes()}
 				</Tab>
 			</Tabs>
 		</div>
