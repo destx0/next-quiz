@@ -95,3 +95,21 @@ export const handleRemoveFromBatch = async (quizId, batchId, setTestBatches) => 
 		console.error("Error removing quiz from batch:", error);
 	}
 };
+
+export const updateQuizMetadata = async (quizId, updatedQuiz) => {
+	try {
+		const quizRef = doc(db, "quizzes", quizId);
+		await updateDoc(quizRef, {
+			title: updatedQuiz.title,
+			description: updatedQuiz.description,
+			thumbnailLink: updatedQuiz.thumbnailLink,
+			duration: updatedQuiz.duration,
+			positiveScore: updatedQuiz.positiveScore,
+			negativeScore: updatedQuiz.negativeScore,
+		});
+		console.log("Quiz metadata updated successfully");
+	} catch (error) {
+		console.error("Error updating quiz metadata:", error);
+		throw error;
+	}
+};

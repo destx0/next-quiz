@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import { Tabs, Tab } from "@nextui-org/react";
 import { fetchTestBatches, fetchAllQuizzes, updateBatchOrder } from "./utils/firebaseUtils";
-import { handleDeleteQuiz, handleAddToBatch, handleRemoveFromBatch } from "./utils/quizActions";
+import { handleDeleteQuiz, handleAddToBatch, handleRemoveFromBatch, updateQuizMetadata } from "./utils/quizActions";
 import { QuizList, AllQuizList } from "./components/QuizRenderers";
 
 export default function SSCTestsPage() {
@@ -48,6 +48,27 @@ export default function SSCTestsPage() {
         await updateBatchOrder(batchId, newQuizzes.map((q) => q.id));
     };
 
+    const handleUpdateQuizMetadata = async (updatedQuiz) => {
+        try {
+            await updateQuizMetadata(updatedQuiz.id, updatedQuiz);
+            setTestBatches(prevBatches =>
+                prevBatches.map(batch => ({
+                    ...batch,
+                    quizzes: batch.quizzes.map(quiz =>
+                        quiz.id === updatedQuiz.id ? updatedQuiz : quiz
+                    )
+                }))
+            );
+            setAllQuizzes(prevQuizzes =>
+                prevQuizzes.map(quiz =>
+                    quiz.id === updatedQuiz.id ? updatedQuiz : quiz
+                )
+            );
+        } catch (error) {
+            console.error("Error updating quiz metadata:", error);
+        }
+    };
+
     if (loading) return <div>Loading...</div>;
     if (!user) return <div>Please sign in to view tests.</div>;
 
@@ -73,6 +94,7 @@ export default function SSCTestsPage() {
                             handleDeleteQuiz={(quizId) => handleDeleteQuiz(tier1Batch.id, quizId, setTestBatches, setAllQuizzes)}
                             handleRemoveFromBatch={(quizId) => handleRemoveFromBatch(quizId, tier1Batch.id, setTestBatches)}
                             handleMoveQuiz={(index, direction) => handleMoveQuiz(tier1Batch.id, index, direction)}
+                            handleUpdateQuizMetadata={handleUpdateQuizMetadata}
                         />
                     )}
                 </Tab>
@@ -87,6 +109,7 @@ export default function SSCTestsPage() {
                             handleDeleteQuiz={(quizId) => handleDeleteQuiz(pyqBatch.id, quizId, setTestBatches, setAllQuizzes)}
                             handleRemoveFromBatch={(quizId) => handleRemoveFromBatch(quizId, pyqBatch.id, setTestBatches)}
                             handleMoveQuiz={(index, direction) => handleMoveQuiz(pyqBatch.id, index, direction)}
+                            handleUpdateQuizMetadata={handleUpdateQuizMetadata}
                         />
                     )}
                 </Tab>

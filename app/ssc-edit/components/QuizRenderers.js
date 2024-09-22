@@ -1,65 +1,87 @@
 import Link from "next/link";
 import { downloadQuiz } from "../utils/firebaseUtils";
+import { useState } from "react";
+import QuizMetadataModal from "./QuizMetadataModal";
 
-export const QuizList = ({ quizzes, batchId, handleDeleteQuiz, handleRemoveFromBatch, handleMoveQuiz }) => (
-    <div>
-        <h2 className="text-xl font-semibold mb-4">Quizzes</h2>
-        <ul className="space-y-4">
-            {quizzes.map((quiz, index) => (
-                <li key={quiz.id} className="border p-4 rounded-lg">
-                    <div className="flex items-center justify-between flex-wrap gap-4">
-                        <div className="flex items-center gap-2">
-                            <div className="flex flex-col">
+export const QuizList = ({ quizzes, batchId, handleDeleteQuiz, handleRemoveFromBatch, handleMoveQuiz, handleUpdateQuizMetadata }) => {
+    const [editingQuiz, setEditingQuiz] = useState(null);
+
+    return (
+        <div>
+            <h2 className="text-xl font-semibold mb-4">Quizzes</h2>
+            <ul className="space-y-4">
+                {quizzes.map((quiz, index) => (
+                    <li key={quiz.id} className="border p-4 rounded-lg">
+                        <div className="flex items-center justify-between flex-wrap gap-4">
+                            <div className="flex items-center gap-2">
+                                <div className="flex flex-col">
+                                    <button
+                                        onClick={() => handleMoveQuiz(index, 'up')}
+                                        disabled={index === 0}
+                                        className="text-gray-500 hover:text-gray-700 disabled:text-gray-300"
+                                    >
+                                        ▲
+                                    </button>
+                                    <button
+                                        onClick={() => handleMoveQuiz(index, 'down')}
+                                        disabled={index === quizzes.length - 1}
+                                        className="text-gray-500 hover:text-gray-700 disabled:text-gray-300"
+                                    >
+                                        ▼
+                                    </button>
+                                </div>
+                                <h3 className="font-semibold">
+                                    {quiz.title || `Quiz ID: ${quiz.id}`}
+                                </h3>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                                <Link href={`/ssc-edit/${quiz.id}`} passHref>
+                                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                        Edit
+                                    </button>
+                                </Link>
                                 <button
-                                    onClick={() => handleMoveQuiz(index, 'up')}
-                                    disabled={index === 0}
-                                    className="text-gray-500 hover:text-gray-700 disabled:text-gray-300"
+                                    onClick={() => handleDeleteQuiz(quiz.id)}
+                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                 >
-                                    ▲
+                                    Delete
                                 </button>
                                 <button
-                                    onClick={() => handleMoveQuiz(index, 'down')}
-                                    disabled={index === quizzes.length - 1}
-                                    className="text-gray-500 hover:text-gray-700 disabled:text-gray-300"
+                                    onClick={() => handleRemoveFromBatch(quiz.id)}
+                                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
                                 >
-                                    ▼
+                                    Remove
+                                </button>
+                                <button
+                                    onClick={() => downloadQuiz(quiz.id)}
+                                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Download
+                                </button>
+                                <button
+                                    onClick={() => setEditingQuiz(quiz)}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Edit Metadata
                                 </button>
                             </div>
-                            <h3 className="font-semibold">
-                                {quiz.title || `Quiz ID: ${quiz.id}`}
-                            </h3>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                            <Link href={`/ssc-edit/${quiz.id}`} passHref>
-                                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
-                                </button>
-                            </Link>
-                            <button
-                                onClick={() => handleDeleteQuiz(quiz.id)}
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Delete
-                            </button>
-                            <button
-                                onClick={() => handleRemoveFromBatch(quiz.id)}
-                                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Remove
-                            </button>
-                            <button
-                                onClick={() => downloadQuiz(quiz.id)}
-                                className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Download
-                            </button>
-                        </div>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    </div>
-);
+                    </li>
+                ))}
+            </ul>
+            {editingQuiz && (
+                <QuizMetadataModal
+                    quiz={editingQuiz}
+                    onClose={() => setEditingQuiz(null)}
+                    onSave={(updatedQuiz) => {
+                        handleUpdateQuizMetadata(updatedQuiz);
+                        setEditingQuiz(null);
+                    }}
+                />
+            )}
+        </div>
+    );
+};
 
 export const AllQuizList = ({ allQuizzes, tier1Batch, pyqBatch, handleDeleteQuiz, handleAddToBatch, handleRemoveFromBatch }) => (
     <div>
