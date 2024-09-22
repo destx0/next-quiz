@@ -6,6 +6,7 @@ import {
 	updateDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { getQuestionById } from "@/lib/firestore";
 
 export const fetchTestBatches = async (setTestBatches, setLoading) => {
 	try {
@@ -88,5 +89,52 @@ export const updateBatchOrder = async (batchId, newOrder) => {
 		console.log(`Batch ${batchId} order updated in Firebase`);
 	} catch (error) {
 		console.error("Error updating batch order:", error);
+	}
+};
+
+export const downloadQuiz = async (quizId) => {
+	try {
+		const quizDocRef = doc(db, "quizzes", quizId);
+		const quizDocSnap = await getDoc(quizDocRef);
+		if (quizDocSnap.exists()) {
+			const quizData = quizDocSnap.data();
+			
+			// Fetch all questions and flatten them into a single list
+			const allQuestions = await Promise.all(
+				quizData.sections.flatMap(section => 
+					section.questions.map(async questionRef => {
+						const fullQuestion = await getQuestionById(questionRef.id);
+						return {
+							question: fullQuestion.question,
+							options: fullQuestion.options,
+							correctAnswer: fullQuestion.correctAnswer,
+							explanation: fullQuestion.explanation
+						};
+					})
+				)
+			);
+
+			const jsonString = JSON.stringify(allQuestions, null, 2);
+			const blob = new Blob([jsonString], { type: "application/json" });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement("a");
+			link.href = url;
+
+			// Create a filename-safe version of the quiz title
+			const safeTitle = quizData.title
+				.replace(/[^a-z0-9]/gi, '_')  // Replace non-alphanumeric characters with underscores
+				.replace(/_+/g, '_')          // Replace multiple underscores with a single one
+				.toLowerCase();               // Convert to lowercase
+
+			link.download = `${safeTitle}_${quizId}.json`;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			URL.revokeObjectURL(url);
+		} else {
+			console.error("Quiz not found");
+		}
+	} catch (error) {
+		console.error("Error downloading quiz questions:", error);
 	}
 };
