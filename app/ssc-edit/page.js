@@ -122,6 +122,7 @@ export default function SSCTestsPage() {
                         handleDeleteQuiz={(quizId) => handleDeleteQuiz(null, quizId, setTestBatches, setAllQuizzes)}
                         handleAddToBatch={(quizId, batchId) => handleAddToBatch(quizId, batchId, setTestBatches, allQuizzes)}
                         handleRemoveFromBatch={(quizId, batchId) => handleRemoveFromBatch(quizId, batchId, setTestBatches)}
+                        handleUpdateQuizMetadata={handleUpdateQuizMetadata}
                     />
                 </Tab>
             </Tabs>
