@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Tabs, Tab } from "@nextui-org/react";
+import { Card, CardBody, Tabs, Tab, Button } from "@nextui-org/react";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { getQuiz } from "@/lib/firestore";
 import useAuthStore from "@/lib/zustand";
 import QuizCard from "./QuizCard";
 
-const BatchContainer = ({ batch }) => (
-	<Card className="mb-8 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl">
-		<CardBody className="p-6">
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-				{batch.quizzes.map((quiz, index) => (
-					<QuizCard key={quiz.id} quiz={quiz} index={index} />
-				))}
-			</div>
-		</CardBody>
-	</Card>
-);
+const BatchContainer = ({ batch, selectedYear }) => {
+	const filteredQuizzes = selectedYear
+		? batch.quizzes.filter(quiz => quiz.title.includes(selectedYear))
+		: batch.quizzes;
+
+	return (
+		<Card className="mb-8 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl">
+			<CardBody className="p-6">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+					{filteredQuizzes.map((quiz, index) => (
+						<QuizCard key={quiz.id} quiz={quiz} index={index} />
+					))}
+				</div>
+			</CardBody>
+		</Card>
+	);
+};
 
 const QuizBatches = () => {
 	const [testBatches, setTestBatches] = useState([]);
@@ -24,6 +30,8 @@ const QuizBatches = () => {
 	const [error, setError] = useState(null);
 	const { user } = useAuthStore();
 	const [userQuizData, setUserQuizData] = useState(null);
+	const [selectedYear, setSelectedYear] = useState(null);
+	const [availableYears, setAvailableYears] = useState([]);
 
 	useEffect(() => {
 		const fetchUserQuizData = async () => {
@@ -103,6 +111,21 @@ const QuizBatches = () => {
 		fetchTestBatches();
 	}, [user]);
 
+	useEffect(() => {
+		if (testBatches.length > 0) {
+			const previousYearBatch = testBatches.find(batch => batch.id === "NHI6vv2PzgQ899Sz4Rll");
+			if (previousYearBatch) {
+				const years = previousYearBatch.quizzes
+					.map(quiz => {
+						const match = quiz.title.match(/(19|20)\d{2}/);
+						return match ? match[0] : null;
+					})
+					.filter(Boolean);
+				setAvailableYears([...new Set(years)].sort().reverse());
+			}
+		}
+	}, [testBatches]);
+
 	if (loading)
 		return (
 			<div className="text-center py-8 text-xl">
@@ -145,6 +168,27 @@ const QuizBatches = () => {
 								<span className="text-lg">{batch.title}</span>
 							}
 						>
+							{batch.id === "NHI6vv2PzgQ899Sz4Rll" && (
+								<div className="mb-4 flex flex-wrap gap-2">
+									<Button
+										size="sm"
+										color={selectedYear === null ? "primary" : "default"}
+										onClick={() => setSelectedYear(null)}
+									>
+										All Years
+									</Button>
+									{availableYears.map(year => (
+										<Button
+											key={year}
+											size="sm"
+											color={selectedYear === year ? "primary" : "default"}
+											onClick={() => setSelectedYear(year)}
+										>
+											{year}
+										</Button>
+									))}
+								</div>
+							)}
 							<BatchContainer
 								batch={{
 									...batch,
@@ -157,6 +201,7 @@ const QuizBatches = () => {
 										score: userQuizData?.scores?.[quiz.id],
 									})),
 								}}
+								selectedYear={selectedYear}
 							/>
 						</Tab>
 					))}
