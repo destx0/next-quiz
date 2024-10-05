@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useCallback } from "react";
 import {
 	Button,
@@ -9,8 +11,12 @@ import {
 	Spinner,
 	Progress,
 } from "@nextui-org/react";
-import { useDropzone } from 'react-dropzone';
+import dynamic from 'next/dynamic';
 import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
+
+const Dropzone = dynamic(() => import('react-dropzone').then(mod => ({ default: mod.useDropzone })), {
+	ssr: false,
+});
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -25,7 +31,7 @@ export default function BulkUploadForm() {
 		setJsonFiles(acceptedFiles);
 	}, []);
 
-	const { getRootProps, getInputProps, isDragActive } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive } = Dropzone({
 		onDrop,
 		accept: { 'application/json': ['.json'] },
 		multiple: true
