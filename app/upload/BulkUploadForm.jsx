@@ -14,7 +14,10 @@ import {
 import dynamic from 'next/dynamic';
 import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
 
-const ReactDropzone = dynamic(() => import('react-dropzone'), { ssr: false });
+const ReactDropzone = dynamic(
+	() => import('react-dropzone').then((mod) => mod.default),
+	{ ssr: false }
+);
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
