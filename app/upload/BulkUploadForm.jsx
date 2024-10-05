@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
 	Button,
 	Textarea,
@@ -11,13 +11,7 @@ import {
 	Spinner,
 	Progress,
 } from "@nextui-org/react";
-import dynamic from 'next/dynamic';
 import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
-
-const ReactDropzone = dynamic(
-	() => import('react-dropzone').then((mod) => mod.default),
-	{ ssr: false }
-);
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -27,10 +21,6 @@ export default function BulkUploadForm() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [uploadedIds, setUploadedIds] = useState([]);
 	const [uploadProgress, setUploadProgress] = useState(0);
-
-	const onDrop = useCallback(acceptedFiles => {
-		setJsonFiles(acceptedFiles);
-	}, []);
 
 	const addQuizToTestBatch = async (quizId) => {
 		const testBatchId = "PxOtC4EjRhk1DH1B6j62"; // Hardcoded test batch ID
@@ -53,7 +43,7 @@ export default function BulkUploadForm() {
 			if (inputMethod === "paste") {
 				allData = [JSON.parse(jsonData)];
 			} else {
-				allData = await Promise.all(jsonFiles.map(async (file) => {
+				allData = await Promise.all(Array.from(jsonFiles).map(async (file) => {
 					const fileContent = await file.text();
 					return JSON.parse(fileContent);
 				}));
@@ -108,7 +98,7 @@ export default function BulkUploadForm() {
 	};
 
 	const handleFileChange = (e) => {
-		setJsonFile(e.target.files[0]);
+		setJsonFiles(e.target.files);
 	};
 
 	const helperText = {
@@ -182,39 +172,30 @@ export default function BulkUploadForm() {
 					required
 				/>
 			) : (
-				<ReactDropzone
-					onDrop={onDrop}
-					accept={{ 'application/json': ['.json'] }}
-					multiple={true}
-				>
-					{({getRootProps, getInputProps, isDragActive}) => (
-						<div 
-							{...getRootProps()} 
-							className="p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 flex flex-col items-center justify-center"
-							style={{ minHeight: "200px" }}
-						>
-							<input {...getInputProps()} />
-							{isDragActive ? (
-								<p className="text-xl">Drop the JSON files here ...</p>
-							) : (
-								<>
-									<p className="text-xl mb-2">Drag 'n' drop some JSON files here</p>
-									<p className="text-sm text-gray-500">or click to select files</p>
-								</>
-							)}
-							{jsonFiles.length > 0 && (
-								<div className="mt-4">
-									<p>Selected files:</p>
-									<ul>
-										{jsonFiles.map((file, index) => (
-											<li key={index}>{file.name}</li>
-										))}
-									</ul>
-								</div>
-							)}
+				<div className="flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
+					<input
+						type="file"
+						accept=".json"
+						multiple
+						onChange={handleFileChange}
+						className="hidden"
+						id="fileInput"
+					/>
+					<label htmlFor="fileInput" className="cursor-pointer">
+						<p className="text-xl mb-2">Click to select JSON files</p>
+						<p className="text-sm text-gray-500">or drag and drop files here</p>
+					</label>
+					{jsonFiles.length > 0 && (
+						<div className="mt-4">
+							<p>Selected files:</p>
+							<ul>
+								{Array.from(jsonFiles).map((file, index) => (
+									<li key={index}>{file.name}</li>
+								))}
+							</ul>
 						</div>
 					)}
-				</ReactDropzone>
+				</div>
 			)}
 
 			<Button type="submit" color="primary" disabled={isLoading}>
