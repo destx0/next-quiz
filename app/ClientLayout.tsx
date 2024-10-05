@@ -4,6 +4,7 @@ import React, { Suspense } from "react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
+
 import { Navbar } from "@/components/navbar";
 import Background from "@/components/Background";
 
