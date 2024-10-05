@@ -21,12 +21,13 @@ export default function BulkUploadForm() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [uploadedIds, setUploadedIds] = useState([]);
 	const [uploadProgress, setUploadProgress] = useState(0);
+	const [selectedBatch, setSelectedBatch] = useState("none");
 
 	const addQuizToTestBatch = async (quizId) => {
-		const testBatchId = "PxOtC4EjRhk1DH1B6j62"; // Hardcoded test batch ID
+		if (selectedBatch === "none") return;
 		try {
-			await updateTestBatch(testBatchId, quizId);
-			console.log(`Quiz ${quizId} added to test batch ${testBatchId}`);
+			await updateTestBatch(selectedBatch, quizId);
+			console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
 		} catch (error) {
 			console.error("Error adding quiz to test batch:", error);
 			throw error;
@@ -68,14 +69,16 @@ export default function BulkUploadForm() {
 					const quizIds = await Promise.all(
 						quizzes.map(async (quiz) => {
 							const id = await addQuiz(quiz);
-							await addQuizToTestBatch(id);
+							if (selectedBatch !== "none") {
+								await addQuizToTestBatch(id);
+							}
 							processedItems++;
 							setUploadProgress(Math.round((processedItems / totalItems) * 100));
 							return id;
 						})
 					);
 					setUploadedIds(prev => [...prev, ...quizIds]);
-					console.log(`Quizzes added successfully and added to test batch. IDs: ${quizIds.join(", ")}`);
+					console.log(`Quizzes added successfully. IDs: ${quizIds.join(", ")}`);
 				}
 			}
 			alert("Upload completed successfully!");
@@ -99,6 +102,10 @@ export default function BulkUploadForm() {
 
 	const handleFileChange = (e) => {
 		setJsonFiles(e.target.files);
+	};
+
+	const handleBatchChange = (value) => {
+		setSelectedBatch(value);
 	};
 
 	const helperText = {
@@ -142,25 +149,40 @@ export default function BulkUploadForm() {
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
-			<RadioGroup
-				label="Upload Type"
-				value={uploadType}
-				onValueChange={handleUploadTypeChange}
-				orientation="horizontal"
-			>
-				<Radio value="quizzes">Quizzes</Radio>
-				<Radio value="questions">Questions</Radio>
-			</RadioGroup>
+			<div className="flex justify-start gap-10  items-center">
+				<RadioGroup
+					label="Upload Type"
+					value={uploadType}
+					onValueChange={handleUploadTypeChange}
+					orientation="horizontal"
+				>
+					<Radio value="quizzes">Quizzes</Radio>
+					<Radio value="questions">Questions</Radio>
+				</RadioGroup>
 
-			<RadioGroup
-				label="Input Method"
-				value={inputMethod}
-				onValueChange={handleInputMethodChange}
-				orientation="horizontal"
-			>
-				<Radio value="file">Upload JSON File(s)</Radio>
-				<Radio value="paste">Paste JSON</Radio>
-			</RadioGroup>
+				<RadioGroup
+					label="Input Method"
+					value={inputMethod}
+					onValueChange={handleInputMethodChange}
+					orientation="horizontal"
+				>
+					<Radio value="file">File</Radio>
+					<Radio value="paste">Paste</Radio>
+				</RadioGroup>
+			</div>
+
+			{uploadType === "quizzes" && (
+				<RadioGroup
+					label="Select Batch"
+					value={selectedBatch}
+					onValueChange={handleBatchChange}
+					orientation="horizontal"
+				>
+					<Radio value="none">No Batch</Radio>
+					<Radio value="PxOtC4EjRhk1DH1B6j62">Tier 1</Radio>
+					<Radio value="NHI6vv2PzgQ899Sz4Rll">PYQs</Radio>
+				</RadioGroup>
+			)}
 
 			{inputMethod === "paste" ? (
 				<Textarea
