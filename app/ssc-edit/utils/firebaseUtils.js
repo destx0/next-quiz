@@ -105,10 +105,7 @@ export const downloadQuiz = async (quizId) => {
 					section.questions.map(async questionRef => {
 						const fullQuestion = await getQuestionById(questionRef.id);
 						return {
-							question: fullQuestion.question,
-							options: fullQuestion.options,
-							correctAnswer: fullQuestion.correctAnswer,
-							explanation: fullQuestion.explanation
+							...fullQuestion, // Spread all properties of fullQuestion
 						};
 					})
 				)
