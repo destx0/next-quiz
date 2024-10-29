@@ -11,7 +11,7 @@ import {
 	Spinner,
 	Progress,
 } from "@nextui-org/react";
-import { addQuestion, addQuiz, updateTestBatch } from "@/lib/firestore";
+import { addQuestion, addQuiz, updateTestBatch, addFullQuiz } from "@/lib/firestore";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -22,6 +22,7 @@ export default function BulkUploadForm() {
 	const [uploadedIds, setUploadedIds] = useState([]);
 	const [uploadProgress, setUploadProgress] = useState(0);
 	const [selectedBatch, setSelectedBatch] = useState("none");
+	const [uploadVersion, setUploadVersion] = useState("v1");
 
 	const addQuizToTestBatch = async (quizId) => {
 		if (selectedBatch === "none") return;
@@ -68,7 +69,13 @@ export default function BulkUploadForm() {
 					const quizzes = Array.isArray(data) ? data : [data];
 					const quizIds = await Promise.all(
 						quizzes.map(async (quiz) => {
-							const id = await addQuiz(quiz);
+							let id;
+							if (uploadVersion === "v2") {
+								id = await addFullQuiz(quiz);
+							} else {
+								id = await addQuiz(quiz);
+							}
+							
 							if (selectedBatch !== "none") {
 								await addQuizToTestBatch(id);
 							}
@@ -106,6 +113,10 @@ export default function BulkUploadForm() {
 
 	const handleBatchChange = (value) => {
 		setSelectedBatch(value);
+	};
+
+	const handleVersionChange = (value) => {
+		setUploadVersion(value);
 	};
 
 	const helperText = {
@@ -169,6 +180,18 @@ export default function BulkUploadForm() {
 					<Radio value="file">File</Radio>
 					<Radio value="paste">Paste</Radio>
 				</RadioGroup>
+
+				{uploadType === "quizzes" && (
+					<RadioGroup
+						label="Upload Version"
+						value={uploadVersion}
+						onValueChange={handleVersionChange}
+						orientation="horizontal"
+					>
+						<Radio value="v1">Version 1.0</Radio>
+						<Radio value="v2">Version 2.0</Radio>
+					</RadioGroup>
+				)}
 			</div>
 
 			{uploadType === "quizzes" && (
