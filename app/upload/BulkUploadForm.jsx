@@ -16,6 +16,8 @@ import { HELPER_TEXT } from "./constants";
 import BatchSelector from "./components/BatchSelector";
 import UploadOptions from "./components/UploadOptions";
 import NewBatchModal from "./components/NewBatchModal";
+import LanguageSelector from "./components/LanguageSelector";
+import UploadSidebar from "./components/UploadSidebar";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -32,6 +34,7 @@ export default function BulkUploadForm() {
 	const [newBatchTitle, setNewBatchTitle] = useState("");
 	const [newBatchDescription, setNewBatchDescription] = useState("");
 	const [isCreatingBatch, setIsCreatingBatch] = useState(false);
+	const [selectedLanguage, setSelectedLanguage] = useState("english");
 
 	useEffect(() => {
 		const fetchTestBatches = async () => {
@@ -79,7 +82,11 @@ export default function BulkUploadForm() {
 			for (let data of allData) {
 				if (uploadType === "questions") {
 					const questions = Array.isArray(data) ? data : [data];
-					const ids = await Promise.all(questions.map(async (question) => {
+					const questionsWithLanguage = questions.map(q => ({
+						...q,
+						language: selectedLanguage
+					}));
+					const ids = await Promise.all(questionsWithLanguage.map(async (question) => {
 						const id = await addQuestion(question);
 						processedItems++;
 						setUploadProgress(Math.round((processedItems / totalItems) * 100));
@@ -89,8 +96,12 @@ export default function BulkUploadForm() {
 					console.log(`Questions added successfully. IDs: ${ids.join(", ")}`);
 				} else if (uploadType === "quizzes") {
 					const quizzes = Array.isArray(data) ? data : [data];
+					const quizzesWithLanguage = quizzes.map(quiz => ({
+						...quiz,
+						language: selectedLanguage
+					}));
 					const quizIds = await Promise.all(
-						quizzes.map(async (quiz) => {
+						quizzesWithLanguage.map(async (quiz) => {
 							let id;
 							if (uploadVersion === "v2") {
 								id = await addFullQuiz(quiz);
@@ -176,131 +187,130 @@ export default function BulkUploadForm() {
 		}
 	};
 
+	const handleLanguageChange = (value) => {
+		setSelectedLanguage(value);
+	};
+
 	return (
-		<form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
-			<Card>
-				<CardBody>
-					<UploadOptions
-						uploadType={uploadType}
-						onUploadTypeChange={handleUploadTypeChange}
-						inputMethod={inputMethod}
-						onInputMethodChange={handleInputMethodChange}
-						uploadVersion={uploadVersion}
-						onVersionChange={handleVersionChange}
-					/>
-				</CardBody>
-			</Card>
-
-			{uploadType === "quizzes" && (
-				<Card>
-					<CardBody>
-						<BatchSelector
-							selectedBatch={selectedBatch}
-							onBatchChange={handleBatchChange}
-							testBatches={testBatches}
-							onCreateNew={onOpen}
-						/>
-					</CardBody>
-				</Card>
-			)}
-
-			<Card>
-				<CardBody>
-					{inputMethod === "paste" ? (
-						<Textarea
-							label={`JSON Data for ${uploadType}`}
-							value={jsonData}
-							onChange={(e) => setJsonData(e.target.value)}
-							placeholder={`Paste your ${uploadType} JSON data here`}
-							minRows={10}
-							required
-						/>
-					) : (
-						<div className="flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
-							<input
-								type="file"
-								accept=".json"
-								multiple
-								onChange={handleFileChange}
-								className="hidden"
-								id="fileInput"
-							/>
-							<label htmlFor="fileInput" className="cursor-pointer">
-								<p className="text-xl mb-2">Click to select JSON files</p>
-								<p className="text-sm text-gray-500">or drag and drop files here</p>
-							</label>
-							{jsonFiles.length > 0 && (
-								<div className="mt-4">
-									<p>Selected files:</p>
-									<ul>
-										{Array.from(jsonFiles).map((file, index) => (
-											<li key={index}>{file.name}</li>
-										))}
-									</ul>
-								</div>
-							)}
-						</div>
-					)}
-				</CardBody>
-			</Card>
-
-			<div className="flex justify-center">
-				<Button 
-					type="submit" 
-					color="primary" 
-					size="lg"
-					disabled={isLoading}
-				>
-					{isLoading ? <Spinner size="sm" /> : `Upload ${uploadType}`}
-				</Button>
+		<form onSubmit={handleSubmit} className="flex gap-6 mx-auto max-w-7xl">
+			{/* Sidebar */}
+			<div className="w-1/3 sticky top-4 h-fit">
+				<UploadSidebar
+					uploadType={uploadType}
+					onUploadTypeChange={handleUploadTypeChange}
+					inputMethod={inputMethod}
+					onInputMethodChange={handleInputMethodChange}
+					uploadVersion={uploadVersion}
+					onVersionChange={handleVersionChange}
+					selectedLanguage={selectedLanguage}
+					onLanguageChange={handleLanguageChange}
+					selectedBatch={selectedBatch}
+					onBatchChange={handleBatchChange}
+					testBatches={testBatches}
+					onCreateNewBatch={onOpen}
+				/>
 			</div>
 
-			{isLoading && (
-				<div className="text-center">
-					<Progress 
-						aria-label="Uploading..." 
-						size="md" 
-						value={uploadProgress} 
-						color="primary" 
-						showValueLabel={true}
-						className="max-w-md mx-auto"
-					/>
-					<p className="mt-2">Processing uploads...</p>
-				</div>
-			)}
-
-			{uploadedIds.length > 0 && (
+			{/* Main Content */}
+			<div className="flex-1 space-y-6">
 				<Card>
 					<CardBody>
-						<h3 className="text-lg font-semibold mb-2">Uploaded {uploadType} IDs:</h3>
-						<ul className="list-disc pl-5">
-							{uploadedIds.map((id, index) => (
-								<li key={index}>{id}</li>
-							))}
-						</ul>
+						{inputMethod === "paste" ? (
+							<Textarea
+								label={`JSON Data for ${uploadType}`}
+								value={jsonData}
+								onChange={(e) => setJsonData(e.target.value)}
+								placeholder={`Paste your ${uploadType} JSON data here`}
+								minRows={10}
+								required
+							/>
+						) : (
+							<div className="flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
+								<input
+									type="file"
+									accept=".json"
+									multiple
+									onChange={handleFileChange}
+									className="hidden"
+									id="fileInput"
+								/>
+								<label htmlFor="fileInput" className="cursor-pointer">
+									<p className="text-xl mb-2">Click to select JSON files</p>
+									<p className="text-sm text-gray-500">or drag and drop files here</p>
+								</label>
+								{jsonFiles.length > 0 && (
+									<div className="mt-4">
+										<p>Selected files:</p>
+										<ul>
+											{Array.from(jsonFiles).map((file, index) => (
+												<li key={index}>{file.name}</li>
+											))}
+										</ul>
+									</div>
+								)}
+							</div>
+						)}
 					</CardBody>
 				</Card>
-			)}
 
-			<Card>
-				<CardBody>
-					<h3 className="text-lg font-semibold mb-2">Expected Format</h3>
-					<pre className="text-sm overflow-auto bg-gray-100 p-4 rounded">
-						{HELPER_TEXT[uploadType]}
-					</pre>
-				</CardBody>
-			</Card>
+				<div className="flex justify-center">
+					<Button 
+						type="submit" 
+						color="primary" 
+						size="lg"
+						disabled={isLoading}
+					>
+						{isLoading ? <Spinner size="sm" /> : `Upload ${uploadType}`}
+					</Button>
+				</div>
 
-			<NewBatchModal
-				isOpen={isOpen}
-				onClose={onClose}
-				title={newBatchTitle}
-				onTitleChange={(e) => setNewBatchTitle(e.target.value)}
-				description={newBatchDescription}
-				onDescriptionChange={(e) => setNewBatchDescription(e.target.value)}
-				onSubmit={handleCreateBatch}
-				isLoading={isCreatingBatch}
-			/>
+				{isLoading && (
+					<div className="text-center">
+						<Progress 
+							aria-label="Uploading..." 
+							size="md" 
+							value={uploadProgress} 
+							color="primary" 
+							showValueLabel={true}
+							className="max-w-md mx-auto"
+						/>
+						<p className="mt-2">Processing uploads...</p>
+					</div>
+				)}
+
+				{uploadedIds.length > 0 && (
+					<Card>
+						<CardBody>
+							<h3 className="text-lg font-semibold mb-2">Uploaded {uploadType} IDs:</h3>
+							<ul className="list-disc pl-5">
+								{uploadedIds.map((id, index) => (
+									<li key={index}>{id}</li>
+								))}
+							</ul>
+						</CardBody>
+					</Card>
+				)}
+
+				<Card>
+					<CardBody>
+						<h3 className="text-lg font-semibold mb-2">Expected Format</h3>
+						<pre className="text-sm overflow-auto bg-gray-100 p-4 rounded">
+							{HELPER_TEXT[uploadType]}
+						</pre>
+					</CardBody>
+				</Card>
+
+				<NewBatchModal
+					isOpen={isOpen}
+					onClose={onClose}
+					title={newBatchTitle}
+					onTitleChange={(e) => setNewBatchTitle(e.target.value)}
+					description={newBatchDescription}
+					onDescriptionChange={(e) => setNewBatchDescription(e.target.value)}
+					onSubmit={handleCreateBatch}
+					isLoading={isCreatingBatch}
+				/>
+			</div>
 		</form>
 	);
 }
