@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Button,
 	Textarea,
@@ -11,7 +11,8 @@ import {
 	Spinner,
 	Progress,
 } from "@nextui-org/react";
-import { addQuestion, addQuiz, updateTestBatch, addFullQuiz } from "@/lib/firestore";
+import { addQuestion, addQuiz, updateTestBatch, addFullQuiz } from "@/lib/uploadService";
+import { getAllTestBatches } from "@/lib/firestore";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -23,15 +24,29 @@ export default function BulkUploadForm() {
 	const [uploadProgress, setUploadProgress] = useState(0);
 	const [selectedBatch, setSelectedBatch] = useState("none");
 	const [uploadVersion, setUploadVersion] = useState("v1");
+	const [testBatches, setTestBatches] = useState([]);
+
+	useEffect(() => {
+		const fetchTestBatches = async () => {
+			try {
+				const batches = await getAllTestBatches();
+				setTestBatches(batches);
+			} catch (error) {
+				console.error("Error fetching test batches:", error);
+			}
+		};
+
+		fetchTestBatches();
+	}, []);
 
 	const addQuizToTestBatch = async (quizId) => {
 		if (selectedBatch === "none") return;
 		try {
-			await updateTestBatch(selectedBatch, quizId);
-			console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
+				await updateTestBatch(selectedBatch, quizId);
+				console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
 		} catch (error) {
-			console.error("Error adding quiz to test batch:", error);
-			throw error;
+				console.error("Error adding quiz to test batch:", error);
+				throw error;
 		}
 	};
 
@@ -202,8 +217,11 @@ export default function BulkUploadForm() {
 					orientation="horizontal"
 				>
 					<Radio value="none">No Batch</Radio>
-					<Radio value="PxOtC4EjRhk1DH1B6j62">Tier 1</Radio>
-					<Radio value="NHI6vv2PzgQ899Sz4Rll">PYQs</Radio>
+					{testBatches.map((batch) => (
+						<Radio key={batch.id} value={batch.id}>
+							{batch.title}
+						</Radio>
+					))}
 				</RadioGroup>
 			)}
 
