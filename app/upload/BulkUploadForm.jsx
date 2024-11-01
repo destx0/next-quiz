@@ -49,14 +49,17 @@ export default function BulkUploadForm() {
 		fetchTestBatches();
 	}, []);
 
-	const addQuizToTestBatch = async (quizId) => {
+	const addQuizToTestBatch = async (quizId, quizData) => {
 		if (selectedBatch === "none") return;
 		try {
-				await updateTestBatch(selectedBatch, quizId);
-				console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
+			await updateTestBatch(selectedBatch, quizId, {
+				...quizData,
+				language: selectedLanguage
+			});
+			console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
 		} catch (error) {
-				console.error("Error adding quiz to test batch:", error);
-				throw error;
+			console.error("Error adding quiz to test batch:", error);
+			throw error;
 		}
 	};
 
@@ -110,7 +113,7 @@ export default function BulkUploadForm() {
 							}
 							
 							if (selectedBatch !== "none") {
-								await addQuizToTestBatch(id);
+								await addQuizToTestBatch(id, quiz);
 							}
 							processedItems++;
 							setUploadProgress(Math.round((processedItems / totalItems) * 100));
