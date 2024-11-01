@@ -4,15 +4,18 @@ import React, { useState, useEffect } from "react";
 import {
 	Button,
 	Textarea,
-	Radio,
-	RadioGroup,
 	Card,
 	CardBody,
 	Spinner,
 	Progress,
+	useDisclosure,
 } from "@nextui-org/react";
-import { addQuestion, addQuiz, updateTestBatch, addFullQuiz } from "@/lib/uploadService";
+import { addQuestion, addQuiz, updateTestBatch, addFullQuiz, createNewBatch } from "@/lib/uploadService";
 import { getAllTestBatches } from "@/lib/firestore";
+import { HELPER_TEXT } from "./constants";
+import BatchSelector from "./components/BatchSelector";
+import UploadOptions from "./components/UploadOptions";
+import NewBatchModal from "./components/NewBatchModal";
 
 export default function BulkUploadForm() {
 	const [jsonData, setJsonData] = useState("");
@@ -23,8 +26,12 @@ export default function BulkUploadForm() {
 	const [uploadedIds, setUploadedIds] = useState([]);
 	const [uploadProgress, setUploadProgress] = useState(0);
 	const [selectedBatch, setSelectedBatch] = useState("none");
-	const [uploadVersion, setUploadVersion] = useState("v1");
+	const [uploadVersion, setUploadVersion] = useState("v2");
 	const [testBatches, setTestBatches] = useState([]);
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [newBatchTitle, setNewBatchTitle] = useState("");
+	const [newBatchDescription, setNewBatchDescription] = useState("");
+	const [isCreatingBatch, setIsCreatingBatch] = useState(false);
 
 	useEffect(() => {
 		const fetchTestBatches = async () => {
@@ -134,136 +141,119 @@ export default function BulkUploadForm() {
 		setUploadVersion(value);
 	};
 
-	const helperText = {
-		questions: `Expected format for questions:
-[
-  {
-    "question": "What is the capital of France?",
-    "options": ["London", "Berlin", "Paris", "Madrid"],
-    "correctAnswer": 2,
-    "explanation": "Paris is the capital of France."
-  },
-  // ... more questions ...
-]`,
-		quizzes: `Expected format for quizzes:
-[
-  {
-    "title": "General Knowledge Quiz",
-    "description": "Test your knowledge!",
-    "thumbnailLink": "https://example.com/thumbnail.jpg",
-    "duration": 30,
-    "positiveScore": 1,
-    "negativeScore": 0.25,
-    "sections": [
-      {
-        "name": "History",
-        "questions": [
-          { "id": "existingQuestionId" },
-          {
-            "question": "Who was the first US President?",
-            "options": ["Washington", "Adams", "Jefferson", "Madison"],
-            "correctAnswer": 0,
-            "explanation": "George Washington was the first US President."
-          }
-        ]
-      }
-    ]
-  },
-  // ... more quizzes ...
-]`,
+	const handleCreateBatch = async () => {
+		if (!newBatchTitle.trim()) {
+			alert("Please enter a batch title");
+			return;
+		}
+
+		setIsCreatingBatch(true);
+		try {
+			const batchData = {
+				title: newBatchTitle.trim(),
+				description: newBatchDescription.trim(),
+			};
+			
+			const newBatchId = await createNewBatch(batchData);
+			
+			// Refresh the batches list
+			const updatedBatches = await getAllTestBatches();
+			setTestBatches(updatedBatches);
+			
+			// Select the newly created batch
+			setSelectedBatch(newBatchId);
+			
+			// Close the modal and reset form
+			onClose();
+			setNewBatchTitle("");
+			setNewBatchDescription("");
+			
+			alert("Batch created successfully!");
+		} catch (error) {
+			alert("Error creating batch: " + error.message);
+		} finally {
+			setIsCreatingBatch(false);
+		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
-			<div className="flex justify-start gap-10  items-center">
-				<RadioGroup
-					label="Upload Type"
-					value={uploadType}
-					onValueChange={handleUploadTypeChange}
-					orientation="horizontal"
-				>
-					<Radio value="quizzes">Quizzes</Radio>
-					<Radio value="questions">Questions</Radio>
-				</RadioGroup>
-
-				<RadioGroup
-					label="Input Method"
-					value={inputMethod}
-					onValueChange={handleInputMethodChange}
-					orientation="horizontal"
-				>
-					<Radio value="file">File</Radio>
-					<Radio value="paste">Paste</Radio>
-				</RadioGroup>
-
-				{uploadType === "quizzes" && (
-					<RadioGroup
-						label="Upload Version"
-						value={uploadVersion}
-						onValueChange={handleVersionChange}
-						orientation="horizontal"
-					>
-						<Radio value="v1">Version 1.0</Radio>
-						<Radio value="v2">Version 2.0</Radio>
-					</RadioGroup>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
+			<Card>
+				<CardBody>
+					<UploadOptions
+						uploadType={uploadType}
+						onUploadTypeChange={handleUploadTypeChange}
+						inputMethod={inputMethod}
+						onInputMethodChange={handleInputMethodChange}
+						uploadVersion={uploadVersion}
+						onVersionChange={handleVersionChange}
+					/>
+				</CardBody>
+			</Card>
 
 			{uploadType === "quizzes" && (
-				<RadioGroup
-					label="Select Batch"
-					value={selectedBatch}
-					onValueChange={handleBatchChange}
-					orientation="horizontal"
-				>
-					<Radio value="none">No Batch</Radio>
-					{testBatches.map((batch) => (
-						<Radio key={batch.id} value={batch.id}>
-							{batch.title}
-						</Radio>
-					))}
-				</RadioGroup>
+				<Card>
+					<CardBody>
+						<BatchSelector
+							selectedBatch={selectedBatch}
+							onBatchChange={handleBatchChange}
+							testBatches={testBatches}
+							onCreateNew={onOpen}
+						/>
+					</CardBody>
+				</Card>
 			)}
 
-			{inputMethod === "paste" ? (
-				<Textarea
-					label={`JSON Data for ${uploadType}`}
-					value={jsonData}
-					onChange={(e) => setJsonData(e.target.value)}
-					placeholder={`Paste your ${uploadType} JSON data here`}
-					minRows={10}
-					required
-				/>
-			) : (
-				<div className="flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
-					<input
-						type="file"
-						accept=".json"
-						multiple
-						onChange={handleFileChange}
-						className="hidden"
-						id="fileInput"
-					/>
-					<label htmlFor="fileInput" className="cursor-pointer">
-						<p className="text-xl mb-2">Click to select JSON files</p>
-						<p className="text-sm text-gray-500">or drag and drop files here</p>
-					</label>
-					{jsonFiles.length > 0 && (
-						<div className="mt-4">
-							<p>Selected files:</p>
-							<ul>
-								{Array.from(jsonFiles).map((file, index) => (
-									<li key={index}>{file.name}</li>
-								))}
-							</ul>
+			<Card>
+				<CardBody>
+					{inputMethod === "paste" ? (
+						<Textarea
+							label={`JSON Data for ${uploadType}`}
+							value={jsonData}
+							onChange={(e) => setJsonData(e.target.value)}
+							placeholder={`Paste your ${uploadType} JSON data here`}
+							minRows={10}
+							required
+						/>
+					) : (
+						<div className="flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
+							<input
+								type="file"
+								accept=".json"
+								multiple
+								onChange={handleFileChange}
+								className="hidden"
+								id="fileInput"
+							/>
+							<label htmlFor="fileInput" className="cursor-pointer">
+								<p className="text-xl mb-2">Click to select JSON files</p>
+								<p className="text-sm text-gray-500">or drag and drop files here</p>
+							</label>
+							{jsonFiles.length > 0 && (
+								<div className="mt-4">
+									<p>Selected files:</p>
+									<ul>
+										{Array.from(jsonFiles).map((file, index) => (
+											<li key={index}>{file.name}</li>
+										))}
+									</ul>
+								</div>
+							)}
 						</div>
 					)}
-				</div>
-			)}
+				</CardBody>
+			</Card>
 
-			<Button type="submit" color="primary" disabled={isLoading}>
-				{isLoading ? <Spinner size="sm" /> : `Upload ${uploadType}`}
-			</Button>
+			<div className="flex justify-center">
+				<Button 
+					type="submit" 
+					color="primary" 
+					size="lg"
+					disabled={isLoading}
+				>
+					{isLoading ? <Spinner size="sm" /> : `Upload ${uploadType}`}
+				</Button>
+			</div>
 
 			{isLoading && (
 				<div className="text-center">
@@ -294,11 +284,23 @@ export default function BulkUploadForm() {
 
 			<Card>
 				<CardBody>
-					<pre className="text-sm overflow-auto">
-						{helperText[uploadType]}
+					<h3 className="text-lg font-semibold mb-2">Expected Format</h3>
+					<pre className="text-sm overflow-auto bg-gray-100 p-4 rounded">
+						{HELPER_TEXT[uploadType]}
 					</pre>
 				</CardBody>
 			</Card>
+
+			<NewBatchModal
+				isOpen={isOpen}
+				onClose={onClose}
+				title={newBatchTitle}
+				onTitleChange={(e) => setNewBatchTitle(e.target.value)}
+				description={newBatchDescription}
+				onDescriptionChange={(e) => setNewBatchDescription(e.target.value)}
+				onSubmit={handleCreateBatch}
+				isLoading={isCreatingBatch}
+			/>
 		</form>
 	);
 }
