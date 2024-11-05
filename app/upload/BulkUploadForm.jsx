@@ -10,13 +10,16 @@ import {
 	Progress,
 	useDisclosure,
 } from "@nextui-org/react";
-import { addQuestion, addQuiz, updateTestBatch, addFullQuiz, createNewBatch } from "@/lib/uploadService";
+import {
+	addQuestion,
+	addQuiz,
+	updateTestBatch,
+	addFullQuiz,
+	createNewBatch,
+} from "@/lib/uploadService";
 import { getAllTestBatches } from "@/lib/firestore";
 import { HELPER_TEXT } from "./constants";
-import BatchSelector from "./components/BatchSelector";
-import UploadOptions from "./components/UploadOptions";
 import NewBatchModal from "./components/NewBatchModal";
-import LanguageSelector from "./components/LanguageSelector";
 import UploadSidebar from "./components/UploadSidebar";
 
 export default function BulkUploadForm() {
@@ -54,7 +57,7 @@ export default function BulkUploadForm() {
 		try {
 			await updateTestBatch(selectedBatch, quizId, {
 				...quizData,
-				language: selectedLanguage
+				language: selectedLanguage,
 			});
 			console.log(`Quiz ${quizId} added to test batch ${selectedBatch}`);
 		} catch (error) {
@@ -73,35 +76,46 @@ export default function BulkUploadForm() {
 			if (inputMethod === "paste") {
 				allData = [JSON.parse(jsonData)];
 			} else {
-				allData = await Promise.all(Array.from(jsonFiles).map(async (file) => {
-					const fileContent = await file.text();
-					return JSON.parse(fileContent);
-				}));
+				allData = await Promise.all(
+					Array.from(jsonFiles).map(async (file) => {
+						const fileContent = await file.text();
+						return JSON.parse(fileContent);
+					})
+				);
 			}
 
-			const totalItems = allData.reduce((acc, data) => acc + (Array.isArray(data) ? data.length : 1), 0);
+			const totalItems = allData.reduce(
+				(acc, data) => acc + (Array.isArray(data) ? data.length : 1),
+				0
+			);
 			let processedItems = 0;
 
 			for (let data of allData) {
 				if (uploadType === "questions") {
 					const questions = Array.isArray(data) ? data : [data];
-					const questionsWithLanguage = questions.map(q => ({
+					const questionsWithLanguage = questions.map((q) => ({
 						...q,
-						language: selectedLanguage
+						language: selectedLanguage,
 					}));
-					const ids = await Promise.all(questionsWithLanguage.map(async (question) => {
-						const id = await addQuestion(question);
-						processedItems++;
-						setUploadProgress(Math.round((processedItems / totalItems) * 100));
-						return id;
-					}));
-					setUploadedIds(prev => [...prev, ...ids]);
-					console.log(`Questions added successfully. IDs: ${ids.join(", ")}`);
+					const ids = await Promise.all(
+						questionsWithLanguage.map(async (question) => {
+							const id = await addQuestion(question);
+							processedItems++;
+							setUploadProgress(
+								Math.round((processedItems / totalItems) * 100)
+							);
+							return id;
+						})
+					);
+					setUploadedIds((prev) => [...prev, ...ids]);
+					console.log(
+						`Questions added successfully. IDs: ${ids.join(", ")}`
+					);
 				} else if (uploadType === "quizzes") {
 					const quizzes = Array.isArray(data) ? data : [data];
-					const quizzesWithLanguage = quizzes.map(quiz => ({
+					const quizzesWithLanguage = quizzes.map((quiz) => ({
 						...quiz,
-						language: selectedLanguage
+						language: selectedLanguage,
 					}));
 					const quizIds = await Promise.all(
 						quizzesWithLanguage.map(async (quiz) => {
@@ -111,17 +125,21 @@ export default function BulkUploadForm() {
 							} else {
 								id = await addQuiz(quiz);
 							}
-							
+
 							if (selectedBatch !== "none") {
 								await addQuizToTestBatch(id, quiz);
 							}
 							processedItems++;
-							setUploadProgress(Math.round((processedItems / totalItems) * 100));
+							setUploadProgress(
+								Math.round((processedItems / totalItems) * 100)
+							);
 							return id;
 						})
 					);
-					setUploadedIds(prev => [...prev, ...quizIds]);
-					console.log(`Quizzes added successfully. IDs: ${quizIds.join(", ")}`);
+					setUploadedIds((prev) => [...prev, ...quizIds]);
+					console.log(
+						`Quizzes added successfully. IDs: ${quizIds.join(", ")}`
+					);
 				}
 			}
 			alert("Upload completed successfully!");
@@ -167,21 +185,21 @@ export default function BulkUploadForm() {
 				title: newBatchTitle.trim(),
 				description: newBatchDescription.trim(),
 			};
-			
+
 			const newBatchId = await createNewBatch(batchData);
-			
+
 			// Refresh the batches list
 			const updatedBatches = await getAllTestBatches();
 			setTestBatches(updatedBatches);
-			
+
 			// Select the newly created batch
 			setSelectedBatch(newBatchId);
-			
+
 			// Close the modal and reset form
 			onClose();
 			setNewBatchTitle("");
 			setNewBatchDescription("");
-			
+
 			alert("Batch created successfully!");
 		} catch (error) {
 			alert("Error creating batch: " + error.message);
@@ -237,17 +255,28 @@ export default function BulkUploadForm() {
 									className="hidden"
 									id="fileInput"
 								/>
-								<label htmlFor="fileInput" className="cursor-pointer">
-									<p className="text-xl mb-2">Click to select JSON files</p>
-									<p className="text-sm text-gray-500">or drag and drop files here</p>
+								<label
+									htmlFor="fileInput"
+									className="cursor-pointer"
+								>
+									<p className="text-xl mb-2">
+										Click to select JSON files
+									</p>
+									<p className="text-sm text-gray-500">
+										or drag and drop files here
+									</p>
 								</label>
 								{jsonFiles.length > 0 && (
 									<div className="mt-4">
 										<p>Selected files:</p>
 										<ul>
-											{Array.from(jsonFiles).map((file, index) => (
-												<li key={index}>{file.name}</li>
-											))}
+											{Array.from(jsonFiles).map(
+												(file, index) => (
+													<li key={index}>
+														{file.name}
+													</li>
+												)
+											)}
 										</ul>
 									</div>
 								)}
@@ -257,23 +286,27 @@ export default function BulkUploadForm() {
 				</Card>
 
 				<div className="flex justify-center">
-					<Button 
-						type="submit" 
-						color="primary" 
+					<Button
+						type="submit"
+						color="primary"
 						size="lg"
 						disabled={isLoading}
 					>
-						{isLoading ? <Spinner size="sm" /> : `Upload ${uploadType}`}
+						{isLoading ? (
+							<Spinner size="sm" />
+						) : (
+							`Upload ${uploadType}`
+						)}
 					</Button>
 				</div>
 
 				{isLoading && (
 					<div className="text-center">
-						<Progress 
-							aria-label="Uploading..." 
-							size="md" 
-							value={uploadProgress} 
-							color="primary" 
+						<Progress
+							aria-label="Uploading..."
+							size="md"
+							value={uploadProgress}
+							color="primary"
 							showValueLabel={true}
 							className="max-w-md mx-auto"
 						/>
@@ -284,7 +317,9 @@ export default function BulkUploadForm() {
 				{uploadedIds.length > 0 && (
 					<Card>
 						<CardBody>
-							<h3 className="text-lg font-semibold mb-2">Uploaded {uploadType} IDs:</h3>
+							<h3 className="text-lg font-semibold mb-2">
+								Uploaded {uploadType} IDs:
+							</h3>
 							<ul className="list-disc pl-5">
 								{uploadedIds.map((id, index) => (
 									<li key={index}>{id}</li>
@@ -296,7 +331,9 @@ export default function BulkUploadForm() {
 
 				<Card>
 					<CardBody>
-						<h3 className="text-lg font-semibold mb-2">Expected Format</h3>
+						<h3 className="text-lg font-semibold mb-2">
+							Expected Format
+						</h3>
 						<pre className="text-sm overflow-auto bg-gray-100 p-4 rounded">
 							{HELPER_TEXT[uploadType]}
 						</pre>
@@ -309,7 +346,9 @@ export default function BulkUploadForm() {
 					title={newBatchTitle}
 					onTitleChange={(e) => setNewBatchTitle(e.target.value)}
 					description={newBatchDescription}
-					onDescriptionChange={(e) => setNewBatchDescription(e.target.value)}
+					onDescriptionChange={(e) =>
+						setNewBatchDescription(e.target.value)
+					}
 					onSubmit={handleCreateBatch}
 					isLoading={isCreatingBatch}
 				/>
