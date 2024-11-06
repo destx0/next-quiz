@@ -8,7 +8,7 @@ import {
 	CardBody,
 	CardHeader,
 } from "@nextui-org/react";
-import { addQuiz, updateQuiz, addQuestion } from "@/lib/firestore";
+import { addQuiz, addQuestion } from "@/lib/uploadService";
 import { XCircle } from "lucide-react";
 
 export default function QuizForm() {
