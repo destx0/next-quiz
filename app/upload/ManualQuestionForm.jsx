@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Input, Button, Radio, RadioGroup, Textarea } from "@nextui-org/react";
-import { addQuestion } from "@/lib/firestore";
+import { addQuestion } from "@/lib/uploadService";
 
 export default function ManualQuestionForm() {
 	const [question, setQuestion] = useState("");
 	const [options, setOptions] = useState(["", "", "", ""]);
 	const [correctAnswer, setCorrectAnswer] = useState("0");
 	const [explanation, setExplanation] = useState("");
+	const [code, setCode] = useState("");
 
 	const handleOptionChange = (index, value) => {
 		const newOptions = [...options];
@@ -21,6 +22,7 @@ export default function ManualQuestionForm() {
 			options,
 			correctAnswer: parseInt(correctAnswer),
 			explanation,
+			code: code || undefined,
 		};
 		try {
 			const id = await addQuestion(questionData);
@@ -30,6 +32,7 @@ export default function ManualQuestionForm() {
 			setOptions(["", "", "", ""]);
 			setCorrectAnswer("0");
 			setExplanation("");
+			setCode("");
 		} catch (error) {
 			alert("Error adding question");
 		}
@@ -37,6 +40,12 @@ export default function ManualQuestionForm() {
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
+			<Input
+				label="Question Code (Optional)"
+				value={code}
+				onChange={(e) => setCode(e.target.value)}
+				placeholder="Enter a unique code for this question"
+			/>
 			<Input
 				label="Question"
 				value={question}
