@@ -6,20 +6,20 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebaseConfig";
 
 const ProtectedRoute = ({ children }) => {
-	const [user, loading] = useAuthState(auth);
-	const router = useRouter();
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
 
-	useEffect(() => {
-		if (!loading && !user) {
-			router.push("/login");
-		}
-	}, [user, loading, router]);
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
 
-	if (loading) {
-		return <p>Loading...</p>;
-	}
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-	return user ? children : null;
+  return user ? children : null;
 };
 
 export default ProtectedRoute;

@@ -8,27 +8,27 @@ import { Analytics } from "@vercel/analytics/react";
 import "katex/dist/katex.min.css";
 
 export const metadata = {
-	title: "Infinity Mock",
-	description: "Infinity Mock",
+  title: "Infinity Mock",
+  description: "Infinity Mock",
 };
 
 export default function RootLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<html lang="en" suppressHydrationWarning>
-			<head />
-			<body>
-				<Providers>
-					{/* <Background /> */}
-					<ClientLayout>
-						{children}
-						<Analytics />
-					</ClientLayout>
-				</Providers>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body>
+        <Providers>
+          {/* <Background /> */}
+          <ClientLayout>
+            {children}
+            <Analytics />
+          </ClientLayout>
+        </Providers>
+      </body>
+    </html>
+  );
 }

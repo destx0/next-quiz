@@ -38,5 +38,5 @@ export const HELPER_TEXT = {
 export const LANGUAGES = [
   { value: "english", label: "English" },
   { value: "hindi", label: "Hindi" },
-  { value: "bengali", label: "Bengali" }
-]; 
+  { value: "bengali", label: "Bengali" },
+];
