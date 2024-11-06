@@ -95,7 +95,7 @@ export default function BulkUploadForm() {
 					const questions = Array.isArray(data) ? data : [data];
 					const questionsWithLanguage = questions.map((q) => ({
 						...q,
-						language: selectedLanguage,
+						language: q.language || selectedLanguage,
 					}));
 					const ids = await Promise.all(
 						questionsWithLanguage.map(async (question) => {
@@ -115,7 +115,7 @@ export default function BulkUploadForm() {
 					const quizzes = Array.isArray(data) ? data : [data];
 					const quizzesWithLanguage = quizzes.map((quiz) => ({
 						...quiz,
-						language: selectedLanguage,
+						language: quiz.language || selectedLanguage,
 					}));
 					const quizIds = await Promise.all(
 						quizzesWithLanguage.map(async (quiz) => {
@@ -142,9 +142,9 @@ export default function BulkUploadForm() {
 					);
 				}
 			}
-			alert("Upload completed successfully!");
-			setJsonData("");
-			setJsonFiles([]);
+				alert("Upload completed successfully!");
+				setJsonData("");
+				setJsonFiles([]);
 		} catch (error) {
 			alert("Error adding data: " + error.message);
 		} finally {
