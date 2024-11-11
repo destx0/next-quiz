@@ -5,20 +5,17 @@ import { auth } from "@/lib/firebase";
 import { Tabs, Tab } from "@nextui-org/react";
 import {
   fetchTestBatches,
-  fetchAllQuizzes,
   updateBatchOrder,
 } from "./utils/firebaseUtils";
 import {
   handleDeleteQuiz,
-  handleAddToBatch,
   handleRemoveFromBatch,
   updateQuizMetadata,
 } from "./utils/quizActions";
-import { QuizList, AllQuizList } from "./components/QuizRenderers";
+import { QuizList } from "./components/QuizRenderers";
 
 export default function SSCTestsPage() {
   const [testBatches, setTestBatches] = useState([]);
-  const [allQuizzes, setAllQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -27,7 +24,6 @@ export default function SSCTestsPage() {
       setUser(currentUser);
       if (currentUser) {
         fetchTestBatches(setTestBatches, setLoading);
-        fetchAllQuizzes(setAllQuizzes);
       } else {
         setLoading(false);
       }
@@ -71,11 +67,6 @@ export default function SSCTestsPage() {
           ),
         }))
       );
-      setAllQuizzes((prevQuizzes) =>
-        prevQuizzes.map((quiz) =>
-          quiz.id === updatedQuiz.id ? updatedQuiz : quiz
-        )
-      );
     } catch (error) {
       console.error("Error updating quiz metadata:", error);
     }
@@ -97,7 +88,7 @@ export default function SSCTestsPage() {
               examDetails={batch.examDetails}
               batchId={batch.id}
               handleDeleteQuiz={(quizId) =>
-                handleDeleteQuiz(batch.id, quizId, setTestBatches, setAllQuizzes)
+                handleDeleteQuiz(batch.id, quizId, setTestBatches)
               }
               handleRemoveFromBatch={(quizId) =>
                 handleRemoveFromBatch(quizId, batch.id, setTestBatches)
@@ -109,23 +100,6 @@ export default function SSCTestsPage() {
             />
           </Tab>
         ))}
-        <Tab key="all" title="All Quizzes">
-          <h2 className="text-xl font-semibold my-4">All Quizzes</h2>
-          <AllQuizList
-            allQuizzes={allQuizzes}
-            testBatches={testBatches}
-            handleDeleteQuiz={(quizId) =>
-              handleDeleteQuiz(null, quizId, setTestBatches, setAllQuizzes)
-            }
-            handleAddToBatch={(quizId, batchId) =>
-              handleAddToBatch(quizId, batchId, setTestBatches, allQuizzes)
-            }
-            handleRemoveFromBatch={(quizId, batchId) =>
-              handleRemoveFromBatch(quizId, batchId, setTestBatches)
-            }
-            handleUpdateQuizMetadata={handleUpdateQuizMetadata}
-          />
-        </Tab>
       </Tabs>
     </div>
   );
