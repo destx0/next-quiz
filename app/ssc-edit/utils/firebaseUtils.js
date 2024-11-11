@@ -11,47 +11,49 @@ import { getQuestionById } from "@/lib/firestore";
 export const fetchTestBatches = async (setTestBatches, setLoading) => {
   try {
     console.log("Fetching test batches...");
-    const batchIds = ["PxOtC4EjRhk1DH1B6j62", "NHI6vv2PzgQ899Sz4Rll"];
+    const batchesSnapshot = await getDocs(collection(db, "testBatches"));
+    
     const batchesData = await Promise.all(
-      batchIds.map(async (batchId) => {
-        const batchDocRef = doc(db, "testBatches", batchId);
-        const batchDocSnap = await getDoc(batchDocRef);
+      batchesSnapshot.docs.map(async (batchDoc) => {
+        const batchData = batchDoc.data();
+        console.log("Batch data:", batchData);
+        console.log('Number of exam details:', batchData.examDetails?.length || 0);
 
-        if (batchDocSnap.exists()) {
-          const batchData = batchDocSnap.data();
-          console.log("Batch data:", batchData);
-
-          const quizzesWithDetails = await Promise.all(
-            (batchData.quizzes || []).map(async (quizId) => {
-              console.log("Fetching quiz:", quizId);
-              const quizDocRef = doc(db, "quizzes", quizId);
-              const quizDocSnap = await getDoc(quizDocRef);
-              if (quizDocSnap.exists()) {
-                console.log("Quiz data fetched:", quizId);
-                return {
-                  id: quizId,
-                  ...quizDocSnap.data(),
-                };
-              } else {
-                console.log("Quiz not found:", quizId);
-                return {
-                  id: quizId,
-                  title: `Quiz ${quizId} (Not Found)`,
-                  error: "Quiz not found",
-                };
+        // Fetch quiz data for each exam in examDetails
+        const examDetailsWithQuizzes = await Promise.all(
+          (batchData.examDetails || []).map(async (exam) => {
+            console.log('Fetching quiz data for exam:', exam.title, 'primaryQuizId:', exam.primaryQuizId);
+            
+            const quizDocRef = doc(db, 'fullQuizzes', exam.primaryQuizId);
+            const quizDocSnap = await getDoc(quizDocRef);
+            
+            if (quizDocSnap.exists()) {
+              console.log('Quiz data found for:', exam.title);
+              return {
+                ...exam,
+                quizData: { 
+                  id: exam.primaryQuizId, 
+                  ...quizDocSnap.data() 
+                }
+              };
+            }
+            console.log('No quiz data found for:', exam.title);
+            return {
+              ...exam,
+              quizData: {
+                id: exam.primaryQuizId,
+                title: `Quiz ${exam.primaryQuizId} (Not Found)`,
+                error: "Quiz not found"
               }
-            })
-          );
+            };
+          })
+        );
 
-          return {
-            id: batchDocSnap.id,
-            ...batchData,
-            quizzes: quizzesWithDetails,
-          };
-        } else {
-          console.log("Batch not found:", batchId);
-          return null;
-        }
+        return {
+          id: batchDoc.id,
+          ...batchData,
+          examDetails: examDetailsWithQuizzes
+        };
       })
     );
 
@@ -82,10 +84,10 @@ export const fetchAllQuizzes = async (setAllQuizzes) => {
   }
 };
 
-export const updateBatchOrder = async (batchId, newOrder) => {
+export const updateBatchOrder = async (batchId, examDetails) => {
   try {
     const batchRef = doc(db, "testBatches", batchId);
-    await updateDoc(batchRef, { quizzes: newOrder });
+    await updateDoc(batchRef, { examDetails });
     console.log(`Batch ${batchId} order updated in Firebase`);
   } catch (error) {
     console.error("Error updating batch order:", error);
