@@ -95,7 +95,7 @@ export default function BulkUploadForm() {
           const questions = Array.isArray(data) ? data : [data];
           const questionsWithLanguage = questions.map((q) => ({
             ...q,
-            language: q.language || selectedLanguage,
+            language: q.language || selectedLanguage || "english",
           }));
           const ids = await Promise.all(
             questionsWithLanguage.map(async (question) => {
@@ -111,26 +111,34 @@ export default function BulkUploadForm() {
           console.log(`Questions added successfully. IDs: ${ids.join(", ")}`);
         } else if (uploadType === "quizzes") {
           const quizzes = Array.isArray(data) ? data : [data];
-          const quizzesWithLanguage = quizzes.map((quiz) => ({
-            ...quiz,
-            language: quiz.language || selectedLanguage,
-          }));
           const quizIds = await Promise.all(
-            quizzesWithLanguage.map(async (quiz) => {
+            quizzes.map(async (quiz) => {
+              const originalQuizData = { ...quiz };
+              
+              console.log("Original quiz data before processing:", {
+                title: originalQuizData.title,
+                language: originalQuizData.language
+              });
+
               let id;
               if (uploadVersion === "v2") {
-                id = await addFullQuiz(quiz);
+                const result = await addFullQuiz(originalQuizData);
+                id = result.id;
+                originalQuizData.language = result.quizData.language;
               } else {
-                id = await addQuiz(quiz);
+                id = await addQuiz(originalQuizData);
               }
 
               if (selectedBatch !== "none") {
-                await addQuizToTestBatch(id, quiz);
+                console.log("Data being sent to addQuizToTestBatch:", {
+                  id,
+                  title: originalQuizData.title,
+                  language: originalQuizData.language
+                });
+                await addQuizToTestBatch(id, originalQuizData);
               }
               processedItems++;
-              setUploadProgress(
-                Math.round((processedItems / totalItems) * 100)
-              );
+              setUploadProgress(Math.round((processedItems / totalItems) * 100));
               return id;
             })
           );
