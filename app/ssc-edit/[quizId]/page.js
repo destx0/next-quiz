@@ -40,8 +40,9 @@ export default function EditQuizPage() {
     if (!quizData || !params.quizId) return;
 
     try {
-      // Update the question in Firestore
-      const quizRef = doc(db, "quizzes", params.quizId);
+      // Update only in fullQuizzes collection
+      const fullQuizRef = doc(db, "fullQuizzes", params.quizId);
+      
       const updatedSections = quizData.sections.map((section) => ({
         ...section,
         questions: section.questions.map((q) =>
@@ -49,7 +50,8 @@ export default function EditQuizPage() {
         ),
       }));
 
-      await updateDoc(quizRef, { sections: updatedSections });
+      // Update only fullQuizzes collection
+      await updateDoc(fullQuizRef, { sections: updatedSections });
 
       // Update local state
       setQuizData((prevData) => ({
