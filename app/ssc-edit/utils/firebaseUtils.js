@@ -11,10 +11,10 @@ export const fetchTestBatches = async (setTestBatches, setLoading) => {
   try {
     console.log("Fetching test batches...");
     const batchesSnapshot = await getDocs(collection(db, "testBatches"));
-    
-    const batchesData = batchesSnapshot.docs.map(batchDoc => ({
+
+    const batchesData = batchesSnapshot.docs.map((batchDoc) => ({
       id: batchDoc.id,
-      ...batchDoc.data()
+      ...batchDoc.data(),
     }));
 
     console.log("Processed batch data:", batchesData);

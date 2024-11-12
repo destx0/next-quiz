@@ -42,7 +42,7 @@ export default function EditQuizPage() {
     try {
       // Update only in fullQuizzes collection
       const fullQuizRef = doc(db, "fullQuizzes", params.quizId);
-      
+
       const updatedSections = quizData.sections.map((section) => ({
         ...section,
         questions: section.questions.map((q) =>

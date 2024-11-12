@@ -3,10 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import { Tabs, Tab } from "@nextui-org/react";
-import {
-  fetchTestBatches,
-  updateBatchOrder,
-} from "./utils/firebaseUtils";
+import { fetchTestBatches, updateBatchOrder } from "./utils/firebaseUtils";
 import {
   handleDeleteQuiz,
   handleRemoveFromBatch,

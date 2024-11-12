@@ -27,7 +27,9 @@ export const QuizList = ({
     if (selectedQuizzes.size === examDetails.length) {
       setSelectedQuizzes(new Set());
     } else {
-      setSelectedQuizzes(new Set(examDetails.map((exam) => exam.primaryQuizId)));
+      setSelectedQuizzes(
+        new Set(examDetails.map((exam) => exam.primaryQuizId))
+      );
     }
   };
 
@@ -107,13 +109,20 @@ export const QuizList = ({
                   </button>
                 </div>
               </div>
-              
+
               <div className="ml-8 space-y-2">
-                <h4 className="font-medium text-gray-700">Available Languages:</h4>
+                <h4 className="font-medium text-gray-700">
+                  Available Languages:
+                </h4>
                 <div className="flex flex-wrap gap-4">
                   {exam.quizIds?.map((quizEntry, langIndex) => (
-                    <div key={langIndex} className="flex items-center gap-2 p-2 border rounded">
-                      <span className="font-medium capitalize">{quizEntry.language}:</span>
+                    <div
+                      key={langIndex}
+                      className="flex items-center gap-2 p-2 border rounded"
+                    >
+                      <span className="font-medium capitalize">
+                        {quizEntry.language}:
+                      </span>
                       <div className="flex gap-2">
                         <Link href={`/ssc-edit/${quizEntry.quizId}`} passHref>
                           <button className="bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 rounded">
@@ -124,7 +133,9 @@ export const QuizList = ({
                     </div>
                   ))}
                   <button
-                    onClick={() => {/* TODO: Add new language quiz */}}
+                    onClick={() => {
+                      /* TODO: Add new language quiz */
+                    }}
                     className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded flex items-center gap-1"
                   >
                     <span>+</span> Add Language
