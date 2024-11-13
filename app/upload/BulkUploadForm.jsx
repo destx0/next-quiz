@@ -114,10 +114,10 @@ export default function BulkUploadForm() {
           const quizIds = await Promise.all(
             quizzes.map(async (quiz) => {
               const originalQuizData = { ...quiz };
-              
+
               console.log("Original quiz data before processing:", {
                 title: originalQuizData.title,
-                language: originalQuizData.language
+                language: originalQuizData.language,
               });
 
               let id;
@@ -133,12 +133,14 @@ export default function BulkUploadForm() {
                 console.log("Data being sent to addQuizToTestBatch:", {
                   id,
                   title: originalQuizData.title,
-                  language: originalQuizData.language
+                  language: originalQuizData.language,
                 });
                 await addQuizToTestBatch(id, originalQuizData);
               }
               processedItems++;
-              setUploadProgress(Math.round((processedItems / totalItems) * 100));
+              setUploadProgress(
+                Math.round((processedItems / totalItems) * 100)
+              );
               return id;
             })
           );
