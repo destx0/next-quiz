@@ -94,6 +94,7 @@ export default function SSCTestsPage() {
                 handleMoveQuiz(batch.id, index, direction)
               }
               handleUpdateQuizMetadata={handleUpdateQuizMetadata}
+              setTestBatches={setTestBatches}
             />
           </Tab>
         ))}

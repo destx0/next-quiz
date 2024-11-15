@@ -1,6 +1,20 @@
 import Link from "next/link";
 import { useState } from "react";
 import QuizMetadataModal from "./QuizMetadataModal";
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+import { quizServices } from "../services/quizServices";
+
+const AVAILABLE_LANGUAGES = [
+  { key: "english", label: "English" },
+  { key: "hindi", label: "Hindi" },
+  { key: "bengali", label: "Bengali" },
+];
 
 export const QuizList = ({
   examDetails,
@@ -9,6 +23,7 @@ export const QuizList = ({
   handleRemoveFromBatch,
   handleMoveQuiz,
   handleUpdateQuizMetadata,
+  setTestBatches,
 }) => {
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [selectedQuizzes, setSelectedQuizzes] = useState(new Set());
@@ -30,6 +45,70 @@ export const QuizList = ({
       setSelectedQuizzes(
         new Set(examDetails.map((exam) => exam.primaryQuizId))
       );
+    }
+  };
+
+  const handleQuizLanguageChange = async (
+    quizId,
+    currentLanguage,
+    newLanguage
+  ) => {
+    try {
+      console.log("Language change requested:", {
+        quizId,
+        currentLanguage,
+        newLanguage,
+        batchId,
+      });
+
+      const updatedExamDetails = await quizServices.changeQuizLanguage(
+        batchId,
+        quizId,
+        currentLanguage,
+        newLanguage
+      );
+
+      // Update local state
+      setTestBatches((prevBatches) =>
+        prevBatches.map((batch) =>
+          batch.id === batchId
+            ? { ...batch, examDetails: updatedExamDetails }
+            : batch
+        )
+      );
+
+      console.log("Language change completed successfully");
+    } catch (error) {
+      console.error("Language change failed:", error);
+      alert(`Failed to change language: ${error.message}`);
+    }
+  };
+
+  const handleRemoveLanguageVersion = async (quizId, language) => {
+    try {
+      if (
+        window.confirm(
+          `Are you sure you want to remove the ${language} version?`
+        )
+      ) {
+        const updatedExamDetails = await quizServices.removeLanguageVersion(
+          batchId,
+          quizId,
+          language
+        );
+
+        // Update local state
+        setTestBatches((prevBatches) =>
+          prevBatches.map((batch) =>
+            batch.id === batchId
+              ? { ...batch, examDetails: updatedExamDetails }
+              : batch
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Failed to remove language version:", error);
+      alert(error.message);
     }
   };
 
@@ -84,17 +163,6 @@ export const QuizList = ({
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Link href={`/ssc-edit/${exam.primaryQuizId}`} passHref>
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                      Edit
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => handleDeleteQuiz(exam.primaryQuizId)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Delete
-                  </button>
                   <button
                     onClick={() => handleRemoveFromBatch(exam.primaryQuizId)}
                     className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
@@ -120,26 +188,63 @@ export const QuizList = ({
                       key={langIndex}
                       className="flex items-center gap-2 p-2 border rounded"
                     >
-                      <span className="font-medium capitalize">
-                        {quizEntry.language}:
-                      </span>
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <Button variant="flat" className="capitalize">
+                            {quizEntry.language || "Select Language"}
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          aria-label="Language selection"
+                          onAction={(key) => {
+                            console.log("Dropdown selection:", {
+                              selectedKey: key,
+                              currentLanguage: quizEntry.language,
+                              quizId: quizEntry.quizId,
+                            });
+                            handleQuizLanguageChange(
+                              quizEntry.quizId,
+                              quizEntry.language,
+                              key.toString()
+                            );
+                          }}
+                        >
+                          {AVAILABLE_LANGUAGES.map((lang) => (
+                            <DropdownItem
+                              key={lang.key}
+                              className={
+                                quizEntry.language === lang.key
+                                  ? "text-primary"
+                                  : ""
+                              }
+                            >
+                              {lang.label}
+                            </DropdownItem>
+                          ))}
+                        </DropdownMenu>
+                      </Dropdown>
                       <div className="flex gap-2">
                         <Link href={`/ssc-edit/${quizEntry.quizId}`} passHref>
                           <button className="bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 rounded">
-                            Edit {quizEntry.language}
+                            Edit
                           </button>
                         </Link>
+                        {exam.quizIds.length > 1 && (
+                          <button
+                            onClick={() =>
+                              handleRemoveLanguageVersion(
+                                quizEntry.quizId,
+                                quizEntry.language
+                              )
+                            }
+                            className="bg-red-500 hover:bg-red-700 text-white text-sm py-1 px-2 rounded"
+                          >
+                            Remove
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))}
-                  <button
-                    onClick={() => {
-                      /* TODO: Add new language quiz */
-                    }}
-                    className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded flex items-center gap-1"
-                  >
-                    <span>+</span> Add Language
-                  </button>
                 </div>
               </div>
             </div>
