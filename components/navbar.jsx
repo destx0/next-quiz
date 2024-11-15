@@ -28,8 +28,8 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import useAuthStore from "@/lib/zustand";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/ssc-mock", label: "All mocks" },
+  { href: "/ssc-edit", label: "Editor" },
+  { href: "/upload", label: "Upload" },
 ];
 
 export const Navbar = () => {

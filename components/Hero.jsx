@@ -77,16 +77,28 @@ export default function Hero() {
         <p className={subtitle({ class: "mb-8" })}>
           Ace your SSC exams with our comprehensive Mock platform!
         </p>
-        <Link href={user ? "/ssc-mock" : "/login"}>
-          <Button
-            color="primary"
-            size="lg"
-            variant="shadow"
-            className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
-          >
-            {user ? "Start Mock Test" : "Sign Up Now"}
-          </Button>
-        </Link>
+        <div className="flex gap-4">
+          <Link href={user ? "/ssc-edit" : "/login"}>
+            <Button
+              color="primary"
+              size="lg"
+              variant="shadow"
+              className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+            >
+              Editor
+            </Button>
+          </Link>
+          <Link href={user ? "/upload" : "/login"}>
+            <Button
+              color="primary"
+              size="lg"
+              variant="shadow"
+              className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+            >
+              Uploader
+            </Button>
+          </Link>
+        </div>
       </div>
       <div className="md:w-1/2">
         <Image
