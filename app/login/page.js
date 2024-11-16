@@ -26,11 +26,7 @@ export default function Login() {
 
   const handleLogin = async (email, password) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const token = await userCredential.user.getIdToken();
       setCookie("authToken", token);
       setCookie("userEmail", userCredential.user.email);

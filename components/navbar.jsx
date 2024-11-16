@@ -30,7 +30,7 @@ import { isAdminUser } from "@/lib/utils";
 
 const getNavItems = (isAdmin) => {
   const items = [];
-
+  
   // Admin-only routes
   if (isAdmin) {
     items.push(
@@ -38,10 +38,10 @@ const getNavItems = (isAdmin) => {
       { href: "/upload", label: "Upload" }
     );
   }
-
+  
   // Routes for all authenticated users
   items.push({ href: "/image-thing", label: "ImageThing" });
-
+  
   return items;
 };
 

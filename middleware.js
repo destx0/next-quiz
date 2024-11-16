@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
-const ADMIN_EMAILS = ["classcommon2@gmail.com", "iampulakghosh@gmail.com"];
+const ADMIN_EMAILS = [
+  "classcommon2@gmail.com",
+  "iampulakghosh@gmail.com",
+];
 
 export function middleware(request) {
   const authToken = request.cookies.get("authToken");
