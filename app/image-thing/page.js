@@ -10,7 +10,7 @@ function ImageUploader() {
 
   const onDrop = (acceptedFiles) => {
     const newImages = acceptedFiles.map((file) => {
-      const url = URL.createObjectURL(file); // Create a local URL for preview
+      const url = URL.createObjectURL(file);
       return { file, url };
     });
 
@@ -30,30 +30,64 @@ function ImageUploader() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/png': [],
-      'image/jpeg': [],
+      "image/png": [],
+      "image/jpeg": [],
     },
   });
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto p-6">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2">Image Uploader</h1>
+        <p className="text-gray-600">
+          Upload and get shareable links instantly
+        </p>
+      </div>
+
       <div
         {...getRootProps()}
-        style={{ border: "2px dashed #ccc", padding: "20px", cursor: "pointer" }}
+        className="border-2 border-dashed border-blue-300 rounded-lg p-8 mb-8 text-center hover:border-blue-500 transition-colors cursor-pointer bg-blue-50"
       >
         <input {...getInputProps()} />
-        <p>Drop your images here or click to select files (PNG, JPG only)</p>
+        <p className="text-gray-600">
+          Drop your images here or click to select files (PNG, JPG only)
+        </p>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+
+      <div className="space-y-6">
         {images.map(({ url }, index) => (
-          <div key={index} style={{ margin: '10px' }}>
-            <img src={url} alt={`Preview ${index}`} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-            {imageUrls[index] && (
-              <div>
-                <Input value={imageUrls[index]} readOnly />
-                <Button onClick={() => handleCopy(imageUrls[index])}>Copy Link</Button>
-              </div>
-            )}
+          <div
+            key={index}
+            className="bg-white p-4 rounded-lg shadow-md flex flex-col sm:flex-row gap-4 items-center"
+          >
+            <img
+              src={url}
+              alt={`Preview ${index}`}
+              className="w-32 h-32 object-cover rounded-lg"
+            />
+            <div className="flex-1 w-full space-y-2">
+              {imageUrls[index] ? (
+                <>
+                  <Input
+                    value={imageUrls[index]}
+                    readOnly
+                    className="bg-gray-50"
+                  />
+                  <Button
+                    onClick={() => handleCopy(imageUrls[index])}
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                  >
+                    Copy Link
+                  </Button>
+                </>
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-pulse text-gray-400">
+                    Uploading...
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -61,11 +95,9 @@ function ImageUploader() {
   );
 }
 
-// Default export of the page component
 export default function Page() {
   return (
-    <div>
-      <h1>Image Uploader</h1>
+    <div className="min-h-screen bg-gray-50 py-12">
       <ImageUploader />
     </div>
   );

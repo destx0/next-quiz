@@ -30,6 +30,7 @@ import useAuthStore from "@/lib/zustand";
 const navItems = [
   { href: "/ssc-edit", label: "Editor" },
   { href: "/upload", label: "Upload" },
+  { href: "/image-thing", label: "ImageThing" },
 ];
 
 export const Navbar = () => {
