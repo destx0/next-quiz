@@ -2,7 +2,28 @@
 import { useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { useDropzone } from "react-dropzone";
-import { uploadImageToFirebase } from "../../lib/firebase";
+
+const uploadImageToFirebase = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Upload failed");
+    }
+
+    const data = await response.json();
+    return data.url;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error;
+  }
+};
 
 function ImageUploader() {
   const [imageUrls, setImageUrls] = useState([]);
