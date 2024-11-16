@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { Input, Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { setCookie } from "cookies-next";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,10 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const token = await userCredential.user.getIdToken();
+      setCookie("authToken", token);
+      setCookie("userEmail", userCredential.user.email);
       router.push("/dashboard");
     } catch (error) {
       console.error("Error registering new user", error);

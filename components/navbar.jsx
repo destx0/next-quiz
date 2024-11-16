@@ -26,16 +26,30 @@ import { deleteCookie } from "cookies-next";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import useAuthStore from "@/lib/zustand";
+import { isAdminUser } from "@/lib/utils";
 
-const navItems = [
-  { href: "/ssc-edit", label: "Editor" },
-  { href: "/upload", label: "Upload" },
-  { href: "/image-thing", label: "ImageThing" },
-];
+const getNavItems = (isAdmin) => {
+  const items = [];
+  
+  // Admin-only routes
+  if (isAdmin) {
+    items.push(
+      { href: "/ssc-edit", label: "Editor" },
+      { href: "/upload", label: "Upload" }
+    );
+  }
+  
+  // Routes for all authenticated users
+  items.push({ href: "/image-thing", label: "ImageThing" });
+  
+  return items;
+};
 
 export const Navbar = () => {
   const router = useRouter();
   const { user, loading, setUser, setLoading } = useAuthStore();
+  const isAdmin = isAdminUser(user?.email);
+  const navItems = getNavItems(isAdmin);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -50,6 +64,7 @@ export const Navbar = () => {
     try {
       await signOut(auth);
       deleteCookie("authToken");
+      deleteCookie("userEmail");
       router.push("/login");
     } catch (error) {
       console.error("Error signing out", error);

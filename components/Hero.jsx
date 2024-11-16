@@ -5,6 +5,7 @@ import useAuthStore from "@/lib/zustand";
 import Link from "next/link";
 import * as THREE from "three";
 import Image from "next/image";
+import { isAdminUser } from "@/lib/utils";
 
 const InfinityAnimation = () => {
   const mountRef = useRef(null);
@@ -69,6 +70,7 @@ const InfinityAnimation = () => {
 
 export default function Hero() {
   const { user } = useAuthStore((state) => ({ user: state.user }));
+  const isAdmin = isAdminUser(user?.email);
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between mb-16">
@@ -78,26 +80,54 @@ export default function Hero() {
           Ace your SSC exams with our comprehensive Mock platform!
         </p>
         <div className="flex gap-4">
-          <Link href={user ? "/ssc-edit" : "/login"}>
-            <Button
-              color="primary"
-              size="lg"
-              variant="shadow"
-              className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
-            >
-              Editor
-            </Button>
-          </Link>
-          <Link href={user ? "/upload" : "/login"}>
-            <Button
-              color="primary"
-              size="lg"
-              variant="shadow"
-              className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
-            >
-              Uploader
-            </Button>
-          </Link>
+          {isAdmin && (
+            <>
+              <Link href={user ? "/ssc-edit" : "/login"}>
+                <Button
+                  color="primary"
+                  size="lg"
+                  variant="shadow"
+                  className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+                >
+                  Editor
+                </Button>
+              </Link>
+              <Link href={user ? "/upload" : "/login"}>
+                <Button
+                  color="primary"
+                  size="lg"
+                  variant="shadow"
+                  className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+                >
+                  Uploader
+                </Button>
+              </Link>
+            </>
+          )}
+          {user && !isAdmin && (
+            <Link href="/image-thing">
+              <Button
+                color="primary"
+                size="lg"
+                variant="shadow"
+                className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+              >
+                ImageThing
+              </Button>
+            </Link>
+          )}
+          {!user && (
+            <Link href="/login">
+              <Button
+                color="primary"
+                size="lg"
+                variant="shadow"
+                className="font-semibold px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+              >
+                Get Started
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="md:w-1/2">
