@@ -15,7 +15,11 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const token = await userCredential.user.getIdToken();
       setCookie("authToken", token);
       setCookie("userEmail", userCredential.user.email);
