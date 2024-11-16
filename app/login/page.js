@@ -24,16 +24,10 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (email, password) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const token = await userCredential.user.getIdToken();
-      setCookie("authToken", token);
-      setCookie("userEmail", userCredential.user.email);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Error logging in:", error);
-    }
+  const handleLogin = async (user) => {
+    const token = await user.getIdToken();
+    setCookie("authToken", token, { maxAge: 30 * 24 * 60 * 60 }); // 30 days
+    router.push("/ssc-mock");
   };
 
   const handleEmailLogin = async (e) => {
@@ -44,7 +38,7 @@ export default function Login() {
         email,
         password
       );
-      await handleLogin(email, password);
+      await handleLogin(userCredential.user);
     } catch (error) {
       console.error("Error signing in with email and password", error);
     }
@@ -54,7 +48,7 @@ export default function Login() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      await handleLogin(result.user.email, password);
+      await handleLogin(result.user);
     } catch (error) {
       console.error("Error signing in with Google", error);
     }
