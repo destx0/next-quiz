@@ -74,14 +74,11 @@ export default function SSCTestsPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">SSC Tests</h1>
       <Tabs>
         {testBatches.map((batch) => (
           <Tab key={batch.id} title={batch.title || "Unnamed Batch"}>
-            <h2 className="text-xl font-semibold my-4">
-              {batch.title || "Unnamed Batch"}
-            </h2>
             <QuizList
+              batchTitle={batch.title}
               examDetails={batch.examDetails}
               batchId={batch.id}
               handleDeleteQuiz={(quizId) =>

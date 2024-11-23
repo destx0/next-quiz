@@ -217,3 +217,75 @@ export const handleLanguageChange = async (
     throw error;
   }
 };
+
+export const downloadQuizData = async (quizId, language, flatten = false) => {
+  try {
+    // Fetch the quiz data from Firestore
+    const quizRef = doc(db, "fullQuizzes", quizId);
+    const quizDoc = await getDoc(quizRef);
+
+    if (!quizDoc.exists()) {
+      throw new Error("Quiz not found");
+    }
+
+    const rawData = quizDoc.data();
+
+    // Prepare the data based on flatten option
+    let quizData;
+    if (flatten && rawData.sections) {
+      // Flatten the sections into a single questions array
+      const allQuestions = rawData.sections.reduce((acc, section) => {
+        const questionsWithSection = (section.questions || []).map((q) => ({
+          ...q,
+          section: section.name, // Add section name to each question
+        }));
+        return [...acc, ...questionsWithSection];
+      }, []);
+
+      quizData = {
+        ...rawData,
+        questions: allQuestions, // Replace sections with flattened questions
+        sections: undefined, // Remove sections array
+        language: language,
+        quizId: quizId,
+      };
+    } else {
+      // Keep original structure
+      quizData = {
+        ...rawData,
+        language: language,
+        quizId: quizId,
+      };
+    }
+
+    // Convert to JSON string with proper formatting
+    const jsonString = JSON.stringify(quizData, null, 2);
+
+    // Create blob and download link
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    // Set filename with quiz title and language
+    const sanitizedTitle = (quizData.title || quizId)
+      .replace(/[^a-z0-9]/gi, "_")
+      .replace(/_+/g, "_");
+    const filename = `${sanitizedTitle}_${language}${flatten ? "_flat" : ""}.json`;
+
+    link.href = url;
+    link.download = filename;
+
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    console.log(`Quiz ${quizId} downloaded successfully`);
+  } catch (error) {
+    console.error("Error downloading quiz:", error);
+    throw error;
+  }
+};

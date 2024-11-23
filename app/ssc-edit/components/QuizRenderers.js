@@ -9,6 +9,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { quizServices } from "../services/quizServices";
+import { downloadQuizData } from "../utils/quizActions";
 
 const AVAILABLE_LANGUAGES = [
   { key: "english", label: "English" },
@@ -17,6 +18,7 @@ const AVAILABLE_LANGUAGES = [
 ];
 
 export const QuizList = ({
+  batchTitle,
   examDetails,
   batchId,
   handleDeleteQuiz,
@@ -27,6 +29,7 @@ export const QuizList = ({
 }) => {
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [selectedQuizzes, setSelectedQuizzes] = useState(new Set());
+  const [flattenDownload, setFlattenDownload] = useState(true);
 
   const handleSelectQuiz = (quizId) => {
     const newSelected = new Set(selectedQuizzes);
@@ -112,23 +115,73 @@ export const QuizList = ({
     }
   };
 
+  const handleDownloadQuiz = async (quizId, language) => {
+    try {
+      await downloadQuizData(quizId, language, flattenDownload);
+    } catch (error) {
+      console.error("Failed to download quiz data:", error);
+      alert("Failed to download quiz data: " + error.message);
+    }
+  };
+
+  const handleBulkDownload = async () => {
+    try {
+      for (const quizId of selectedQuizzes) {
+        const quiz = examDetails.find((exam) => exam.primaryQuizId === quizId);
+        if (quiz && quiz.quizIds) {
+          for (const quizVersion of quiz.quizIds) {
+            await downloadQuizData(
+              quizVersion.quizId,
+              quizVersion.language,
+              flattenDownload
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Failed to download quizzes:", error);
+      alert("Failed to download some quizzes: " + error.message);
+    }
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Quizzes</h2>
-        {examDetails?.length > 0 && (
-          <div className="flex gap-2 items-center">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedQuizzes.size === examDetails.length}
-                onChange={handleSelectAll}
-                className="form-checkbox h-5 w-5"
-              />
-              Select All
-            </label>
-          </div>
-        )}
+      <div className="flex justify-between items-center my-4">
+        <h2 className="text-xl font-semibold">
+          {batchTitle || "Unnamed Batch"}
+        </h2>
+        <div className="flex gap-4 items-center">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={flattenDownload}
+              onChange={(e) => setFlattenDownload(e.target.checked)}
+              className="form-checkbox h-4 w-4"
+            />
+            Flatten
+          </label>
+          {examDetails?.length > 0 && (
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={selectedQuizzes.size === examDetails.length}
+                  onChange={handleSelectAll}
+                  className="form-checkbox h-5 w-5"
+                />
+                Select All
+              </label>
+              {selectedQuizzes.size > 0 && (
+                <button
+                  onClick={handleBulkDownload}
+                  className="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded flex items-center gap-2"
+                >
+                  <span>↓</span> Download Selected ({selectedQuizzes.size})
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <ul className="space-y-4">
         {examDetails?.map((exam, index) => (
@@ -163,26 +216,46 @@ export const QuizList = ({
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
+                  <div className="flex justify-between items-center">
+                    {exam.quizIds?.length > 1 && (
+                      <button
+                        onClick={() => {
+                          exam.quizIds.forEach((quizEntry) =>
+                            handleDownloadQuiz(
+                              quizEntry.quizId,
+                              quizEntry.language
+                            )
+                          );
+                        }}
+                        variant="outline"
+                        color="secondary"
+                        className="text-sm   py-2 px-4 rounded"
+                      >
+                        <span>↓</span> Download All
+                      </button>
+                    )}
+                  </div>
                   <button
                     onClick={() => handleRemoveFromBatch(exam.primaryQuizId)}
-                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
+                    variant="outline"
+                    color="danger"
+                    className="text-sm py-2 px-4 rounded"
                   >
                     Remove
                   </button>
                   <button
                     onClick={() => setEditingQuiz(exam)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    variant="outline"
+                    color="primary"
+                    className=" text-sm py-2 px-4 rounded"
                   >
                     Edit Metadata
                   </button>
                 </div>
               </div>
 
-              <div className="ml-8 space-y-2">
-                <h4 className="font-medium text-gray-700">
-                  Available Languages:
-                </h4>
-                <div className="flex flex-wrap gap-4">
+              <div className="flex ml-8 space-y-2">
+                <div className="flex flex-wrap gap-4 flex-1">
                   {exam.quizIds?.map((quizEntry, langIndex) => (
                     <div
                       key={langIndex}
@@ -229,6 +302,17 @@ export const QuizList = ({
                             Edit
                           </button>
                         </Link>
+                        <button
+                          onClick={() =>
+                            handleDownloadQuiz(
+                              quizEntry.quizId,
+                              quizEntry.language
+                            )
+                          }
+                          className="bg-purple-500 hover:bg-purple-700 text-white text-sm py-1 px-2 rounded flex items-center gap-1"
+                        >
+                          <span>↓</span> Download
+                        </button>
                         {exam.quizIds.length > 1 && (
                           <button
                             onClick={() =>
