@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { quizServices } from "../services/quizServices";
 import { downloadQuizData } from "../utils/quizActions";
+import useTestBatchStore from "../store/testBatchStore";
 
 const AVAILABLE_LANGUAGES = [
   { key: "english", label: "English" },
@@ -25,11 +26,11 @@ export const QuizList = ({
   handleRemoveFromBatch,
   handleMoveQuiz,
   handleUpdateQuizMetadata,
-  setTestBatches,
 }) => {
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [selectedQuizzes, setSelectedQuizzes] = useState(new Set());
   const [flattenDownload, setFlattenDownload] = useState(true);
+  const setTestBatches = useTestBatchStore((state) => state.setTestBatches);
 
   const handleSelectQuiz = (quizId) => {
     const newSelected = new Set(selectedQuizzes);
@@ -71,7 +72,7 @@ export const QuizList = ({
         newLanguage
       );
 
-      // Update local state
+      // Update local state through Zustand
       setTestBatches((prevBatches) =>
         prevBatches.map((batch) =>
           batch.id === batchId
@@ -100,7 +101,7 @@ export const QuizList = ({
           language
         );
 
-        // Update local state
+        // Update local state through Zustand
         setTestBatches((prevBatches) =>
           prevBatches.map((batch) =>
             batch.id === batchId
@@ -229,7 +230,7 @@ export const QuizList = ({
                         }}
                         variant="outline"
                         color="secondary"
-                        className="text-sm   py-2 px-4 rounded"
+                        className="text-sm py-2 px-4 rounded"
                       >
                         <span>↓</span> Download All
                       </button>
@@ -247,7 +248,7 @@ export const QuizList = ({
                     onClick={() => setEditingQuiz(exam)}
                     variant="outline"
                     color="primary"
-                    className=" text-sm py-2 px-4 rounded"
+                    className="text-sm py-2 px-4 rounded"
                   >
                     Edit Metadata
                   </button>
@@ -270,11 +271,6 @@ export const QuizList = ({
                         <DropdownMenu
                           aria-label="Language selection"
                           onAction={(key) => {
-                            console.log("Dropdown selection:", {
-                              selectedKey: key,
-                              currentLanguage: quizEntry.language,
-                              quizId: quizEntry.quizId,
-                            });
                             handleQuizLanguageChange(
                               quizEntry.quizId,
                               quizEntry.language,
