@@ -16,6 +16,8 @@ import {
   useDisclosure,
   RadioGroup,
   Radio,
+  Spinner,
+  Progress,
 } from "@nextui-org/react";
 import { ChevronDown, ChevronRight, Plus, Edit2, Upload } from "lucide-react";
 import NewCategoryModal from "./components/NewCategoryModal";
@@ -40,6 +42,11 @@ export default function OrganizerPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedLanguage, setSelectedLanguage] = useState("english");
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({
+    current: 0,
+    total: 0,
+  });
 
   useEffect(() => {
     fetchOrganizerData();
@@ -55,7 +62,7 @@ export default function OrganizerPage() {
     }
   };
 
-  const handleFileUpload = async (event, batchPath) => {
+  const handleFileUpload = async (event, batchId) => {
     event.preventDefault();
     const files = Array.from(event.target.files);
 
@@ -73,11 +80,17 @@ export default function OrganizerPage() {
       return;
     }
 
+    setIsUploading(true);
+    setUploadProgress({ current: 0, total: files.length });
+
     try {
       const results = await uploadQuizzesToBatch(
-        batchPath,
+        batchId,
         files,
-        selectedLanguage
+        selectedLanguage,
+        (current, total) => {
+          setUploadProgress({ current, total });
+        }
       );
 
       let message = [];
@@ -106,32 +119,55 @@ export default function OrganizerPage() {
         message: error.message,
       });
       onOpen();
+    } finally {
+      setIsUploading(false);
+      setUploadProgress({ current: 0, total: 0 });
+      // Reset the file input
+      event.target.value = "";
     }
-
-    // Reset the file input
-    event.target.value = "";
   };
 
-  const renderUploadSection = (category, title, batchPath) => {
+  const renderUploadSection = (category, title, batchId) => {
     return (
       <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
-        <input
-          type="file"
-          accept=".json"
-          multiple
-          className="hidden"
-          id={`${category}Upload`}
-          onChange={(e) => handleFileUpload(e, batchPath)}
-        />
-        <label htmlFor={`${category}Upload`} className="cursor-pointer">
-          <div className="flex flex-col items-center">
-            <Upload className="w-8 h-8 mb-2" />
-            <p className="text-lg mb-1">Upload {title} Tests</p>
+        {isUploading ? (
+          <div className="flex flex-col items-center gap-4">
+            <Spinner size="lg" />
+            <Progress
+              size="sm"
+              value={(uploadProgress.current / uploadProgress.total) * 100}
+              className="max-w-md"
+            />
             <p className="text-sm text-gray-500">
-              Click to select JSON files or drag and drop
+              Processing {uploadProgress.current} of {uploadProgress.total}{" "}
+              files...
             </p>
           </div>
-        </label>
+        ) : (
+          <>
+            <input
+              type="file"
+              accept=".json"
+              multiple
+              className="hidden"
+              id={`${category}Upload`}
+              onChange={(e) => handleFileUpload(e, batchId)}
+              disabled={isUploading}
+            />
+            <label
+              htmlFor={`${category}Upload`}
+              className={`cursor-pointer ${isUploading ? "pointer-events-none" : ""}`}
+            >
+              <div className="flex flex-col items-center">
+                <Upload className="w-8 h-8 mb-2" />
+                <p className="text-lg mb-1">Upload {title} Tests</p>
+                <p className="text-sm text-gray-500">
+                  Click to select JSON files or drag and drop
+                </p>
+              </div>
+            </label>
+          </>
+        )}
       </div>
     );
   };

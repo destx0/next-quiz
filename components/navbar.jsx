@@ -31,6 +31,7 @@ const navItems = [
   { href: "/ssc-edit", label: "Editor" },
   { href: "/upload", label: "Upload" },
   { href: "/image-thing", label: "ImageThing" },
+  { href: "/organizer", label: "organizer" },
 ];
 
 export const Navbar = () => {
