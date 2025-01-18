@@ -41,7 +41,6 @@ export default function NewTopicModal({
         <ModalHeader>Add New Topic</ModalHeader>
         <ModalBody>
           <Input
-            label="Topic Name"
             value={topicName}
             onChange={(e) => setTopicName(e.target.value)}
           />

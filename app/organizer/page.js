@@ -13,11 +13,19 @@ import {
   ModalBody,
   ModalFooter,
   Input,
+  useDisclosure,
+  Tooltip,
+  RadioGroup,
+  Radio,
 } from "@nextui-org/react";
 import { ChevronDown, ChevronRight, Plus, Edit2, Upload } from "lucide-react";
 import NewCategoryModal from "./components/NewCategoryModal";
 import NewTopicModal from "./components/NewTopicModal";
-import { addNewExamCategory, addTopicToCategory } from "@/lib/organizerService";
+import {
+  addNewExamCategory,
+  addTopicToCategory,
+  uploadQuizzesToBatch,
+} from "@/lib/organizerService";
 
 export default function OrganizerPage() {
   const [organizerData, setOrganizerData] = useState(null);
@@ -29,6 +37,10 @@ export default function OrganizerPage() {
   const [newName, setNewName] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedLanguage, setSelectedLanguage] = useState("english");
+  const [selectedTopic, setSelectedTopic] = useState(null);
 
   useEffect(() => {
     fetchOrganizerData();
@@ -44,7 +56,64 @@ export default function OrganizerPage() {
     }
   };
 
-  const renderUploadSection = (category, title) => {
+  const handleFileUpload = async (event, batchPath) => {
+    event.preventDefault();
+    const files = Array.from(event.target.files);
+
+    if (files.length === 0) return;
+
+    // Validate file types
+    const invalidFiles = files.filter((file) => !file.name.endsWith(".json"));
+    if (invalidFiles.length > 0) {
+      setNotification({
+        type: "error",
+        title: "Invalid file type",
+        message: "Please upload only JSON files",
+      });
+      onOpen();
+      return;
+    }
+
+    try {
+      const results = await uploadQuizzesToBatch(
+        batchPath,
+        files,
+        selectedLanguage
+      );
+
+      let message = [];
+      if (results.successful.length > 0) {
+        message.push(
+          `Successfully uploaded ${results.successful.length} quizzes`
+        );
+      }
+      if (results.failed.length > 0) {
+        message.push(`Failed to upload ${results.failed.length} quizzes`);
+      }
+
+      setNotification({
+        type: results.failed.length === 0 ? "success" : "warning",
+        title: "Upload Results",
+        message: message.join(". "),
+      });
+      onOpen();
+
+      // Refresh the organizer data
+      fetchOrganizerData();
+    } catch (error) {
+      setNotification({
+        type: "error",
+        title: "Upload Failed",
+        message: error.message,
+      });
+      onOpen();
+    }
+
+    // Reset the file input
+    event.target.value = "";
+  };
+
+  const renderUploadSection = (category, title, batchPath) => {
     return (
       <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
         <input
@@ -53,6 +122,7 @@ export default function OrganizerPage() {
           multiple
           className="hidden"
           id={`${category}Upload`}
+          onChange={(e) => handleFileUpload(e, batchPath)}
         />
         <label htmlFor={`${category}Upload`} className="cursor-pointer">
           <div className="flex flex-col items-center">
@@ -73,29 +143,21 @@ export default function OrganizerPage() {
     if (selectedSection === "topic_wise") {
       return (
         <>
-          <div className="flex justify-end mb-4">
-            <Button
-              color="primary"
-              startContent={<Plus className="w-4 h-4" />}
-              onPress={() => setIsNewTopicModalOpen(true)}
-            >
-              Add Topic
-            </Button>
-          </div>
           <div className="grid grid-cols-2 gap-4">
-            {Object.entries(examData.topic_wise).map(([topic, batchId]) => (
-              <Card key={topic} className="w-full">
+            {selectedTopic && (
+              <Card key={selectedTopic} className="w-full col-span-2">
                 <CardHeader className="font-bold">
-                  <span>{topic.replace(/_/g, " ").toUpperCase()}</span>
+                  <span>{selectedTopic.replace(/_/g, " ").toUpperCase()}</span>
                 </CardHeader>
                 <CardBody>
                   {renderUploadSection(
-                    topic,
-                    topic.replace(/_/g, " ").toUpperCase()
+                    selectedTopic,
+                    selectedTopic.replace(/_/g, " ").toUpperCase(),
+                    examData.topic_wise[selectedTopic]
                   )}
                 </CardBody>
               </Card>
-            ))}
+            )}
           </div>
         </>
       );
@@ -109,7 +171,8 @@ export default function OrganizerPage() {
         <CardBody>
           {renderUploadSection(
             selectedSection,
-            selectedSection.replace(/_/g, " ").toUpperCase()
+            selectedSection.replace(/_/g, " ").toUpperCase(),
+            examData[selectedSection]
           )}
         </CardBody>
       </Card>
@@ -132,6 +195,7 @@ export default function OrganizerPage() {
         onClick={() => {
           setSelectedExam(selectedExam === exam ? null : exam);
           setSelectedSection(null);
+          setSelectedTopic(null);
         }}
       >
         {exam.replace(/_/g, " ").toUpperCase()}
@@ -173,19 +237,14 @@ export default function OrganizerPage() {
             </ListboxItem>,
             ...(selectedCategory === "topic_wise"
               ? [
-                  <ListboxItem
-                    key={`${exam}-add-topic`}
-                    className="pl-12"
-                    startContent={<Plus className="w-4 h-4" />}
-                    onClick={() => setIsNewTopicModalOpen(true)}
-                  >
-                    Add New Topic
-                  </ListboxItem>,
                   ...Object.keys(examData.topic_wise).map((topic) => (
                     <ListboxItem
                       key={topic}
                       className="pl-12"
-                      onClick={() => setSelectedSection("topic_wise")}
+                      onClick={() => {
+                        setSelectedSection("topic_wise");
+                        setSelectedTopic(topic);
+                      }}
                     >
                       {topic.replace(/_/g, " ").toUpperCase()}
                     </ListboxItem>
@@ -226,9 +285,53 @@ export default function OrganizerPage() {
     }
   };
 
+  const renderNotificationModal = () => (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader
+              className={
+                notification?.type === "error"
+                  ? "text-danger"
+                  : notification?.type === "success"
+                    ? "text-success"
+                    : "text-warning"
+              }
+            >
+              {notification?.title}
+            </ModalHeader>
+            <ModalBody>
+              <p>{notification?.message}</p>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onPress={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+
   return (
     <div className="flex min-h-screen">
       <div className="w-64 p-4 bg-gray-100 border-r">
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold mb-2">Select Language</h3>
+          <RadioGroup
+            value={selectedLanguage}
+            onValueChange={setSelectedLanguage}
+            orientation="horizontal"
+            size="sm"
+          >
+            <Radio value="english">English</Radio>
+            <Radio value="hindi">Hindi</Radio>
+            <Radio value="bengali">Bengali</Radio>
+          </RadioGroup>
+        </div>
+
         <div className="mb-4">
           <Button
             color="primary"
@@ -249,22 +352,46 @@ export default function OrganizerPage() {
       <main className="flex-1 p-8">
         {selectedExam && organizerData && (
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <h1 className="text-2xl font-bold">
-                {selectedExam.replace(/_/g, " ").toUpperCase()}
-              </h1>
-              <Button
-                isIconOnly
-                size="sm"
-                variant="light"
-                onPress={() => {
-                  setIsRenaming(true);
-                  setSelectedItem({ type: "category", name: selectedExam });
-                  setNewName(selectedExam.replace(/_/g, " ").toUpperCase());
-                }}
-              >
-                <Edit2 className="w-4 h-4" />
-              </Button>
+            <div className="flex flex-col gap-2 mb-6">
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold">
+                  {selectedExam.replace(/_/g, " ").toUpperCase()}
+                </h1>
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  onPress={() => {
+                    setIsRenaming(true);
+                    setSelectedItem({ type: "category", name: selectedExam });
+                    setNewName(selectedExam.replace(/_/g, " ").toUpperCase());
+                  }}
+                >
+                  <Edit2 className="w-4 h-4" />
+                </Button>
+              </div>
+              {selectedSection === "topic_wise" && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    color="primary"
+                    variant="flat"
+                    startContent={<Plus className="h-4 w-4" />}
+                    onPress={() => setIsNewTopicModalOpen(true)}
+                    className="w-fit"
+                  >
+                    Add New Topic
+                  </Button>
+                  {selectedTopic && (
+                    <Button
+                      variant="light"
+                      onPress={() => setSelectedTopic(null)}
+                      className="w-fit"
+                    >
+                      Back to Topics
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
             {renderExamContent(organizerData[selectedExam])}
           </div>
@@ -289,7 +416,6 @@ export default function OrganizerPage() {
           <ModalHeader>Rename {selectedItem?.type}</ModalHeader>
           <ModalBody>
             <Input
-              label="New Name"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
             />
@@ -309,6 +435,8 @@ export default function OrganizerPage() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {renderNotificationModal()}
     </div>
   );
 }

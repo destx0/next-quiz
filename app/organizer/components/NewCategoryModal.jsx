@@ -39,7 +39,6 @@ export default function NewCategoryModal({ isOpen, onClose, onAdd }) {
         <ModalHeader>Add New Category</ModalHeader>
         <ModalBody>
           <Input
-            placeholder="e.g., SSC CGL"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
           />
