@@ -14,7 +14,6 @@ import {
   ModalFooter,
   Input,
   useDisclosure,
-  Tooltip,
   RadioGroup,
   Radio,
 } from "@nextui-org/react";
@@ -381,15 +380,6 @@ export default function OrganizerPage() {
                   >
                     Add New Topic
                   </Button>
-                  {selectedTopic && (
-                    <Button
-                      variant="light"
-                      onPress={() => setSelectedTopic(null)}
-                      className="w-fit"
-                    >
-                      Back to Topics
-                    </Button>
-                  )}
                 </div>
               )}
             </div>
