@@ -222,9 +222,9 @@ export default function OrganizerPage() {
         key={exam}
         startContent={
           selectedExam === exam ? (
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="w-4 h-4 text-primary" />
           ) : (
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-gray-400" />
           )
         }
         onClick={() => {
@@ -232,6 +232,9 @@ export default function OrganizerPage() {
           setSelectedSection(null);
           setSelectedTopic(null);
         }}
+        className={`font-medium ${
+          selectedExam === exam ? "bg-primary-50" : "hover:bg-gray-50"
+        }`}
       >
         {exam.replace(/_/g, " ").toUpperCase()}
       </ListboxItem>,
@@ -239,14 +242,22 @@ export default function OrganizerPage() {
         ? [
             <ListboxItem
               key={`${exam}-pyqs`}
-              className="pl-6"
+              className={`pl-8 text-sm ${
+                selectedSection === "pyqs"
+                  ? "bg-primary-50 text-primary font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
               onClick={() => setSelectedSection("pyqs")}
             >
               PYQs
             </ListboxItem>,
             <ListboxItem
               key={`${exam}-mock`}
-              className="pl-6"
+              className={`pl-8 text-sm ${
+                selectedSection === "full_mock"
+                  ? "bg-primary-50 text-primary font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
               onClick={() => setSelectedSection("full_mock")}
             >
               Full Mock
@@ -255,12 +266,16 @@ export default function OrganizerPage() {
               key={`${exam}-topic`}
               startContent={
                 selectedCategory === "topic_wise" ? (
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="w-4 h-4 text-primary" />
                 ) : (
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
                 )
               }
-              className="pl-6"
+              className={`pl-8 text-sm ${
+                selectedSection === "topic_wise" && !selectedTopic
+                  ? "bg-primary-50 text-primary font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
               onClick={() => {
                 setSelectedCategory(
                   selectedCategory === "topic_wise" ? null : "topic_wise"
@@ -271,20 +286,22 @@ export default function OrganizerPage() {
               Topic Wise
             </ListboxItem>,
             ...(selectedCategory === "topic_wise"
-              ? [
-                  ...Object.keys(examData.topic_wise).map((topic) => (
-                    <ListboxItem
-                      key={topic}
-                      className="pl-12"
-                      onClick={() => {
-                        setSelectedSection("topic_wise");
-                        setSelectedTopic(topic);
-                      }}
-                    >
-                      {topic.replace(/_/g, " ").toUpperCase()}
-                    </ListboxItem>
-                  )),
-                ]
+              ? Object.keys(examData.topic_wise).map((topic) => (
+                  <ListboxItem
+                    key={topic}
+                    className={`pl-12 text-sm ${
+                      selectedTopic === topic
+                        ? "bg-primary-50 text-primary font-medium"
+                        : "text-gray-600 hover:bg-gray-50"
+                    }`}
+                    onClick={() => {
+                      setSelectedSection("topic_wise");
+                      setSelectedTopic(topic);
+                    }}
+                  >
+                    {topic.replace(/_/g, " ").toUpperCase()}
+                  </ListboxItem>
+                ))
               : []),
           ]
         : []),
@@ -351,10 +368,10 @@ export default function OrganizerPage() {
   );
 
   return (
-    <div className="flex min-h-screen">
-      <div className="w-64 p-4 bg-gray-100 border-r">
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold mb-2">Select Language</h3>
+    <div className="flex min-h-screen bg-gray-50">
+      <div className="w-72 p-4 bg-white border-r shadow-sm">
+        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <h3 className="text-sm font-semibold mb-3 text-gray-700">Language</h3>
           <RadioGroup
             value={selectedLanguage}
             onValueChange={setSelectedLanguage}
@@ -367,29 +384,36 @@ export default function OrganizerPage() {
           </RadioGroup>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6">
           <Button
             color="primary"
             startContent={<Plus className="w-4 h-4" />}
-            className="w-full"
+            className="w-full shadow-sm"
             onPress={() => setIsNewCategoryModalOpen(true)}
           >
             Add Category
           </Button>
         </div>
-        <Listbox
-          aria-label="Exam Categories"
-          className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80"
-        >
-          {renderListboxItems()}
-        </Listbox>
+
+        <div className="overflow-y-auto max-h-[calc(100vh-240px)] rounded-lg border bg-white">
+          <Listbox
+            aria-label="Exam Categories"
+            className="p-0 gap-0"
+            itemClasses={{
+              base: "px-3 rounded-none",
+            }}
+          >
+            {renderListboxItems()}
+          </Listbox>
+        </div>
       </div>
+
       <main className="flex-1 p-8">
         {selectedExam && organizerData && (
           <div>
-            <div className="flex flex-col gap-2 mb-6">
+            <div className="flex flex-col gap-2 mb-6 bg-white p-6 rounded-lg shadow-sm">
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold">
+                <h1 className="text-2xl font-bold text-gray-800">
                   {selectedExam.replace(/_/g, " ").toUpperCase()}
                 </h1>
                 <Button
@@ -406,7 +430,7 @@ export default function OrganizerPage() {
                 </Button>
               </div>
               {selectedSection === "topic_wise" && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-2">
                   <Button
                     color="primary"
                     variant="flat"
